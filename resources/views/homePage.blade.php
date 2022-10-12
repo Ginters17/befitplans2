@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,6 +22,7 @@
         }
     </style>
 </head>
+
 <body class="antialiased">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">Befit</a>
@@ -34,12 +36,14 @@
                     <a class="nav-link" href="#">Information</a>
                 </li>
             </ul>
+            @guest
             <span class="navbar-text">
                 <a class="nav-link" href="{{ route('login') }}">Login</a>
             </span>
             <span class="navbar-text">
                 <a class="nav-link" href="{{ route('register') }}">Register</a>
             </span>
+            @endguest
         </div>
     </nav>
     <div class="container">
@@ -50,9 +54,35 @@
                 <h2 class="d-flex justify-content-center">Choose your category</h2>
                 <br></br>
                 <ul class="list-group d-flex justify-content-center">
-                    <li class="list-group-item">Upper Body</li>
-                    <li class="list-group-item">Lower Body</li>
-                    <li class="list-group-item">Cardio</li>
+                    @guest
+                    <a class="list-group-item" href="{{ route('register') }}">Upper Body</a>
+                    <a class="list-group-item" href="{{ route('register') }}">Legs</a>
+                    <a class="list-group-item" href="{{ route('register') }}">Cardio</a>
+                    @endguest
+                    @auth
+                    <a class="list-group-item" data-toggle="modal" data-target="#exampleModalCenter">Upper Body</a>
+                    <a class="list-group-item" data-toggle="modal" data-target="#exampleModalCenter">Legs</a>
+                    <a class="list-group-item" data-toggle="modal" data-target="#exampleModalCenter">Cardio</a>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Choose your plan</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                <a class="list-group-item" href="/plan">Default Plan</a>
+                                <a class="list-group-item" href="/plan">Personalized Plan</a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    @endauth
                 </ul>
             </div>
             <div class="col">
@@ -60,4 +90,5 @@
         </div>
     </div>
 </body>
+
 </html>
