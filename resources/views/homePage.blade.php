@@ -54,41 +54,69 @@
                 <h2 class="d-flex justify-content-center">Choose your category</h2>
                 <br></br>
                 <ul class="list-group d-flex justify-content-center">
-                    @guest
-                    <a class="list-group-item" href="{{ route('register') }}">Upper Body</a>
-                    <a class="list-group-item" href="{{ route('register') }}">Legs</a>
-                    <a class="list-group-item" href="{{ route('register') }}">Cardio</a>
-                    @endguest
-                    @auth
-                    <a class="list-group-item" data-toggle="modal" data-target="#exampleModalCenter">Upper Body</a>
-                    <a class="list-group-item" data-toggle="modal" data-target="#exampleModalCenter">Legs</a>
-                    <a class="list-group-item" data-toggle="modal" data-target="#exampleModalCenter">Cardio</a>
-
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLongTitle">Choose your plan</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                <a class="list-group-item" href="/plan">Default Plan</a>
-                                <a class="list-group-item" href="/plan">Personalized Plan</a>
-                                </div>
-
-                            </div>
+                    <a class="list-group-item" data-toggle="modal" data-target="#upperBodyModalCenter">Upper Body</a>
+                    <a class="list-group-item" data-toggle="modal" data-target="#lowerBodyModalCenter">Lower Body</a>
+                    <a class="list-group-item" data-toggle="modal" data-target="#cardioModalCenter">Cardio</a>         
+                </ul>
+            </div>
+            <div class="modal fade" id="upperBodyModalCenter" tabindex="-1" role="dialog" aria-labelledby="upperBodyModalCenter" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Choose your plan for upper body</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <a class="list-group-item" method="POST" href="/storeDefaultPlan/1">Default Plan</a>
+                            <a class="list-group-item" method="POST" href="/storeDefaultPlan/1">Personalized Plan</a>
                         </div>
                     </div>
-                    @endauth
-                </ul>
+                </div>
+            </div>
+            <div class="modal fade" id="lowerBodyModalCenter" tabindex="-1" role="dialog" aria-labelledby="lowerBodyModalCenter" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Choose your plan for lower body</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <a class="list-group-item" method="POST" href="/storeDefaultPlan/2">Default Plan</a>
+                            <a class="list-group-item" method="POST" href="/storeDefaultPlan/2">Personalized Plan</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="cardioModalCenter" tabindex="-1" role="dialog" aria-labelledby="cardioModalCenter" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Choose your plan for cardio</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <a class="list-group-item" method="POST" href="/storeDefaultPlan/3">Default Plan</a>
+                            <a class="list-group-item" method="POST" href="/storeDefaultPlan/3">Personalized Plan</a>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="col">
             </div>
         </div>
     </div>
+
+    <script>
+        function showPlanSelector(category_id)
+        {
+        }
+    </script>
 </body>
 
 </html>
