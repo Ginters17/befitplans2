@@ -61,7 +61,12 @@ class PlanController extends Controller
      */
     public function storePersonalizedPlan(Request $request)
     {
-        if (Auth::user()) {   
+        if (Auth::user()) {
+            $user = auth()->user();  
+            if($user->age == '' || $user->sex == null || $user->weight == null || $user->height == null)
+            {
+                return redirect('/user/'.$user->id.'/edit');
+            } 
             $userName = auth()->user()->name;
             $plan = new Plan();
             $plan->name="{$userName}'s plan";

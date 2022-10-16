@@ -49,7 +49,7 @@
                         </div>
                         <div class="modal-body">
                             <a class="list-group-item" method="POST" href="/storeDefaultPlan/1">Default Plan</a>
-                            <a class="list-group-item" method="POST" href="/storeDefaultPlan/1">Personalized Plan</a>
+                            <a class="list-group-item" method="POST" href="/storePersonalizedPlan/1">Personalized Plan</a>
                         </div>
                     </div>
                 </div>
@@ -65,7 +65,7 @@
                         </div>
                         <div class="modal-body">
                             <a class="list-group-item" method="POST" href="/storeDefaultPlan/2">Default Plan</a>
-                            <a class="list-group-item" method="POST" href="/storeDefaultPlan/2">Personalized Plan</a>
+                            <a class="list-group-item" method="POST" href="/storePersonalizedPlan/2">Personalized Plan</a>
                         </div>
                     </div>
                 </div>
@@ -81,7 +81,7 @@
                         </div>
                         <div class="modal-body">
                             <a class="list-group-item" method="POST" href="/storeDefaultPlan/3">Default Plan</a>
-                            <a class="list-group-item" method="POST" href="/storeDefaultPlan/3">Personalized Plan</a>
+                            <a class="list-group-item" method="POST" href="/storePersonalizedPlan/3">Personalized Plan</a>
                         </div>
                     </div>
                 </div>
@@ -92,9 +92,6 @@
     </div>
 
     <script>
-        function showPlanSelector(category_id)
-        {
-        }
     </script>
 </body>
 
