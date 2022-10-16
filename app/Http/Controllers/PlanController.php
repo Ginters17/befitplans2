@@ -18,7 +18,7 @@ class PlanController extends Controller
         // $post = Plan::with(['comment' => function($query){
         //     $query->orderBy('created_at', 'desc');
         // }])->findOrFail($id);
-        return view('plan');
+        return view('planPage');
     }
 
     /**
@@ -39,7 +39,7 @@ class PlanController extends Controller
      */
     public function storeDefaultPlan(Request $request)
     {
-        if (Auth::user()) {   
+        if (Auth::user()) {  
             $userName = auth()->user()->name;
             $plan = new Plan();
             $plan->name="{$userName}'s plan";
@@ -69,7 +69,7 @@ class PlanController extends Controller
             $plan->user_id=auth()->id();
             $plan->is_default=0;
             $plan->save();
-            return back();
+            return redirect('/plan/'.$plan->id);
         } else {
             return redirect('/register'); 
         }
