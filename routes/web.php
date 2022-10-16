@@ -31,5 +31,6 @@ Route::get('user/{user_id}/edit', [App\Http\Controllers\UserController::class, '
 Route::post('user/{user_id}/update', [App\Http\Controllers\UserController::class, 'update']);
 
 Route::get('storeDefaultPlan/{category_id}', [App\Http\Controllers\PlanController::class, 'storeDefaultPlan']);
+Route::get('storePersonalizedPlan/{category_id}', [App\Http\Controllers\PlanController::class, 'storePersonalizedPlan']);
 
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');

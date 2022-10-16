@@ -93,7 +93,7 @@ class UserController extends Controller
                 $user->height = $request->height;
                 $user->sex = $request->sex;
                 $user->save();
-                return back();
+                return redirect('/');
             // }
             // else 
             // { 
