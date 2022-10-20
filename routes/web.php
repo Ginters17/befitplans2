@@ -24,7 +24,7 @@ Auth::routes();
 
 Route::get('home', [App\Http\Controllers\HomeController::class, 'index']);
 
-Route::get('plan/{plan_id}', [App\Http\Controllers\PlanController::class, 'index']);
+Route::get('plan/{plan_id}', [App\Http\Controllers\WorkoutController::class, 'index']);
 
 Route::get('user/{user_id}', [App\Http\Controllers\UserController::class, 'index']);
 Route::get('user/{user_id}/edit', [App\Http\Controllers\UserController::class, 'edit']);

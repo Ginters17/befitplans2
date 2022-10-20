@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Category;
 use App\Models\User;
+use App\Models\Workout;
 
 class Plan extends Model
 {
@@ -16,5 +17,8 @@ class Plan extends Model
     }
     public function user() { // FK relationship
         return $this->belongsTo(User::class);
+    }
+    public function workout() { // FK relationship
+        return $this->hasMany(Workout::class);
     }
 }

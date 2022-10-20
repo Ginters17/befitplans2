@@ -5,20 +5,27 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Plan;
+use App\Models\Workout;
+use App\Services\WorkoutService;
 
 class PlanController extends Controller
 {
+    protected $workoutService;
+    public function __construct(WorkoutService $workoutService)
+    { 
+        $this->workoutService = $workoutService;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
+    public function index($planId)
     {
-        // $post = Plan::with(['comment' => function($query){
-        //     $query->orderBy('created_at', 'desc');
-        // }])->findOrFail($id);
-        return view('planPage');
+        $plan = Plan::findOrFail($planId);
+        $planWorkouts=Workout::where('plan_id', $planId)->get();
+        return view('planPage', compact('planWorkouts'), compact('plan'));
     }
 
     /**
@@ -47,6 +54,9 @@ class PlanController extends Controller
             $plan->user_id=auth()->id();
             $plan->is_default=1;
             $plan->save();
+
+            $this->workoutService->makeWorkouts(1, auth()->user(), $plan, true);
+            
             return redirect('/plan/'.$plan->id);
         } else {
             return redirect('/register'); 
@@ -74,6 +84,9 @@ class PlanController extends Controller
             $plan->user_id=auth()->id();
             $plan->is_default=0;
             $plan->save();
+
+            // Make and call service to get coefficient for workouts based on user's data
+            $this->workoutService->makeWorkouts(1, auth()->user(), $plan, true);
             return redirect('/plan/'.$plan->id);
         } else {
             return redirect('/register'); 
