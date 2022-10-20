@@ -3,7 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -14,17 +13,19 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('plans', function (Blueprint $table) {
+        Schema::create('workouts', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->string('name',50);
             $table->string('description',300)->nullable();
             $table->foreignId('user_id')->nullable()->constrained('users');
-            $table->foreignId('category_id')->nullable()->constrained('categories');
-            $table->integer('age_max')->nullable();
-            $table->integer('age_min')->nullable();
-            $table->integer('sex')->nullable(); 
-            $table->boolean('is_default'); 
+            $table->foreignId('plan_id')->constrained('plans');
+            $table->integer('day');
+            $table->integer('reps')->nullable();
+            $table->integer('sets')->nullable();
+            $table->integer('duration_minutes')->nullable();
+            $table->string('difficulty')->nullable();
+            $table->boolean('day_off');
         });
     }
 
@@ -35,8 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-        Schema::drop('plans');
-        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+        Schema::dropIfExists('workouts');
     }
 };

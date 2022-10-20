@@ -30,6 +30,10 @@
             <div class="col">
             </div>
             <div class="col-6">
+                <h2>Workouts for this plan:</h2>
+                @foreach ($planWorkouts as $workout)
+                <a class="list-group-item">{{ $workout->name }}</a>
+                @endforeach
             </div>
             <div class="col">
             </div>
