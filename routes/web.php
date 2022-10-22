@@ -24,13 +24,16 @@ Auth::routes();
 
 Route::get('home', [App\Http\Controllers\HomeController::class, 'index']);
 
-Route::get('plan/{plan_id}', [App\Http\Controllers\WorkoutController::class, 'index']);
+Route::get('plan/{plan_id}', [App\Http\Controllers\PlanController::class, 'index']);
+Route::get('storeDefaultPlan/{category_id}', [App\Http\Controllers\PlanController::class, 'storeDefaultPlan']);
+Route::get('storePersonalizedPlan/{category_id}', [App\Http\Controllers\PlanController::class, 'storePersonalizedPlan']);
+
+Route::get('plan/{plan_id}/workout/{workout_id}', [App\Http\Controllers\WorkoutController::class, 'index']);
+Route::get('plan/{plan_id}/workout/{workout_id}/complete', [App\Http\Controllers\WorkoutController::class, 'complete']);
 
 Route::get('user/{user_id}', [App\Http\Controllers\UserController::class, 'index']);
 Route::get('user/{user_id}/edit', [App\Http\Controllers\UserController::class, 'edit']);
 Route::post('user/{user_id}/update', [App\Http\Controllers\UserController::class, 'update']);
 
-Route::get('storeDefaultPlan/{category_id}', [App\Http\Controllers\PlanController::class, 'storeDefaultPlan']);
-Route::get('storePersonalizedPlan/{category_id}', [App\Http\Controllers\PlanController::class, 'storePersonalizedPlan']);
 
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');

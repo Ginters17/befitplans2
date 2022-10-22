@@ -26,6 +26,7 @@ return new class extends Migration
             $table->integer('duration_minutes')->nullable();
             $table->string('difficulty')->nullable();
             $table->boolean('day_off');
+            $table->boolean('is_complete')->nullable();
         });
     }
 

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Workout;
+use App\Models\Plan;
+use Illuminate\Support\Facades\Auth;
 
 class WorkoutController extends Controller
 {
@@ -11,9 +14,11 @@ class WorkoutController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($planId,$workoutId)
     {
-        //
+        $workout = Workout::findOrFail($workoutId);
+        $plan = Plan::findOrFail($planId);
+        return view('workoutPage', compact('workout'), compact('plan'));
     }
 
     /**
@@ -80,5 +85,20 @@ class WorkoutController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function complete($plan_id, $workout_id)
+    {
+        $workout = Workout::findOrFail($workout_id);
+        if(auth()->user()->id == $workout->user_id)
+        {
+            $workout->is_complete = true;
+            $workout->save();
+            return redirect('/plan/'.$plan_id);
+        }
+        else
+        {
+            return redirect('/');
+        }
     }
 }
