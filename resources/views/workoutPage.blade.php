@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Befit - {{$plan->name}}</title>
+    <title>Befit - Workout</title>
 
     <!-- Fonts -->
     <link href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -28,17 +28,20 @@
     <div class="container">
         <div class="row">
             <div class="col">
+                    <a href="/plan/{{$plan->id}}">Back to {{ $plan->name }}</a>
             </div>
             <div class="col-6">
-                <h2>Workouts for this plan:</h2>
-                @foreach ($planWorkouts as $workout)
-                @if($workout->is_complete)
-                    <a class="list-group-item p-3 mb-2 bg-success text-white" href="{{$workout->plan_id}}/workout/{{$workout->id}}">Day {{$workout->day}} - {{ $workout->name }}</a>
+                <h2>Workout</h2>
+                <p>{{$workout->name}}</p>
+                <p>{{$workout->description}}</p>
+                @if($plan->category_id == 1 || $plan->category_id == 2)
+                <p>Sets: {{$workout->sets}}</p>
+                <p>Reps: {{$workout->reps}}</p>
                 @endif
-                @if(!$workout->is_complete)
-                <a class="list-group-item" href="{{$workout->plan_id}}/workout/{{$workout->id}}">Day {{$workout->day}} - {{ $workout->name }}</a>
+                @if($plan->category_id == 3)
+                <p>Duration: {{$workout->duration_minutes}}</p>
                 @endif
-                @endforeach
+                <a class="btn btn-light" href="{{$workout->id}}/complete">Complete Workout</a>
             </div>
             <div class="col">
             </div>
