@@ -17,7 +17,7 @@ class PlanController extends Controller
         $this->workoutService = $workoutService;
         $this->workoutCoefficientService = $workoutCoefficientService;
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -87,9 +87,10 @@ class PlanController extends Controller
             $plan->is_default=0;
             $plan->save();
 
-            // Make and call service to get coefficient for workouts based on user's data
+            /// Get coefficient for workout intensity and make workouts
             $coefficient = $this->workoutCoefficientService->getCoefficient(auth()->user());
             $this->workoutService->makeWorkouts($coefficient, auth()->user(), $plan, true);
+
             return redirect('/plan/'.$plan->id);
         } else {
             return redirect('/register'); 
