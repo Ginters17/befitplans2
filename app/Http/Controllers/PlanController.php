@@ -7,15 +7,17 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Plan;
 use App\Models\Workout;
 use App\Services\WorkoutService;
+use App\Services\WorkoutCoefficientService;
 
 class PlanController extends Controller
 {
     protected $workoutService;
-    public function __construct(WorkoutService $workoutService)
+    public function __construct(WorkoutService $workoutService, WorkoutCoefficientService $workoutCoefficientService)
     { 
         $this->workoutService = $workoutService;
+        $this->workoutCoefficientService = $workoutCoefficientService;
     }
-
+    
     /**
      * Display a listing of the resource.
      *
@@ -86,7 +88,8 @@ class PlanController extends Controller
             $plan->save();
 
             // Make and call service to get coefficient for workouts based on user's data
-            $this->workoutService->makeWorkouts(1, auth()->user(), $plan, true);
+            $coefficient = $this->workoutCoefficientService->getCoefficient(auth()->user());
+            $this->workoutService->makeWorkouts($coefficient, auth()->user(), $plan, true);
             return redirect('/plan/'.$plan->id);
         } else {
             return redirect('/register'); 
