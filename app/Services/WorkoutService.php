@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Workout;
+use App\Models\Exercise;
 
 class WorkoutService
 {
@@ -22,306 +23,322 @@ class WorkoutService
         }
     }
 
-    public function makeCardioWorkouts($coefficient, $user, $plan, $is_default)
+    /// Make 28 workouts, make exercises for each workout
+    private function makeCardioWorkouts($coefficient, $user, $plan,)
     {
-        $workout = new Workout();
-        $workout->name = "Run";
-        $workout->description = "Run outside or indoors";
-        $workout->plan_id = $plan->id;
-        $workout->user_id = $user->id;
-        $workout->day = 1;
-        $workout->duration_minutes = ceil(20 * $coefficient);
-        $workout->day_off = 0;
-        $workout->save();
+        $workout_id = $workout_id = $this->makeWorkout("RUN", "Run inside or outdoors", $plan->id, $user->id, 1, 0, $coefficient);
+        $this->makeExercise("RUN", "Run inside or outdoors", $workout_id, $user->id, null, null, 20*60, $coefficient);
+       
+        $workout_id = $workout_id = $this->makeWorkout("RUN", "Run inside or outdoors", $plan->id, $user->id, 2, 0, $coefficient);
+        $this->makeExercise("RUN", "Run inside or outdoors", $workout_id, $user->id, null, null, 20*60, $coefficient);
+        
+        $workout_id = $workout_id = $this->makeWorkout("RUN", "Run inside or outdoors", $plan->id, $user->id, 3, 0, $coefficient);
+        $this->makeExercise("RUN", "Run inside or outdoors", $workout_id, $user->id, null, null, 20*60, $coefficient);
+        
+        $workout_id = $workout_id = $this->makeWorkout("FREE", "It's your day off.. let's relax", $plan->id, $user->id, 4, 1, null);
+        
+        $workout_id = $workout_id = $this->makeWorkout("RUN", "Run inside or outdoors", $plan->id, $user->id, 5, 0, $coefficient);
+        $this->makeExercise("RUN", "Run inside or outdoors", $workout_id, $user->id, null, null, 25*60, $coefficient);
+        
+        $workout_id = $workout_id = $this->makeWorkout("RUN", "Run inside or outdoors", $plan->id, $user->id, 6, 0, $coefficient);
+        $this->makeExercise("RUN", "Run inside or outdoors", $workout_id, $user->id, null, null, 25*60, $coefficient);
+        
+        $workout_id = $workout_id = $this->makeWorkout("RUN", "Run inside or outdoors", $plan->id, $user->id, 7, 0, $coefficient);
+        $this->makeExercise("RUN", "Run inside or outdoors", $workout_id, $user->id, null, null, 25*60, $coefficient);
+        
+        $workout_id = $workout_id = $this->makeWorkout("FREE", "It's your day off.. let's relax", $plan->id, $user->id, 8, 1, null);
+        
+        $workout_id = $workout_id = $this->makeWorkout("RUN", "Run inside or outdoors", $plan->id, $user->id, 9, 0, $coefficient);
+        $this->makeExercise("RUN", "Run inside or outdoors", $workout_id, $user->id, null, null, 30*60, $coefficient);
+        
+        $workout_id = $workout_id = $this->makeWorkout("RUN", "Run inside or outdoors", $plan->id, $user->id, 10, 0, $coefficient);
+        $this->makeExercise("RUN", "Run inside or outdoors", $workout_id, $user->id, null, null, 30*60, $coefficient);
+        
+        $workout_id = $workout_id = $this->makeWorkout("RUN", "Run inside or outdoors", $plan->id, $user->id, 11, 0, $coefficient);
+        $this->makeExercise("RUN", "Run inside or outdoors", $workout_id, $user->id, null, null, 30*60, $coefficient);
+        
+        $workout_id = $workout_id = $this->makeWorkout("FREE", "It's your day off.. let's relax", $plan->id, $user->id, 12, 1, null);
+        
+        $workout_id = $workout_id = $this->makeWorkout("RUN", "Run inside or outdoors", $plan->id, $user->id, 13, 0, $coefficient);
+        $this->makeExercise("RUN", "Run inside or outdoors", $workout_id, $user->id, null, null, 35*60, $coefficient);
+        
+        $workout_id = $workout_id = $this->makeWorkout("RUN", "Run inside or outdoors", $plan->id, $user->id, 14, 0, $coefficient);
+        $this->makeExercise("RUN", "Run inside or outdoors", $workout_id, $user->id, null, null, 35*60, $coefficient);
 
-        $workout = new Workout();
-        $workout->name = "Run";
-        $workout->description = "Run outside or indoors";
-        $workout->plan_id = $plan->id;
-        $workout->user_id = $user->id;
-        $workout->day = 2;
-        $workout->duration_minutes = ceil(20 * $coefficient);
-        $workout->day_off = 0;
-        $workout->save();
+        $workout_id = $workout_id = $this->makeWorkout("RUN", "Run inside or outdoors", $plan->id, $user->id, 15, 0, $coefficient);
+        $this->makeExercise("RUN", "Run inside or outdoors", $workout_id, $user->id, null, null, 35*60, $coefficient);
 
-        $workout = new Workout();
-        $workout->name = "Run";
-        $workout->description = "Run outside or indoors";
-        $workout->plan_id = $plan->id;
-        $workout->user_id = $user->id;
-        $workout->day = 3;
-        $workout->duration_minutes = ceil(20 * $coefficient);
-        $workout->day_off = 0;
-        $workout->save();
+        $workout_id = $workout_id = $this->makeWorkout("FREE", "It's your day off.. let's relax", $plan->id, $user->id, 16, 1, null);
 
-        $workout = new Workout();
-        $workout->name = "FREE";
-        $workout->description = "Let's relax.. this is your day off";
-        $workout->plan_id = $plan->id;
-        $workout->user_id = $user->id;
-        $workout->day = 4;
-        $workout->day_off = 1;
-        $workout->save();
+        $workout_id = $workout_id = $this->makeWorkout("RUN", "Run inside or outdoors", $plan->id, $user->id, 17, 0, $coefficient);
+        $this->makeExercise("RUN", "Run inside or outdoors", $workout_id, $user->id, null, null, 40*60, $coefficient);
 
-        $workout = new Workout();
-        $workout->name = "Run";
-        $workout->description = "Run outside or indoors";
-        $workout->plan_id = $plan->id;
-        $workout->user_id = $user->id;
-        $workout->day = 5;
-        $workout->duration_minutes = ceil(25 * $coefficient);
-        $workout->day_off = 0;
-        $workout->save();
+        $workout_id = $workout_id = $this->makeWorkout("RUN", "Run inside or outdoors", $plan->id, $user->id, 18, 0, $coefficient);
+        $this->makeExercise("RUN", "Run inside or outdoors", $workout_id, $user->id, null, null, 40*60, $coefficient);
 
-        $workout = new Workout();
-        $workout->name = "Run";
-        $workout->description = "Run outside or indoors";
-        $workout->plan_id = $plan->id;
-        $workout->user_id = $user->id;
-        $workout->day = 6;
-        $workout->duration_minutes = ceil(25 * $coefficient);
-        $workout->day_off = 0;
-        $workout->save();
+        $workout_id = $workout_id = $this->makeWorkout("RUN", "Run inside or outdoors", $plan->id, $user->id, 19, 0, $coefficient);
+        $this->makeExercise("RUN", "Run inside or outdoors", $workout_id, $user->id, null, null, 40*60, $coefficient);
 
-        $workout = new Workout();
-        $workout->name = "Run";
-        $workout->description = "Run outside or indoors";
-        $workout->plan_id = $plan->id;
-        $workout->user_id = $user->id;
-        $workout->day = 7;
-        $workout->duration_minutes = ceil(25 * $coefficient);
-        $workout->day_off = 0;
-        $workout->save();
+        $workout_id = $workout_id = $this->makeWorkout("FREE", "It's your day off.. let's relax", $plan->id, $user->id, 20, 1, null);
 
-        $workout = new Workout();
-        $workout->name = "FREE";
-        $workout->description = "Let's relax.. this is your day off";
-        $workout->plan_id = $plan->id;
-        $workout->user_id = $user->id;
-        $workout->day = 8;
-        $workout->day_off = 1;
-        $workout->save();
+        $workout_id = $workout_id = $this->makeWorkout("RUN", "Run inside or outdoors", $plan->id, $user->id, 21, 0, $coefficient);
+        $this->makeExercise("RUN", "Run inside or outdoors", $workout_id, $user->id, null, null, 45*60, $coefficient);
 
-        $workout = new Workout();
-        $workout->name = "Run";
-        $workout->description = "Run outside or indoors";
-        $workout->plan_id = $plan->id;
-        $workout->user_id = $user->id;
-        $workout->day = 9;
-        $workout->duration_minutes = ceil(30 * $coefficient);
-        $workout->day_off = 0;
-        $workout->save();
+        $workout_id = $workout_id = $this->makeWorkout("RUN", "Run inside or outdoors", $plan->id, $user->id, 22, 0, $coefficient);
+        $this->makeExercise("RUN", "Run inside or outdoors", $workout_id, $user->id, null, null, 45*60, $coefficient);
 
-        $workout = new Workout();
-        $workout->name = "Run";
-        $workout->description = "Run outside or indoors";
-        $workout->plan_id = $plan->id;
-        $workout->user_id = $user->id;
-        $workout->day = 10;
-        $workout->duration_minutes = ceil(30 * $coefficient);
-        $workout->day_off = 0;
-        $workout->save();
+        $workout_id = $workout_id = $this->makeWorkout("RUN", "Run inside or outdoors", $plan->id, $user->id, 23, 0, $coefficient);
+        $this->makeExercise("RUN", "Run inside or outdoors", $workout_id, $user->id, null, null, 45*60, $coefficient);
 
-        $workout = new Workout();
-        $workout->name = "Run";
-        $workout->description = "Run outside or indoors";
-        $workout->plan_id = $plan->id;
-        $workout->user_id = $user->id;
-        $workout->day = 11;
-        $workout->duration_minutes = ceil(30 * $coefficient);
-        $workout->day_off = 0;
-        $workout->save();
+        $workout_id = $workout_id = $this->makeWorkout("FREE", "It's your last day off in this plan.. let's relax", $plan->id, $user->id, 24, 1, null);
 
-        $workout = new Workout();
-        $workout->name = "FREE";
-        $workout->description = "Let's relax.. this is your day off";
-        $workout->plan_id = $plan->id;
-        $workout->user_id = $user->id;
-        $workout->day = 12;
-        $workout->day_off = 1;
-        $workout->save();
+        $workout_id = $workout_id = $this->makeWorkout("RUN", "Run inside or outdoors", $plan->id, $user->id, 25, 0, $coefficient);
+        $this->makeExercise("RUN", "Run inside or outdoors", $workout_id, $user->id, null, null, 50*60, $coefficient);
 
-        $workout = new Workout();
-        $workout->name = "Run";
-        $workout->description = "Run outside or indoors";
-        $workout->plan_id = $plan->id;
-        $workout->user_id = $user->id;
-        $workout->day = 13;
-        $workout->duration_minutes = ceil(35 * $coefficient);
-        $workout->day_off = 0;
-        $workout->save();
+        $workout_id = $workout_id = $this->makeWorkout("RUN", "Run inside or outdoors", $plan->id, $user->id, 26, 0, $coefficient);
+        $this->makeExercise("RUN", "Run inside or outdoors", $workout_id, $user->id, null, null, 55*60, $coefficient);
 
-        $workout = new Workout();
-        $workout->name = "Run";
-        $workout->description = "Run outside or indoors";
-        $workout->plan_id = $plan->id;
-        $workout->user_id = $user->id;
-        $workout->day = 14;
-        $workout->duration_minutes = ceil(35 * $coefficient);
-        $workout->day_off = 0;
-        $workout->save();
-
-        $workout = new Workout();
-        $workout->name = "Run";
-        $workout->description = "Run outside or indoors";
-        $workout->plan_id = $plan->id;
-        $workout->user_id = $user->id;
-        $workout->day = 15;
-        $workout->duration_minutes = ceil(35 * $coefficient);
-        $workout->day_off = 0;
-        $workout->save();
-
-        $workout = new Workout();
-        $workout->name = "FREE";
-        $workout->description = "Let's relax.. this is your day off";
-        $workout->plan_id = $plan->id;
-        $workout->user_id = $user->id;
-        $workout->day = 16;
-        $workout->day_off = 1;
-        $workout->save();
-
-        $workout = new Workout();
-        $workout->name = "Run";
-        $workout->description = "Run outside or indoors";
-        $workout->plan_id = $plan->id;
-        $workout->user_id = $user->id;
-        $workout->day = 17;
-        $workout->duration_minutes = ceil(40 * $coefficient);
-        $workout->day_off = 0;
-        $workout->save();
-
-        $workout = new Workout();
-        $workout->name = "Run";
-        $workout->description = "Run outside or indoors";
-        $workout->plan_id = $plan->id;
-        $workout->user_id = $user->id;
-        $workout->day = 18;
-        $workout->duration_minutes = ceil(40 * $coefficient);
-        $workout->day_off = 0;
-        $workout->save();
-
-        $workout = new Workout();
-        $workout->name = "Run";
-        $workout->description = "Run outside or indoors";
-        $workout->plan_id = $plan->id;
-        $workout->user_id = $user->id;
-        $workout->day = 19;
-        $workout->duration_minutes = ceil(40 * $coefficient);
-        $workout->day_off = 0;
-        $workout->save();
-
-        $workout = new Workout();
-        $workout->name = "FREE";
-        $workout->description = "Let's relax.. this is your day off";
-        $workout->plan_id = $plan->id;
-        $workout->user_id = $user->id;
-        $workout->day = 20;
-        $workout->day_off = 1;
-        $workout->save();
-
-        $workout = new Workout();
-        $workout->name = "Run";
-        $workout->description = "Run outside or indoors";
-        $workout->plan_id = $plan->id;
-        $workout->user_id = $user->id;
-        $workout->day = 21;
-        $workout->duration_minutes = ceil(45 * $coefficient);
-        $workout->day_off = 0;
-        $workout->save();
-
-        $workout = new Workout();
-        $workout->name = "Run";
-        $workout->description = "Run outside or indoors";
-        $workout->plan_id = $plan->id;
-        $workout->user_id = $user->id;
-        $workout->day = 22;
-        $workout->duration_minutes = ceil(45 * $coefficient);
-        $workout->day_off = 0;
-        $workout->save();
-
-        $workout = new Workout();
-        $workout->name = "Run";
-        $workout->description = "Run outside or indoors";
-        $workout->plan_id = $plan->id;
-        $workout->user_id = $user->id;
-        $workout->day = 23;
-        $workout->duration_minutes = ceil(45 * $coefficient);
-        $workout->day_off = 0;
-        $workout->save();
-
-        $workout = new Workout();
-        $workout->name = "FREE";
-        $workout->description = "Let's relax.. this is your last day off in this plan";
-        $workout->plan_id = $plan->id;
-        $workout->user_id = $user->id;
-        $workout->day = 24;
-        $workout->day_off = 0;
-        $workout->save();
-
-        $workout = new Workout();
-        $workout->name = "Run";
-        $workout->description = "Run outside or indoors";
-        $workout->plan_id = $plan->id;
-        $workout->user_id = $user->id;
-        $workout->day = 25;
-        $workout->duration_minutes = ceil(50 * $coefficient);
-        $workout->day_off = 0;
-        $workout->save();
-
-        $workout = new Workout();
-        $workout->name = "Run";
-        $workout->description = "Run outside or indoors";
-        $workout->plan_id = $plan->id;
-        $workout->user_id = $user->id;
-        $workout->day = 26;
-        $workout->duration_minutes = ceil(55 * $coefficient);
-        $workout->day_off = 0;
-        $workout->save();
-
-        $workout = new Workout();
-        $workout->name = "Run";
-        $workout->description = "Run outside or indoors";
-        $workout->plan_id = $plan->id;
-        $workout->user_id = $user->id;
-        $workout->day = 27;
-        $workout->duration_minutes = ceil(55 * $coefficient);
-        $workout->day_off = 0;
-        $workout->save();
-
-        $workout = new Workout();
-        $workout->name = "Run";
-        $workout->description = "Run outside or indoors";
-        $workout->plan_id = $plan->id;
-        $workout->user_id = $user->id;
-        $workout->day = 28;
-        $workout->duration_minutes = ceil(60 * $coefficient);
-        $workout->day_off = 0;
-        $workout->save();
+        $workout_id = $workout_id = $this->makeWorkout("RUN", "Run inside or outdoors", $plan->id, $user->id, 27, 0, $coefficient);
+        $this->makeExercise("RUN", "Run inside or outdoors", $workout_id, $user->id, null, null, 55*60, $coefficient);
+        
+        $workout_id = $workout_id = $this->makeWorkout("RUN", "Run inside or outdoors", $plan->id, $user->id, 28, 0, $coefficient);
+        $this->makeExercise("RUN", "Run inside or outdoors", $workout_id, $user->id, null, null, 60*60, $coefficient);
     }
-    public function makeUpperBodyWorkouts($coefficient, $user, $plan, $is_default)
+
+    private function makeUpperBodyWorkouts($coefficient, $user, $plan,)
     {
-        $workout = new Workout();
-        $workout->name = "Wide push-ups";
-        $workout->description = "Wide push-ups will work your chest muscles";
-        $workout->plan_id = $plan->id;
-        $workout->user_id = $user->id;
-        $workout->day = 1;
-        $workout->reps = ceil(6 * $coefficient);
-        $workout->sets = ceil(3 * $coefficient);
-        $workout->day_off = 0;
-        $workout->save();
+        $workout_id = $this->makeWorkout("Regular push ups and Tricep dips", "Regular pushups will work your chest and triceps. Tricep dips will work your triceps", $plan->id, $user->id, 1, 0, $coefficient);
+        $this->makeExercise("Regular push ups", "Do regular push ups", $workout_id, $user->id, 6, 3, null, $coefficient);
+        $this->makeExercise("Tricep Dips", "Do tricep Dips", $workout_id, $user->id, 6, 3, null, $coefficient);
+        
+        $workout_id = $this->makeWorkout("Planks and Crunches", "Planks will work your core. Crunches will work your abs", $plan->id, $user->id, 2, 0, $coefficient);
+        $this->makeExercise("Planks", "Do planks", $workout_id, $user->id, null, null, 60, $coefficient);
+        $this->makeExercise("Crunches", "Do crunches", $workout_id, $user->id, 12, 3, null, $coefficient);
+        
+        $workout_id = $this->makeWorkout("Superman and Diamond push ups", "Superman will work your back. Diamond push ups will work your biceps", $plan->id, $user->id, 3, 0, $coefficient);
+        $this->makeExercise("Superman", "Do Superman", $workout_id, $user->id, 12, 3, null, $coefficient);
+        $this->makeExercise("Diamond push ups", "Do diamond push ups", $workout_id, $user->id, 6, 3, null, $coefficient);
+
+        $workout_id = $this->makeWorkout("FREE", "It's your day off.. let's relax", $plan->id, $user->id, 4, 1, $coefficient);
+
+        $workout_id = $this->makeWorkout("Regular push ups and Tricep dips", "Regular pushups will work your chest and triceps. Tricep dips will work your triceps", $plan->id, $user->id, 5, 0, $coefficient);
+        $this->makeExercise("Regular push ups", "Do regular push ups", $workout_id, $user->id, 8, 3, null, $coefficient);
+        $this->makeExercise("Tricep Dips", "Do tricep Dips", $workout_id, $user->id, 8, 3, null, $coefficient);
+        
+        $workout_id = $this->makeWorkout("Planks and Crunches", "Planks will work your core. Crunches will work your abs", $plan->id, $user->id, 6, 0, $coefficient);
+        $this->makeExercise("Planks", "Do planks", $workout_id, $user->id, null, null, 70, $coefficient);
+        $this->makeExercise("Crunches", "Do crunches", $workout_id, $user->id, 14, 3, null, $coefficient);
+        
+        $workout_id = $this->makeWorkout("Superman and Diamond push ups", "Superman will work your back. Diamond push ups will work your biceps", $plan->id, $user->id, 7, 0, $coefficient);
+        $this->makeExercise("Superman", "Do Superman", $workout_id, $user->id, 14, 3, null, $coefficient);
+        $this->makeExercise("Diamond push ups", "Do diamond push ups", $workout_id, $user->id, 8, 3, null, $coefficient);
+
+        $workout_id = $this->makeWorkout("FREE", "It's your day off.. let's relax", $plan->id, $user->id, 8, 1, $coefficient);
+
+        $workout_id = $this->makeWorkout("Regular push ups and Tricep dips", "Regular pushups will work your chest and triceps. Tricep dips will work your triceps", $plan->id, $user->id, 9, 0, $coefficient);
+        $this->makeExercise("Regular push ups", "Do regular push ups", $workout_id, $user->id, 9, 3, null, $coefficient);
+        $this->makeExercise("Tricep Dips", "Do tricep Dips", $workout_id, $user->id, 9, 3, null, $coefficient);
+        
+        $workout_id = $this->makeWorkout("Planks and Crunches", "Planks will work your core. Crunches will work your abs", $plan->id, $user->id, 10, 0, $coefficient);
+        $this->makeExercise("Planks", "Do planks", $workout_id, $user->id, null, null, 75, $coefficient);
+        $this->makeExercise("Crunches", "Do crunches", $workout_id, $user->id, 15, 3, null, $coefficient);
+        
+        $workout_id = $this->makeWorkout("Superman and Diamond push ups", "Superman will work your back. Diamond push ups will work your biceps", $plan->id, $user->id, 11, 0, $coefficient);
+        $this->makeExercise("Superman", "Do Superman", $workout_id, $user->id, 15, 3, null, $coefficient);
+        $this->makeExercise("Diamond push ups", "Do diamond push ups", $workout_id, $user->id, 9, 3, null, $coefficient);
+
+        $workout_id = $this->makeWorkout("FREE", "It's your day off.. let's relax", $plan->id, $user->id, 12, 1, $coefficient);
+
+        $workout_id = $this->makeWorkout("Regular push ups and Tricep dips", "Regular pushups will work your chest and triceps. Tricep dips will work your triceps", $plan->id, $user->id, 13, 0, $coefficient);
+        $this->makeExercise("Regular push ups", "Do regular push ups", $workout_id, $user->id, 10, 3, null, $coefficient);
+        $this->makeExercise("Tricep Dips", "Do tricep Dips", $workout_id, $user->id, 10, 3, null, $coefficient);
+        
+        $workout_id = $this->makeWorkout("Planks and Crunches", "Planks will work your core. Crunches will work your abs", $plan->id, $user->id, 14, 0, $coefficient);
+        $this->makeExercise("Planks", "Do planks", $workout_id, $user->id, null, null, 80, $coefficient);
+        $this->makeExercise("Crunches", "Do crunches", $workout_id, $user->id, 16, 3, null, $coefficient);
+
+        $workout_id = $this->makeWorkout("Superman and Diamond push ups", "Superman will work your back. Diamond push ups will work your biceps", $plan->id, $user->id, 15, 0, $coefficient);
+        $this->makeExercise("Superman", "Do Superman", $workout_id, $user->id, 16, 3, null, $coefficient);
+        $this->makeExercise("Diamond push ups", "Do diamond push ups", $workout_id, $user->id, 10, 3, null, $coefficient);
+
+        $workout_id = $this->makeWorkout("FREE", "It's your day off.. let's relax", $plan->id, $user->id, 16, 1, $coefficient);
+
+        $workout_id = $this->makeWorkout("Regular push ups and Tricep dips", "Regular pushups will work your chest and triceps. Tricep dips will work your triceps", $plan->id, $user->id, 17, 0, $coefficient);
+        $this->makeExercise("Regular push ups", "Do regular push ups", $workout_id, $user->id, 11, 3, null, $coefficient);
+        $this->makeExercise("Tricep Dips", "Do tricep Dips", $workout_id, $user->id, 11, 3, null, $coefficient);
+        
+        $workout_id = $this->makeWorkout("Planks and Crunches", "Planks will work your core. Crunches will work your abs", $plan->id, $user->id, 18, 0, $coefficient);
+        $this->makeExercise("Planks", "Do planks", $workout_id, $user->id, null, null, 85, $coefficient);
+        $this->makeExercise("Crunches", "Do crunches", $workout_id, $user->id, 17, 3, null, $coefficient);
+
+        $workout_id = $this->makeWorkout("Superman and Diamond push ups", "Superman will work your back. Diamond push ups will work your biceps", $plan->id, $user->id, 19, 0, $coefficient);
+        $this->makeExercise("Superman", "Do Superman", $workout_id, $user->id, 17, 3, null, $coefficient);
+        $this->makeExercise("Diamond push ups", "Do diamond push ups", $workout_id, $user->id, 11, 3, null, $coefficient);
+
+        $workout_id = $this->makeWorkout("FREE", "It's your day off.. let's relax", $plan->id, $user->id, 20, 1, $coefficient);
+
+        $workout_id = $this->makeWorkout("Regular push ups and Tricep dips", "Regular pushups will work your chest and triceps. Tricep dips will work your triceps", $plan->id, $user->id, 21, 0, $coefficient);
+        $this->makeExercise("Regular push ups", "Do regular push ups", $workout_id, $user->id, 12, 3, null, $coefficient);
+        $this->makeExercise("Tricep Dips", "Do tricep Dips", $workout_id, $user->id, 12, 3, null, $coefficient);
+        
+        $workout_id = $this->makeWorkout("Planks and Crunches", "Planks will work your core. Crunches will work your abs", $plan->id, $user->id, 22, 0, $coefficient);
+        $this->makeExercise("Planks", "Do planks", $workout_id, $user->id, null, null, 90, $coefficient);
+        $this->makeExercise("Crunches", "Do crunches", $workout_id, $user->id, 18, 3, null, $coefficient);
+
+        $workout_id = $this->makeWorkout("Superman and Diamond push ups", "Superman will work your back. Diamond push ups will work your biceps", $plan->id, $user->id, 23, 0, $coefficient);
+        $this->makeExercise("Superman", "Do Superman", $workout_id, $user->id, 18, 3, null, $coefficient);
+        $this->makeExercise("Diamond push ups", "Do diamond push ups", $workout_id, $user->id, 12, 3, null, $coefficient);
+
+        $workout_id = $this->makeWorkout("FREE", "It's your last day off in this plan.. let's relax", $plan->id, $user->id, 24, 1, $coefficient);
+        
+        $workout_id = $this->makeWorkout("Regular push ups and Tricep dips", "Regular pushups will work your chest and triceps. Tricep dips will work your triceps", $plan->id, $user->id, 25, 0, $coefficient);
+        $this->makeExercise("Regular push ups", "Do regular push ups", $workout_id, $user->id, 10, 4, null, $coefficient);
+        $this->makeExercise("Tricep Dips", "Do tricep Dips", $workout_id, $user->id, 10, 4, null, $coefficient);
+        
+        $workout_id = $this->makeWorkout("Planks and Crunches", "Planks will work your core. Crunches will work your abs", $plan->id, $user->id, 26, 0, $coefficient);
+        $this->makeExercise("Planks", "Do planks", $workout_id, $user->id, null, null, 90, $coefficient);
+        $this->makeExercise("Crunches", "Do crunches", $workout_id, $user->id, 14, 4, null, $coefficient);
+
+        $workout_id = $this->makeWorkout("Superman and Diamond push ups", "Superman will work your back. Diamond push ups will work your biceps", $plan->id, $user->id, 27, 0, $coefficient);
+        $this->makeExercise("Superman", "Do Superman", $workout_id, $user->id, 14, 4, null, $coefficient);
+        $this->makeExercise("Diamond push ups", "Do diamond push ups", $workout_id, $user->id, 10, 4, null, $coefficient);
+
+        $workout_id = $this->makeWorkout("Regular push ups, Diamond push ups, Crunches", "Regular push ups will work your chest and triceps. Diamond push ups will work your biceps. Crunches will work your abs.", $plan->id, $user->id, 27, 0, $coefficient);
+        $this->makeExercise("Regular push ups", "Do regular push ups", $workout_id, $user->id, 12, 4, null, $coefficient);
+        $this->makeExercise("Diamond push ups", "Do diamond push ups", $workout_id, $user->id, 12, 4, null, $coefficient);
+        $this->makeExercise("Crunches", "Do crunches", $workout_id, $user->id, 16, 4, null, $coefficient);
+        
+    
     }
-    public function makeLowerBodyWorkouts($coefficient, $user, $plan, $is_default)
+
+    private function makeLowerBodyWorkouts($coefficient, $user, $plan, $is_default)
+    {
+        $workout_id = $this->makeWorkout("Regular push ups and Tricep dips", "Regular pushups will work your chest and triceps. Tricep dips will work your triceps", $plan->id, $user->id, 1, 0, $coefficient);
+        $this->makeExercise("Regular push ups", "Do regular push ups", $workout_id, $user->id, 6, 3, null, $coefficient);
+        $this->makeExercise("Tricep Dips", "Do tricep Dips", $workout_id, $user->id, 6, 3, null, $coefficient);
+        
+        $workout_id = $this->makeWorkout("Planks and Crunches", "Planks will work your core. Crunches will work your abs", $plan->id, $user->id, 2, 0, $coefficient);
+        $this->makeExercise("Planks", "Do planks", $workout_id, $user->id, null, null, 60, $coefficient);
+        $this->makeExercise("Crunches", "Do crunches", $workout_id, $user->id, 12, 3, null, $coefficient);
+        
+        $workout_id = $this->makeWorkout("Superman and Diamond push ups", "Superman will work your back. Diamond push ups will work your biceps", $plan->id, $user->id, 3, 0, $coefficient);
+        $this->makeExercise("Superman", "Do Superman", $workout_id, $user->id, 12, 3, null, $coefficient);
+        $this->makeExercise("Diamond push ups", "Do diamond push ups", $workout_id, $user->id, 6, 3, null, $coefficient);
+
+        $workout_id = $this->makeWorkout("FREE", "It's your day off.. let's relax", $plan->id, $user->id, 4, 1, $coefficient);
+
+        $workout_id = $this->makeWorkout("Regular push ups and Tricep dips", "Regular pushups will work your chest and triceps. Tricep dips will work your triceps", $plan->id, $user->id, 5, 0, $coefficient);
+        $this->makeExercise("Regular push ups", "Do regular push ups", $workout_id, $user->id, 8, 3, null, $coefficient);
+        $this->makeExercise("Tricep Dips", "Do tricep Dips", $workout_id, $user->id, 8, 3, null, $coefficient);
+        
+        $workout_id = $this->makeWorkout("Planks and Crunches", "Planks will work your core. Crunches will work your abs", $plan->id, $user->id, 6, 0, $coefficient);
+        $this->makeExercise("Planks", "Do planks", $workout_id, $user->id, null, null, 70, $coefficient);
+        $this->makeExercise("Crunches", "Do crunches", $workout_id, $user->id, 14, 3, null, $coefficient);
+        
+        $workout_id = $this->makeWorkout("Superman and Diamond push ups", "Superman will work your back. Diamond push ups will work your biceps", $plan->id, $user->id, 7, 0, $coefficient);
+        $this->makeExercise("Superman", "Do Superman", $workout_id, $user->id, 14, 3, null, $coefficient);
+        $this->makeExercise("Diamond push ups", "Do diamond push ups", $workout_id, $user->id, 8, 3, null, $coefficient);
+
+        $workout_id = $this->makeWorkout("FREE", "It's your day off.. let's relax", $plan->id, $user->id, 8, 1, $coefficient);
+
+        $workout_id = $this->makeWorkout("Regular push ups and Tricep dips", "Regular pushups will work your chest and triceps. Tricep dips will work your triceps", $plan->id, $user->id, 9, 0, $coefficient);
+        $this->makeExercise("Regular push ups", "Do regular push ups", $workout_id, $user->id, 9, 3, null, $coefficient);
+        $this->makeExercise("Tricep Dips", "Do tricep Dips", $workout_id, $user->id, 9, 3, null, $coefficient);
+        
+        $workout_id = $this->makeWorkout("Planks and Crunches", "Planks will work your core. Crunches will work your abs", $plan->id, $user->id, 10, 0, $coefficient);
+        $this->makeExercise("Planks", "Do planks", $workout_id, $user->id, null, null, 75, $coefficient);
+        $this->makeExercise("Crunches", "Do crunches", $workout_id, $user->id, 15, 3, null, $coefficient);
+        
+        $workout_id = $this->makeWorkout("Superman and Diamond push ups", "Superman will work your back. Diamond push ups will work your biceps", $plan->id, $user->id, 11, 0, $coefficient);
+        $this->makeExercise("Superman", "Do Superman", $workout_id, $user->id, 15, 3, null, $coefficient);
+        $this->makeExercise("Diamond push ups", "Do diamond push ups", $workout_id, $user->id, 9, 3, null, $coefficient);
+
+        $workout_id = $this->makeWorkout("FREE", "It's your day off.. let's relax", $plan->id, $user->id, 12, 1, $coefficient);
+
+        $workout_id = $this->makeWorkout("Regular push ups and Tricep dips", "Regular pushups will work your chest and triceps. Tricep dips will work your triceps", $plan->id, $user->id, 13, 0, $coefficient);
+        $this->makeExercise("Regular push ups", "Do regular push ups", $workout_id, $user->id, 10, 3, null, $coefficient);
+        $this->makeExercise("Tricep Dips", "Do tricep Dips", $workout_id, $user->id, 10, 3, null, $coefficient);
+        
+        $workout_id = $this->makeWorkout("Planks and Crunches", "Planks will work your core. Crunches will work your abs", $plan->id, $user->id, 14, 0, $coefficient);
+        $this->makeExercise("Planks", "Do planks", $workout_id, $user->id, null, null, 80, $coefficient);
+        $this->makeExercise("Crunches", "Do crunches", $workout_id, $user->id, 16, 3, null, $coefficient);
+
+        $workout_id = $this->makeWorkout("Superman and Diamond push ups", "Superman will work your back. Diamond push ups will work your biceps", $plan->id, $user->id, 15, 0, $coefficient);
+        $this->makeExercise("Superman", "Do Superman", $workout_id, $user->id, 16, 3, null, $coefficient);
+        $this->makeExercise("Diamond push ups", "Do diamond push ups", $workout_id, $user->id, 10, 3, null, $coefficient);
+
+        $workout_id = $this->makeWorkout("FREE", "It's your day off.. let's relax", $plan->id, $user->id, 16, 1, $coefficient);
+
+        $workout_id = $this->makeWorkout("Regular push ups and Tricep dips", "Regular pushups will work your chest and triceps. Tricep dips will work your triceps", $plan->id, $user->id, 17, 0, $coefficient);
+        $this->makeExercise("Regular push ups", "Do regular push ups", $workout_id, $user->id, 11, 3, null, $coefficient);
+        $this->makeExercise("Tricep Dips", "Do tricep Dips", $workout_id, $user->id, 11, 3, null, $coefficient);
+        
+        $workout_id = $this->makeWorkout("Planks and Crunches", "Planks will work your core. Crunches will work your abs", $plan->id, $user->id, 18, 0, $coefficient);
+        $this->makeExercise("Planks", "Do planks", $workout_id, $user->id, null, null, 85, $coefficient);
+        $this->makeExercise("Crunches", "Do crunches", $workout_id, $user->id, 17, 3, null, $coefficient);
+
+        $workout_id = $this->makeWorkout("Superman and Diamond push ups", "Superman will work your back. Diamond push ups will work your biceps", $plan->id, $user->id, 19, 0, $coefficient);
+        $this->makeExercise("Superman", "Do Superman", $workout_id, $user->id, 17, 3, null, $coefficient);
+        $this->makeExercise("Diamond push ups", "Do diamond push ups", $workout_id, $user->id, 11, 3, null, $coefficient);
+
+        $workout_id = $this->makeWorkout("FREE", "It's your day off.. let's relax", $plan->id, $user->id, 20, 1, $coefficient);
+
+        $workout_id = $this->makeWorkout("Regular push ups and Tricep dips", "Regular pushups will work your chest and triceps. Tricep dips will work your triceps", $plan->id, $user->id, 21, 0, $coefficient);
+        $this->makeExercise("Regular push ups", "Do regular push ups", $workout_id, $user->id, 12, 3, null, $coefficient);
+        $this->makeExercise("Tricep Dips", "Do tricep Dips", $workout_id, $user->id, 12, 3, null, $coefficient);
+        
+        $workout_id = $this->makeWorkout("Planks and Crunches", "Planks will work your core. Crunches will work your abs", $plan->id, $user->id, 22, 0, $coefficient);
+        $this->makeExercise("Planks", "Do planks", $workout_id, $user->id, null, null, 90, $coefficient);
+        $this->makeExercise("Crunches", "Do crunches", $workout_id, $user->id, 18, 3, null, $coefficient);
+
+        $workout_id = $this->makeWorkout("Superman and Diamond push ups", "Superman will work your back. Diamond push ups will work your biceps", $plan->id, $user->id, 23, 0, $coefficient);
+        $this->makeExercise("Superman", "Do Superman", $workout_id, $user->id, 18, 3, null, $coefficient);
+        $this->makeExercise("Diamond push ups", "Do diamond push ups", $workout_id, $user->id, 12, 3, null, $coefficient);
+
+        $workout_id = $this->makeWorkout("FREE", "It's your last day off in this plan.. let's relax", $plan->id, $user->id, 24, 1, $coefficient);
+        
+        $workout_id = $this->makeWorkout("Regular push ups and Tricep dips", "Regular pushups will work your chest and triceps. Tricep dips will work your triceps", $plan->id, $user->id, 25, 0, $coefficient);
+        $this->makeExercise("Regular push ups", "Do regular push ups", $workout_id, $user->id, 10, 4, null, $coefficient);
+        $this->makeExercise("Tricep Dips", "Do tricep Dips", $workout_id, $user->id, 10, 4, null, $coefficient);
+        
+        $workout_id = $this->makeWorkout("Planks and Crunches", "Planks will work your core. Crunches will work your abs", $plan->id, $user->id, 26, 0, $coefficient);
+        $this->makeExercise("Planks", "Do planks", $workout_id, $user->id, null, null, 90, $coefficient);
+        $this->makeExercise("Crunches", "Do crunches", $workout_id, $user->id, 14, 4, null, $coefficient);
+
+        $workout_id = $this->makeWorkout("Superman and Diamond push ups", "Superman will work your back. Diamond push ups will work your biceps", $plan->id, $user->id, 27, 0, $coefficient);
+        $this->makeExercise("Superman", "Do Superman", $workout_id, $user->id, 14, 4, null, $coefficient);
+        $this->makeExercise("Diamond push ups", "Do diamond push ups", $workout_id, $user->id, 10, 4, null, $coefficient);
+
+        $workout_id = $this->makeWorkout("Regular push ups, Diamond push ups, Crunches", "Regular push ups will work your chest and triceps. Diamond push ups will work your biceps. Crunches will work your abs.", $plan->id, $user->id, 27, 0, $coefficient);
+        $this->makeExercise("Regular push ups", "Do regular push ups", $workout_id, $user->id, 12, 4, null, $coefficient);
+        $this->makeExercise("Diamond push ups", "Do diamond push ups", $workout_id, $user->id, 12, 4, null, $coefficient);
+        $this->makeExercise("Crunches", "Do crunches", $workout_id, $user->id, 16, 4, null, $coefficient);
+    }
+
+    private function makeWorkout($name, $description, $plan_id, $user_id, $day, $day_off, $coefficient)
     {
         $workout = new Workout();
-        $workout->name = "Squats";
-        $workout->description = "Squats will work your quads";
-        $workout->plan_id = $plan->id;
-        $workout->user_id = $user->id;
-        $workout->day = 1;
-        $workout->reps = ceil(6 * $coefficient);
-        $workout->sets = ceil(3 * $coefficient);
-        $workout->day_off = 0;
+        $workout->name = $name;
+        $workout->description = $description;
+        $workout->plan_id = $plan_id;
+        $workout->user_id = $user_id;
+        $workout->day = $day;
+        $workout->day_off = $day_off;
         $workout->save();
+
+        return $workout->id;
+    }
+
+    private function makeExercise($name, $description, $workout_id, $user_id, $reps, $sets, $duration,  $coefficient)
+    {
+        $exercise = new Exercise();
+        $exercise->name = $name;
+        $exercise->description = $description;
+        $exercise->workout_id = $workout_id;
+        $exercise->user_id = $user_id;
+        $exercise->reps = ceil($reps * $coefficient);
+        $exercise->sets = ceil($sets * $coefficient);
+        $exercise->duration = $duration * $coefficient;
+        $exercise->save();
     }
 }

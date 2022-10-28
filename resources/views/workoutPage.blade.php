@@ -28,19 +28,31 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                    <a href="/plan/{{$plan->id}}">Back to {{ $plan->name }}</a>
+                <a href="/plan/{{$plan->id}}">Back to {{ $plan->name }}</a>
             </div>
             <div class="col-6">
                 <h2>Workout</h2>
                 <p>{{$workout->name}}</p>
                 <p>{{$workout->description}}</p>
-                @if($plan->category_id == 1 || $plan->category_id == 2)
-                <p>Sets: {{$workout->sets}}</p>
-                <p>Reps: {{$workout->reps}}</p>
-                @endif
-                @if($plan->category_id == 3)
-                <p>Duration: {{$workout->duration_minutes}}</p>
-                @endif
+                @foreach ($workout->exercise as $exercise)
+                    <div class="list-group-item">
+                        <p>{{$exercise->name}}</p>
+                        @if($exercise->sets != null)
+                            <p>Sets: {{$exercise->sets}}</p>
+                        @endif
+                        @if($exercise->reps != null)
+                            <p>Reps: {{$exercise->reps}}</p>
+                        @endif
+                        @if($exercise->duration != null)
+                            @if($plan->category_id == 3)
+                            <p>Duration: {{$exercise->duration}} minutes</p>
+                            @endif
+                            @if($plan->category_id == 1 || $plan->category_id == 2)
+                            <p>Duration: {{$exercise->duration}} seconds</p>
+                            @endif
+                        @endif
+                    </div>
+                @endforeach
                 <a class="btn btn-light" href="{{$workout->id}}/complete">Complete Workout</a>
             </div>
             <div class="col">
