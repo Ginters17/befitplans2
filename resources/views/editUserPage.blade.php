@@ -34,15 +34,21 @@
                 <form method="POST" action="{{ action([App\Http\Controllers\UserController::class, 'update'], $user->id) }}">
                     @csrf
                     <div class="form-group row">
-                        <label for="inputPassword" class="col-sm-2 col-form-label">Name</label>
+                        <label for="inputPassword" class="col-sm-2 col-form-label">Name *</label>
                         <div class="col-sm-10">
                             <input type="text" name="name" class="form-control" id="inputPassworzd" value="{{$user->name}}">
+                            @error('name')
+                            <p class="alert alert-danger" role="alert">Name must not be empty</p>
+                            @enderror
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="inputPassword" class="col-sm-2 col-form-label">Age</label>
                         <div class="col-sm-10">
                             <input type="text" name="age" class="form-control" id="inputPassworzd" value="{{$user->age}}">
+                            @error('age')
+                            <p class="alert alert-danger" role="alert">You must be older than 13</p>
+                            @enderror
                         </div>
                     </div>
                     <div class="form-group row">
@@ -60,20 +66,40 @@
                     <div class="form-group row">
                         <label for="" class="col-sm-2 col-form-label">Sex</label>
                         <div class="custom-control custom-radio custom-control-inline">
+                            @if ($user->sex == 1)
+                            <input type="radio" id="customRadioInline1" class="custom-control-input" name="sex" value="1" checked="checked">
+                            @endif
+                            @if ($user->sex != 1)
                             <input type="radio" id="customRadioInline1" class="custom-control-input" name="sex" value="1">
+                            @endif
                             <label class="custom-control-label" for="customRadioInline1">Male</label>
                         </div>
                         <div class="custom-control custom-radio custom-control-inline">
+                            @if ($user->sex == 2)
+                            <input type="radio" id="customRadioInline2" class="custom-control-input" name="sex" value="2" checked="checked">
+                            @endif
+                            @if ($user->sex != 2)
                             <input type="radio" id="customRadioInline2" class="custom-control-input" name="sex" value="2">
-                            <label class="custom-control-label active" for="customRadioInline2" checked="">Female</label>
+                            @endif
+                            <label class="custom-control-label active" for="customRadioInline2">Female</label>
                         </div>
                         <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" id="customRadioInline2" class="custom-control-input" name="sex" value="3">
-                            <label class="custom-control-label" for="customRadioInline2">Other</label>
+                            @if ($user->sex == 3)
+                            <input type="radio" id="customRadioInline3" class="custom-control-input" name="sex" value="3" checked="checked">
+                            @endif
+                            @if ($user->sex != 3)
+                            <input type="radio" id="customRadioInline3" class="custom-control-input" name="sex" value="3">
+                            @endif
+                            <label class="custom-control-label" for="customRadioInline3">Other</label>
                         </div>
                         <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" id="customRadioInline2" class="custom-control-input" name="sex" value="4">
-                            <label class="custom-control-label" for="customRadioInline2">Prefer not to say</label>
+                            @if ($user->sex == 4)
+                            <input type="radio" id="customRadioInline4" class="custom-control-input" name="sex" value="4" checked="checked">
+                            @endif
+                            @if ($user->sex != 4)
+                            <input type="radio" id="customRadioInline4" class="custom-control-input" name="sex" value="4">
+                            @endif
+                            <label class="custom-control-label" for="customRadioInline4">Prefer not to say</label>
                         </div>
                     </div>
                     <input type="submit" value="SAVE">

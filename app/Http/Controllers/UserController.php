@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider;
 use App\Models\User;
 use App\Models\Plan;
 
@@ -17,7 +18,7 @@ class UserController extends Controller
     public function index($userId)
     {
         $user = User::findOrFail($userId);
-        $userPlans=Plan::where('user_id', $userId)->get();
+        $userPlans = Plan::where('user_id', $userId)->get();
         return view('userPage', compact('userPlans'), compact('user'));
     }
 
@@ -61,8 +62,12 @@ class UserController extends Controller
      */
     public function edit($userId)
     {
-        $user = User::findOrFail($userId);
-        return view('editUserPage', compact('user'));
+        if (Auth::user() || Auth::user()->id == $userId) {
+            $user = User::findOrFail($userId);
+            return view('editUserPage', compact('user'));
+        } else {
+            return redirect('/');
+        }
     }
 
     /**
@@ -74,35 +79,22 @@ class UserController extends Controller
      */
     public function update(Request $request, $userId)
     {
-        $rules = array( 
-            'name' => 'required|min:1|max:40',
-            'age' => 'required|min:1|max:100',
-            'weight' => 'required|min:1|max:200',
-            'height' => 'required|min:1|max:200',
-            'sex' => 'required',
+        $rules = array(
+            'name' => 'required',
+            'age' => 'integer|min:13'
         );
         $user = User::findOrFail($userId);
-        if (Auth::user()) 
-        {
-            // if (auth()->user()->can('update', $userId)) 
-            // {
-                $this->validate($request, $rules);   
-                $user->name = $request->name;
-                $user->age = $request->age;
-                $user->weight = $request->weight;
-                $user->height = $request->height;
-                $user->sex = $request->sex;
-                $user->save();
-                return redirect('/');
-            // }
-            // else 
-            // { 
-            //     return redirect('/'); 
-            // }
-        } 
-        else 
-        {
-            return redirect('/'); 
+        if (Auth::user() && Auth::user()->id == $userId) {
+            $this->validate($request, $rules);
+            $user->name = $request->name;
+            $user->age = $request->age;
+            $user->weight = $request->weight;
+            $user->height = $request->height;
+            $user->sex = $request->sex;
+            $user->save();
+            return back();
+        } else {
+            return redirect('/');
         }
     }
 
