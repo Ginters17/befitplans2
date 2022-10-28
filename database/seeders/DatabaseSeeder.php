@@ -15,9 +15,12 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(CategorySeeder::class);
-        $this->call(PlanSeeder::class);
-        $this->call(CardioWorkoutSeeder::class);
-        $this->call(UpperBodyWorkoutSeeder::class);
-        $this->call(LowerBodyWorkoutSeeder::class);
+        // $this->call(PlanSeeder::class);
+        // $this->call(CardioWorkoutSeeder::class);
+        // $this->call(UpperBodyWorkoutSeeder::class);
+        // $this->call(LowerBodyWorkoutSeeder::class);
+        // $this->call(CardioExerciseSeeder::class);
+        // $this->call(UpperBodyExerciseSeeder::class);
+        // $this->call(LowerBodyExerciseSeeder::class);
     }
 }

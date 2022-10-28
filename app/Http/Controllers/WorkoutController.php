@@ -16,7 +16,8 @@ class WorkoutController extends Controller
      */
     public function index($planId,$workoutId)
     {
-        $workout = Workout::findOrFail($workoutId);
+        // $workout = Workout::findOrFail($workoutId);
+        $workout = Workout::with(['exercise'])->findOrFail($workoutId);
         $plan = Plan::findOrFail($planId);
         return view('workoutPage', compact('workout'), compact('plan'));
     }
