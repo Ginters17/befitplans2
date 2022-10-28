@@ -2,9 +2,9 @@
 
 namespace App\Policies;
 
-use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class UserPolicy
 {
@@ -20,8 +20,8 @@ class UserPolicy
         //
     }
 
-    public function update($user_id)
+    public function update(User $userId)
     {
-        return Auth::user()->id == $user_id;
+        return Auth::user()->id == $userId;
     }
 }
