@@ -102,8 +102,16 @@
                             <label class="custom-control-label" for="customRadioInline4">Prefer not to say</label>
                         </div>
                     </div>
-                    <input type="submit" value="SAVE">
+                    <input class="float-right" type="submit" value="SAVE">
                 </form>
+                @if(session()->has('message'))
+                <div class="alert alert-success fade show" role="alert">
+                    <strong>Success!</strong> Your information has been successfully saved.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                @endif
             </div>
             <div class="col">
             </div>
