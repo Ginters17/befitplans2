@@ -92,7 +92,7 @@ class UserController extends Controller
             $user->height = $request->height;
             $user->sex = $request->sex;
             $user->save();
-            return back();
+            return redirect()->back()->with('message', 'Success');
         } else {
             return redirect('/');
         }
