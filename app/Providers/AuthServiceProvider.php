@@ -6,27 +6,29 @@ use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvid
 use Illuminate\Support\Facades\Gate;
 use App\Policies\UserPolicy;
 use App\Models\User;
+use App\Policies\PlanPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
     /**
      * The policy mappings for the application.
      *
-     * @var array<class-string, class-string>
+     * @var array
      */
     protected $policies = [
-        User::class => UserPolicy::class,
-     ];
-
+        'App\Model' => 'App\Policies\PlanPolicy',
+        Plan::class => PlanPolicy::class
+    ];
+ 
     /**
-     * Register any authentication / authorization services.
+     * Register any application authentication / authorization services.
      *
      * @return void
      */
     public function boot()
     {
         $this->registerPolicies();
-
+ 
         //
     }
 }

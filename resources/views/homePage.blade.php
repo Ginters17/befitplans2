@@ -35,7 +35,7 @@
                 <ul class="list-group d-flex justify-content-center">
                     <a class="list-group-item" data-toggle="modal" data-target="#upperBodyModalCenter">Upper Body</a>
                     <a class="list-group-item" data-toggle="modal" data-target="#lowerBodyModalCenter">Lower Body</a>
-                    <a class="list-group-item" data-toggle="modal" data-target="#cardioModalCenter">Cardio</a>         
+                    <a class="list-group-item" data-toggle="modal" data-target="#cardioModalCenter">Cardio</a>
                 </ul>
             </div>
             <div class="modal fade" id="upperBodyModalCenter" tabindex="-1" role="dialog" aria-labelledby="upperBodyModalCenter" aria-hidden="true">
@@ -90,9 +90,14 @@
             </div>
         </div>
     </div>
-
-    <script>
-    </script>
+    @if (session()->has('success'))
+    <div class="alert alert-success fade show fixed-bottom mb-0 px-1 pl-3 pr-3" role="alert">
+        <strong>Success!</strong> Plan has been deleted successfully.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    @endif
 </body>
 
 </html>

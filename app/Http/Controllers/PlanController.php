@@ -8,6 +8,7 @@ use App\Models\Plan;
 use App\Models\Workout;
 use App\Services\WorkoutService;
 use App\Services\WorkoutCoefficientService;
+use App\Http\Controllers\Controller;
 
 class PlanController extends Controller
 {
@@ -126,9 +127,22 @@ class PlanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $planId)
     {
-        //
+        $rules = array(
+            'name' => 'required',
+        );
+        $plan = Plan::findOrFail($planId);
+        if ($this->authorize('update', $plan)) {
+            $this->validate($request, $rules);
+            $plan->name = $request->name;
+            $plan->description = $request->description;
+            $plan->is_public = $request->is_public;
+            $plan->save();
+            return back()->withSuccess(['Success']);
+        } else {
+            return redirect('/');
+        }
     }
 
     /**
@@ -137,8 +151,16 @@ class PlanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($planId)
     {
-        //
+        $plan = Plan::findOrFail($planId);
+        if (Auth::user()) {  
+            if ($this->authorize('delete', $plan)) {
+                $plan->delete();
+                return redirect('/')->withSuccess(['Success']);
+            }
+        } else {
+            return redirect('/');
+        }
     }
 }
