@@ -203,7 +203,7 @@ class WorkoutService
         $this->makeExercise("Superman", "Do Superman", $workout_id, $user->id, 14, 4, null, $coefficient);
         $this->makeExercise("Diamond push ups", "Do diamond push ups", $workout_id, $user->id, 10, 4, null, $coefficient);
 
-        $workout_id = $this->makeWorkout("Regular push ups, Diamond push ups, Crunches", "Regular push ups will work your chest and triceps. Diamond push ups will work your biceps. Crunches will work your abs.", $plan->id, $user->id, 27, 0, $coefficient);
+        $workout_id = $this->makeWorkout("Regular push ups, Diamond push ups, Crunches", "Regular push ups will work your chest and triceps. Diamond push ups will work your biceps. Crunches will work your abs.", $plan->id, $user->id, 28, 0, $coefficient);
         $this->makeExercise("Regular push ups", "Do regular push ups", $workout_id, $user->id, 12, 4, null, $coefficient);
         $this->makeExercise("Diamond push ups", "Do diamond push ups", $workout_id, $user->id, 12, 4, null, $coefficient);
         $this->makeExercise("Crunches", "Do crunches", $workout_id, $user->id, 16, 4, null, $coefficient);

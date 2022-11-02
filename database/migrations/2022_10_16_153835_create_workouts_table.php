@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('name',100);
             $table->string('description',300)->nullable();
             $table->foreignId('user_id')->nullable()->constrained('users');
-            $table->foreignId('plan_id')->constrained('plans');
+            $table->foreignId('plan_id')->constrained('plans')->onDelete('cascade');;
             $table->integer('day');
             $table->string('difficulty')->nullable();
             $table->boolean('day_off');

@@ -25,6 +25,7 @@ return new class extends Migration
             $table->integer('age_min')->nullable();
             $table->integer('sex')->nullable(); 
             $table->boolean('is_default'); 
+            $table->boolean('is_public')->default('0');
         });
     }
 

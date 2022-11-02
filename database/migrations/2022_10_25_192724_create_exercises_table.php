@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('name',100);
             $table->string('description',300)->nullable();
             $table->foreignId('user_id')->nullable()->constrained('users');
-            $table->foreignId('workout_id')->constrained('workouts');
+            $table->foreignId('workout_id')->constrained('workouts')->onDelete('cascade');;
             $table->integer('reps')->nullable();
             $table->integer('sets')->nullable();
             $table->integer('duration')->nullable();
