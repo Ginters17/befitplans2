@@ -32,6 +32,8 @@ Route::post('plan/{plan_id}/update', [App\Http\Controllers\PlanController::class
 
 Route::get('plan/{plan_id}/workout/{workout_id}', [App\Http\Controllers\WorkoutController::class, 'index']);
 Route::get('plan/{plan_id}/workout/{workout_id}/complete', [App\Http\Controllers\WorkoutController::class, 'complete']);
+Route::get('plan/{plan_id}/workout/{workout_id}/delete', [App\Http\Controllers\WorkoutController::class, 'destroy']);
+Route::post('workout/{workout_id}/update', [App\Http\Controllers\WorkoutController::class, 'update']);
 
 Route::get('user/{user_id}', [App\Http\Controllers\UserController::class, 'index']);
 Route::get('user/{user_id}/edit', [App\Http\Controllers\UserController::class, 'edit']);

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Workout;
 use App\Models\Plan;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class WorkoutController extends Controller
 {
@@ -16,7 +17,6 @@ class WorkoutController extends Controller
      */
     public function index($planId,$workoutId)
     {
-        // $workout = Workout::findOrFail($workoutId);
         $workout = Workout::with(['exercise'])->findOrFail($workoutId);
         $plan = Plan::findOrFail($planId);
         return view('workoutPage', compact('workout'), compact('plan'));
@@ -72,9 +72,24 @@ class WorkoutController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $workoutId)
     {
-        //
+        $validator = Validator::make($request->all(),[
+            'name' => 'required'
+        ]);
+        if($validator->fails()){
+            return back()->with('error', 'Workout not updated - Name must not be empty.');
+        }
+
+        $workout = Workout::findOrFail($workoutId);
+        if ($this->authorize('update', $workout)) {
+            $workout->name = $request->name;
+            $workout->description = $request->description;
+            $workout->save();
+            return back()->with('success', 'Workout has been updated successfully.');
+        } else {
+            return redirect('/');
+        }
     }
 
     /**
@@ -83,9 +98,17 @@ class WorkoutController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($planId, $workoutId)
     {
-        //
+        $workout = Workout::findOrFail($workoutId);
+        if (Auth::user()) {  
+            if ($this->authorize('delete', $workout)) {
+                $workout->delete();
+                return redirect('/plan/'.$planId)->with('success', 'Workout has been deleted successfully.');
+            }
+        } else {
+            return redirect('/');
+        }
     }
 
     public function complete($plan_id, $workout_id)
