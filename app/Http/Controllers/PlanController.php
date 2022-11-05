@@ -8,13 +8,13 @@ use App\Models\Plan;
 use App\Models\Workout;
 use App\Services\WorkoutService;
 use App\Services\WorkoutCoefficientService;
-use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class PlanController extends Controller
 {
     protected $workoutService;
     public function __construct(WorkoutService $workoutService, WorkoutCoefficientService $workoutCoefficientService)
-    { 
+    {
         $this->workoutService = $workoutService;
         $this->workoutCoefficientService = $workoutCoefficientService;
     }
@@ -27,7 +27,7 @@ class PlanController extends Controller
     public function index($planId)
     {
         $plan = Plan::findOrFail($planId);
-        $planWorkouts=Workout::where('plan_id', $planId)->get();
+        $planWorkouts = Workout::where('plan_id', $planId)->get();
         return view('planPage', compact('planWorkouts'), compact('plan'));
     }
 
@@ -49,20 +49,20 @@ class PlanController extends Controller
      */
     public function storeDefaultPlan(Request $request)
     {
-        if (Auth::user()) {  
+        if (Auth::user()) {
             $userName = auth()->user()->name;
             $plan = new Plan();
-            $plan->name="{$userName}'s plan";
-            $plan->category_id=$request->category_id;
-            $plan->user_id=auth()->id();
-            $plan->is_default=1;
+            $plan->name = "{$userName}'s plan";
+            $plan->category_id = $request->category_id;
+            $plan->user_id = auth()->id();
+            $plan->is_default = 1;
             $plan->save();
 
             $this->workoutService->makeWorkouts(1, auth()->user(), $plan, true);
-            
-            return redirect('/plan/'.$plan->id);
+
+            return redirect('/plan/' . $plan->id);
         } else {
-            return redirect('/register'); 
+            return redirect('/register');
         }
     }
 
@@ -75,26 +75,26 @@ class PlanController extends Controller
     public function storePersonalizedPlan(Request $request)
     {
         if (Auth::user()) {
-            $user = auth()->user();  
-            if($user->age == '' || $user->sex == null || $user->weight == null || $user->height == null)
-            {
-                return redirect('/user/'.$user->id.'/edit');
-            } 
+            $user = auth()->user();
+            if ($user->age == '' || $user->sex == null || $user->weight == null || $user->height == null) {
+                return redirect('/user/' . $user->id . '/edit');
+            }
+
             $userName = auth()->user()->name;
             $plan = new Plan();
-            $plan->name="{$userName}'s plan";
-            $plan->category_id=$request->category_id;
-            $plan->user_id=auth()->id();
-            $plan->is_default=0;
+            $plan->name = "{$userName}'s plan";
+            $plan->category_id = $request->category_id;
+            $plan->user_id = auth()->id();
+            $plan->is_default = 0;
             $plan->save();
 
             /// Get coefficient for workout intensity and make workouts
             $coefficient = $this->workoutCoefficientService->getCoefficient(auth()->user());
             $this->workoutService->makeWorkouts($coefficient, auth()->user(), $plan, true);
 
-            return redirect('/plan/'.$plan->id);
+            return redirect('/plan/' . $plan->id);
         } else {
-            return redirect('/register'); 
+            return redirect('/register');
         }
     }
 
@@ -129,17 +129,20 @@ class PlanController extends Controller
      */
     public function update(Request $request, $planId)
     {
-        $rules = array(
-            'name' => 'required',
-        );
+        $validator = Validator::make($request->all(),[
+            'name' => 'required'
+        ]);
+        if($validator->fails()){
+            return back()->with('error', 'Plan not updated - Name must not be empty.');
+        }
+        
         $plan = Plan::findOrFail($planId);
         if ($this->authorize('update', $plan)) {
-            $this->validate($request, $rules);
             $plan->name = $request->name;
             $plan->description = $request->description;
             $plan->is_public = $request->is_public;
             $plan->save();
-            return back()->withSuccess(['Success']);
+            return back()->with('success', 'Plan has been updated successfully.');
         } else {
             return redirect('/');
         }
@@ -154,10 +157,10 @@ class PlanController extends Controller
     public function destroy($planId)
     {
         $plan = Plan::findOrFail($planId);
-        if (Auth::user()) {  
+        if (Auth::user()) {
             if ($this->authorize('delete', $plan)) {
                 $plan->delete();
-                return redirect('/')->withSuccess(['Success']);
+                return redirect('/')->with('success', 'Plan has been deleted successfully.');
             }
         } else {
             return redirect('/');

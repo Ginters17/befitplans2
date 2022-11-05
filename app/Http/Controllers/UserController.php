@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Foundation\Support\Providers\AuthServiceProvider;
 use App\Models\User;
 use App\Models\Plan;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -79,20 +79,22 @@ class UserController extends Controller
      */
     public function update(Request $request, $userId)
     {
-        $rules = array(
-            'name' => 'required',
-            'age' => 'integer|min:13'
-        );
+        $validator = Validator::make($request->all(),[
+            'name' => 'required'
+        ]);
+        if($validator->fails()){
+            return back()->with('error', 'Account not updated - Name must not be empty.');
+        };
+
         $user = User::findOrFail($userId);
         if (Auth::user() && Auth::user()->id == $userId) {
-            $this->validate($request, $rules);
             $user->name = $request->name;
             $user->age = $request->age;
             $user->weight = $request->weight;
             $user->height = $request->height;
             $user->sex = $request->sex;
             $user->save();
-            return redirect()->back()->with('message', 'Success');
+            return back()->with('success', 'Account has been updated successfully.');
         } else {
             return redirect('/');
         }
