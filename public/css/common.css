@@ -1,3 +1,40 @@
+body {
+    font-family: 'Nunito', sans-serif;
+}
+
 .btn-open-modal {
     width: 130px;
+}
+
+.list-group-item:not([class^="bg-success"]) {
+    color: #dc3545 !important;
+    border-color: #dc3545;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    border-radius: 0.25rem;
+}
+
+.list-group-item:hover:not([class^="bg-success"]) {
+    border-color: none;
+    background-color: #dc3545;
+    color: white !important;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    cursor: pointer;
+}
+
+.list-group-item.bg-danger {
+    color: white !important;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    border-radius: 0.25rem;
+}
+
+.list-group-item:hover.bg-danger {
+    border-color: none;
+    color: white !important;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    cursor: pointer;
+}
+
+
+h1, h2, h3 {
+    color: #dc3545;
 }
