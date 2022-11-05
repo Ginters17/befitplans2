@@ -110,6 +110,7 @@
         </div>
     </div>
     @include('includes.alerts')
+    @include('includes.toTopButton')
 </body>
 
 </html>

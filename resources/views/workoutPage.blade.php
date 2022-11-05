@@ -25,17 +25,17 @@
 
 <body class="antialiased">
     @include('includes.navBar')
-    <a href="/plan/{{$plan->id}}">Back to {{ $plan->name }}</a>
-    <h2 class="text-center">Workout</h2>
+    <h2 class="text-center mt-5">Workout</h2>
     <p class="text-center">{{$workout->name}}</p>
     <p class="text-center">{{$workout->description}}</p>
     <div class="container">
         <div class="row">
             <div class="col">
+            <a class="btn btn-outline-danger mt-3 float-right" href="/plan/{{$plan->id}}">Back to plan</a>
             </div>
             <div class="col-6">
                 @foreach ($workout->exercise as $exercise)
-                <div class="list-group-item">
+                <div class="list-group-item mt-3">
                     <p>{{$exercise->name}}</p>
                     @if($exercise->sets != null)
                     <p>Sets: {{$exercise->sets}}</p>
@@ -53,7 +53,12 @@
                     @endif
                 </div>
                 @endforeach
-                <a class="btn btn-light" href="{{$workout->id}}/complete">Complete Workout</a>
+                @if(!$workout->is_complete)
+                <a class="btn btn-outline-danger mt-3 float-right" href="{{$workout->id}}/complete">Complete Workout</a>
+                @endif
+                @if($workout->is_complete)
+                <h3 class="mt-3 float-right">Workout Completed</h3>
+                @endif
             </div>
             <div class="col">
                 @auth
@@ -61,6 +66,7 @@
                 @include('includes.editDeleteButtons')
                 @endif
                 @endauth
+                @include('includes.toTopButton')
             </div>
         </div>
     </div>

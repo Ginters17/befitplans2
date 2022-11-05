@@ -118,7 +118,7 @@ class WorkoutController extends Controller
         {
             $workout->is_complete = true;
             $workout->save();
-            return redirect('/plan/'.$plan_id);
+            return redirect('/plan/'.$plan_id)->with('success', 'Workout has been completed successfully.');
         }
         else
         {
