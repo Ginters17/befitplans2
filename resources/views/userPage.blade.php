@@ -33,7 +33,7 @@
                 <h2 class="d-flex justify-content-center mt-5">Your plans</h2>
                 <ul class="list-group d-flex justify-content-center">
                 @foreach ($userPlans as $plan)
-                    <a class="list-group-item mt-3" href="/plan/{{$plan->id}}">{{ $plan->name }}</a>
+                    <a class="list-group-item mt-3 bg-danger" href="/plan/{{$plan->id}}">{{ $plan->name }}</a>
                 @endforeach
                 </ul>
             </div>

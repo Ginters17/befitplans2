@@ -22,7 +22,7 @@
     @include('includes.navBar')
     <div class="container">
         <div class="row">
-            <div class="col">
+            <div class="col-3">
             </div>
             <div class="col-6">
                 <h2 class="d-flex justify-content-center home-page-heading">Choose your category</h2>
@@ -81,7 +81,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col">
+            <div class="col-3">
             </div>
         </div>
     </div>

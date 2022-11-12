@@ -2,8 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\PlanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +32,10 @@ Route::get('plan/{plan_id}/workout/{workout_id}', [App\Http\Controllers\WorkoutC
 Route::get('plan/{plan_id}/workout/{workout_id}/complete', [App\Http\Controllers\WorkoutController::class, 'complete']);
 Route::get('plan/{plan_id}/workout/{workout_id}/delete', [App\Http\Controllers\WorkoutController::class, 'destroy']);
 Route::post('workout/{workout_id}/update', [App\Http\Controllers\WorkoutController::class, 'update']);
+
+Route::get('plan/{plan_id}/workout/{workout_id}/exercise/{exercise_id}/complete', [App\Http\Controllers\ExerciseController::class, 'complete']);
+Route::get('plan/{plan_id}/workout/{workout_id}/exercise/{exercise_id}/delete', [App\Http\Controllers\ExerciseController::class, 'destroy']);
+Route::post('plan/{plan_id}/workout/{workout_id}/exercise/{exercise_id}/update', [App\Http\Controllers\ExerciseController::class, 'update']);
 
 Route::get('user/{user_id}', [App\Http\Controllers\UserController::class, 'index']);
 Route::get('user/{user_id}/edit', [App\Http\Controllers\UserController::class, 'edit']);

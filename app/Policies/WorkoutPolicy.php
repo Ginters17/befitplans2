@@ -91,4 +91,16 @@ class WorkoutPolicy
     {
         //
     }
+
+    /**
+     * Determine whether the user can complete the model.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Workout  $workout
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function complete(User $user, Workout $workout)
+    {
+        return $user->id == $workout->user_id;
+    }
 }

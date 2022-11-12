@@ -24,6 +24,7 @@ return new class extends Migration
             $table->integer('sets')->nullable();
             $table->integer('duration')->nullable();
             $table->string('difficulty')->nullable();
+            $table->string('is_complete')->nullable();
         });
     }
 
