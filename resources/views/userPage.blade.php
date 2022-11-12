@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Befit - $user->name</title>
+    <title>Befit - {{$user->name}}</title>
 
     <!-- Fonts -->
     <link href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -30,7 +30,7 @@
             <div class="col">
             </div>
             <div class="col-6">
-                <h2 class="d-flex justify-content-center mt-5">Your plans</h2>
+                <h1 class="d-flex justify-content-center mt-5">My plans</h1>
                 <ul class="list-group d-flex justify-content-center">
                 @foreach ($userPlans as $plan)
                     <a class="list-group-item mt-3 bg-danger" href="/plan/{{$plan->id}}">{{ $plan->name }}</a>

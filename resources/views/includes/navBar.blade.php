@@ -26,7 +26,7 @@
                 {{ Auth::User()->name }}
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                <a class="dropdown-item" href="/user/{{ Auth::User()->id }}">My Account</a>
+                <a class="dropdown-item" href="/user/{{ Auth::User()->id }}">My Plans</a>
                 <a class="dropdown-item" href="/user/{{ Auth::User()->id }}/edit">Edit Account</a>
                 <a class="dropdown-item" href="/settings">Settings</a>
                 <a class="dropdown-item" href="/logout">Logout</a>
