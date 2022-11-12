@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Plan;
 use App\Models\Workout;
 use App\Services\WorkoutService;
@@ -49,19 +48,23 @@ class PlanController extends Controller
      */
     public function storeDefaultPlan(Request $request)
     {
-        
-        if (Auth::user()) {
-            $userName = auth()->user()->name;
-            $plan = new Plan();
-            $plan->name = "{$userName}'s plan";
-            $plan->category_id = $request->category_id;
-            $plan->user_id = auth()->id();
-            $plan->is_default = 1;
-            $plan->save();
+        if (auth()->user()) {
+            $user = auth()->user();
+            $previousPlanId = $this->findPreviousPlanId($request);
+            if (!$previousPlanId) {
+                $plan = new Plan();
+                $plan->name = $this->getPlanName($user->name, $request);
+                $plan->category_id = $request->category_id;
+                $plan->user_id = auth()->id();
+                $plan->is_default = 1;
+                $plan->save();
 
-            $this->workoutService->makeWorkouts(1, auth()->user(), $plan, true);
+                $this->workoutService->makeWorkouts(1, auth()->user(), $plan, true);
 
-            return redirect('/plan/' . $plan->id);
+                return redirect('/plan/' . $plan->id)->with('success', 'Plan has been created successfully.');
+            } else {
+                return back()->with('errorWithLink', ["You already have a plan in this category.", "Go to plan", "/plan/".$previousPlanId]);
+            }
         } else {
             return redirect('/register');
         }
@@ -75,25 +78,31 @@ class PlanController extends Controller
      */
     public function storePersonalizedPlan(Request $request)
     {
-        if (Auth::user()) {
-            $user = auth()->user();
-            if ($user->age == '' || $user->sex == null || $user->weight == null || $user->height == null) {
-                return redirect('/user/' . $user->id . '/edit');
+        if (auth()->user()) {
+            $previousPlanId = $this->findPreviousPlanId($request);
+            if (!$previousPlanId) {
+                $user = auth()->user();
+
+                if ($user->age == '' || $user->sex == null || $user->weight == null || $user->height == null) {
+                    return redirect('/user/' . $user->id . '/edit')->with('info', 'We need to know some details about you to create a personalized plan.');
+                }
+
+                $plan = new Plan();
+                $plan->name = $this->getPlanName($user->name, $request);
+                $plan->category_id = $request->category_id;
+                $plan->user_id = auth()->id();
+                $plan->is_default = 0;
+                $plan->save();
+
+                /// Get coefficient for workout intensity and make workouts
+                $coefficient = $this->workoutCoefficientService->getCoefficient(auth()->user());
+                $this->workoutService->makeWorkouts($coefficient, auth()->user(), $plan, true);
+
+                return redirect('/plan/' . $plan->id)->with('success', 'Plan has been created successfully.');
             }
-
-            $userName = auth()->user()->name;
-            $plan = new Plan();
-            $plan->name = "{$userName}'s plan";
-            $plan->category_id = $request->category_id;
-            $plan->user_id = auth()->id();
-            $plan->is_default = 0;
-            $plan->save();
-
-            /// Get coefficient for workout intensity and make workouts
-            $coefficient = $this->workoutCoefficientService->getCoefficient(auth()->user());
-            $this->workoutService->makeWorkouts($coefficient, auth()->user(), $plan, true);
-
-            return redirect('/plan/' . $plan->id);
+            else {
+                return back()->with('errorWithLink', ["You already have a plan in this category.", "Go to plan", "/plan/".$previousPlanId]);
+            }
         } else {
             return redirect('/register');
         }
@@ -130,15 +139,15 @@ class PlanController extends Controller
      */
     public function update(Request $request, $planId)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'name' => 'required'
         ]);
-        if($validator->fails()){
+        if ($validator->fails()) {
             return back()->with('error', 'Plan not updated - Name must not be empty.');
         }
-        
+
         $plan = Plan::findOrFail($planId);
-        if ($this->authorize('update', $plan)) {
+        if (auth()->user() && $this->authorize('update', $plan)) {
             $plan->name = $request->name;
             $plan->description = $request->description;
             $plan->is_public = $request->is_public;
@@ -158,13 +167,50 @@ class PlanController extends Controller
     public function destroy($planId)
     {
         $plan = Plan::findOrFail($planId);
-        if (Auth::user()) {
-            if ($this->authorize('delete', $plan)) {
-                $plan->delete();
-                return redirect('/')->with('success', 'Plan has been deleted successfully.');
-            }
+        if (auth()->user() && $this->authorize('delete', $plan)) {
+            $plan->delete();
+            return redirect('/')->with('success', 'Plan has been deleted successfully.');
         } else {
             return redirect('/');
         }
+    }
+
+    // Checks whether user already has plan in a category that they are trying to get a new plan in
+    // Return Plan's id if one is found
+    // Else return false
+    private function findPreviousPlanId($request)
+    {
+        $userId = auth()->user()->id;
+        $userPlans = Plan::where('user_id', $userId)->get();
+
+        foreach ($userPlans as $plan) {
+            if ($plan->category_id == $request->category_id) {
+                return $plan->id;
+            }
+        }
+
+        return false;
+    }
+
+    private function getPlanName($username, $request){
+        $planName = "";
+
+        $planName .= $username[strlen($username)-1] == "s" ? $username."'" : $username."'s";
+        switch ($request->category_id) {
+            case 1:
+              $planName .= " Upper Body ";
+              break;
+            case 2:
+                $planName .= " Lower Body ";
+              break;
+            case 3:
+                $planName .= " Cardio ";
+              break;
+            default:
+                $planName .= " ";
+          }
+        $planName .= "Plan";
+
+        return $planName;
     }
 }
