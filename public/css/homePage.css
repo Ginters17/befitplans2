@@ -4,6 +4,24 @@
     white-space: nowrap;
 }
 
+.list-group-item {
+    border-color: none;
+    background-color: #dc3545;
+    color: white !important;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    cursor: pointer;
+    border-radius: 0.25rem;
+}
+
+.list-group-item:hover {
+    border-color: none;
+    background-color: #932530;
+    color: white !important;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    cursor: pointer;
+    border-radius: 0.25rem;
+}
+
 @media only screen and (max-width: 600px) {
     .home-page-heading {
         font-size: 40px;

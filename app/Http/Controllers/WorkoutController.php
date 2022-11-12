@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Workout;
 use App\Models\Plan;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class WorkoutController extends Controller
@@ -15,11 +14,18 @@ class WorkoutController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($planId,$workoutId)
+    public function index($planId, $workoutId)
     {
         $workout = Workout::with(['exercise'])->findOrFail($workoutId);
         $plan = Plan::findOrFail($planId);
-        return view('workoutPage', compact('workout'), compact('plan'));
+        $areAllPreviousWorkoutsCompleted = $this->areAllPreviousWorkoutsCompleted($plan->id, $workoutId);
+
+        if (!$areAllPreviousWorkoutsCompleted) {
+            return back()->with('error', "Previous workout isn't complete");
+        }
+
+        $areAllExercisesCompleted = $this->areAllExercisesCompleted($workout);
+        return view('workoutPage', compact('workout'), compact('plan'))->with('areAllExercisesCompleted', $areAllExercisesCompleted);
     }
 
     /**
@@ -74,15 +80,16 @@ class WorkoutController extends Controller
      */
     public function update(Request $request, $workoutId)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'name' => 'required'
         ]);
-        if($validator->fails()){
+
+        if ($validator->fails()) {
             return back()->with('error', 'Workout not updated - Name must not be empty.');
         }
 
         $workout = Workout::findOrFail($workoutId);
-        if ($this->authorize('update', $workout)) {
+        if (auth()->user() && $this->authorize('update', $workout)) {
             $workout->name = $request->name;
             $workout->description = $request->description;
             $workout->save();
@@ -101,11 +108,9 @@ class WorkoutController extends Controller
     public function destroy($planId, $workoutId)
     {
         $workout = Workout::findOrFail($workoutId);
-        if (Auth::user()) {  
-            if ($this->authorize('delete', $workout)) {
-                $workout->delete();
-                return redirect('/plan/'.$planId)->with('success', 'Workout has been deleted successfully.');
-            }
+        if (auth()->user() && $this->authorize('delete', $workout)) {
+            $workout->delete();
+            return redirect('/plan/' . $planId)->with('success', 'Workout has been deleted successfully.');
         } else {
             return redirect('/');
         }
@@ -114,15 +119,35 @@ class WorkoutController extends Controller
     public function complete($plan_id, $workout_id)
     {
         $workout = Workout::findOrFail($workout_id);
-        if(auth()->user()->id == $workout->user_id)
-        {
+        if (auth()->user() && $this->authorize('complete', $workout)) {
             $workout->is_complete = true;
             $workout->save();
-            return redirect('/plan/'.$plan_id)->with('success', 'Workout has been completed successfully.');
-        }
-        else
-        {
+            return redirect('/plan/' . $plan_id)->with('success', 'Workout has been completed successfully.');
+        } else {
             return redirect('/');
         }
+    }
+
+    private function areAllExercisesCompleted(Workout $workout)
+    {
+        foreach ($workout->exercise as $exercise) {
+            if (!$exercise->is_complete) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private function areAllPreviousWorkoutsCompleted($planId, $workoutId)
+    {
+        $planWorkouts = Workout::where('plan_id', $planId)->get();
+        for ($i = 0; $planWorkouts[$i]->id < $workoutId; $i++) {
+            if (!$planWorkouts[$i]->is_complete) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

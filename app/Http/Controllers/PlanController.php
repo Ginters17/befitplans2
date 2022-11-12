@@ -49,6 +49,7 @@ class PlanController extends Controller
      */
     public function storeDefaultPlan(Request $request)
     {
+        
         if (Auth::user()) {
             $userName = auth()->user()->name;
             $plan = new Plan();

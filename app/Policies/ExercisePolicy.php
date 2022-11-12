@@ -2,10 +2,11 @@
 
 namespace App\Policies;
 
+use App\Models\Exercise;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class UserPolicy
+class ExercisePolicy
 {
     use HandlesAuthorization;
 
@@ -24,10 +25,10 @@ class UserPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
+     * @param  \App\Models\Exercise  $exercise
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, User $model)
+    public function view(User $user, Exercise $exercise)
     {
         //
     }
@@ -47,34 +48,34 @@ class UserPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
+     * @param  \App\Models\Exercise  $exercise
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, User $model)
+    public function update(User $user, Exercise $exercise)
     {
-        return $user->id == $model->id;
+        return $user->id == $exercise->user_id;
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
+     * @param  \App\Models\Exercise  $exercise
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, User $model)
+    public function delete(User $user, Exercise $exercise)
     {
-        //
+        return $user->id == $exercise->user_id;
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
+     * @param  \App\Models\Exercise  $exercise
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, User $model)
+    public function restore(User $user, Exercise $exercise)
     {
         //
     }
@@ -83,23 +84,23 @@ class UserPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
+     * @param  \App\Models\Exercise  $exercise
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, User $model)
+    public function forceDelete(User $user, Exercise $exercise)
     {
         //
     }
 
     /**
-     * Determine whether the user can permanently delete the model.
+     * Determine whether the user can complete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
+     * @param  \App\Models\Exercise  $exercise
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function edit(User $user, User $model)
+    public function complete(User $user, Exercise $exercise)
     {
-        return $user->id == $model->id;
+        return $user->id == $exercise->user_id;
     }
 }

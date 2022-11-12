@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Plan;
 use Illuminate\Support\Facades\Validator;
@@ -62,7 +61,8 @@ class UserController extends Controller
      */
     public function edit($userId)
     {
-        if (Auth::user() || Auth::user()->id == $userId) {
+        $user = User::findOrFail($userId);
+        if (auth()->user() && $this->authorize('edit', $user)) {
             $user = User::findOrFail($userId);
             return view('editUserPage', compact('user'));
         } else {
@@ -87,7 +87,7 @@ class UserController extends Controller
         };
 
         $user = User::findOrFail($userId);
-        if (Auth::user() && Auth::user()->id == $userId) {
+        if (auth()->user() && $this->authorize('update', $user)) {
             $user->name = $request->name;
             $user->age = $request->age;
             $user->weight = $request->weight;

@@ -6,14 +6,25 @@ body {
     width: 130px;
 }
 
-.list-group-item:not([class^="bg-success"]) {
+.btn-open-modal-no-text {
+    width: 40px;
+    border-color: #dc3545;
+}
+
+.btn-open-modal-no-text:hover {
+    background-color: #932530;
+    border-color: #932530;
+    color: white;
+}
+
+.list-group-item {
     color: #dc3545 !important;
     border-color: #dc3545;
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
     border-radius: 0.25rem;
 }
 
-.list-group-item:hover:not([class^="bg-success"]) {
+.list-group-item:hover {
     border-color: none;
     background-color: #dc3545;
     color: white !important;

@@ -1,3 +1,5 @@
+<script type="text/javascript" src="{{ asset('js/alerts.js') }}"></script>
+
 @if (session()->has('success'))
 <div class="alert alert-success fade show fixed-bottom mb-0 px-1 pl-3 pr-3" role="alert">
     <strong>Success!</strong>  {{ session()->get('success') }}

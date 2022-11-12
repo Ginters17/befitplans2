@@ -12,9 +12,11 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/common.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/planPage.css') }}">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 
 <body class="antialiased">
@@ -28,7 +30,7 @@
             <div class="col-6">
                 @foreach ($planWorkouts as $workout)
                 @if($workout->is_complete)
-                <a class="bg-danger  list-group-item mt-3" href="{{$workout->plan_id}}/workout/{{$workout->id}}">Day {{$workout->day}} - {{ $workout->name }}</a>
+                <a class="bg-danger list-group-item mt-3" href="{{$workout->plan_id}}/workout/{{$workout->id}}">Day {{$workout->day}} - {{ $workout->name }}</a>
                 @endif
                 @if(!$workout->is_complete)
                 <a class="list-group-item mt-3" href="{{$workout->plan_id}}/workout/{{$workout->id}}">Day {{$workout->day}} - {{ $workout->name }}</a>
@@ -66,7 +68,7 @@
                         <div class="form-group row">
                             <label for="description" class="col-sm-2 col-form-label">Description</label>
                             <div class="col-sm-10">
-                                <input type="text" name="description" class="form-control ml-2" id="inputPlanDescription" value="{{$plan->description}}">
+                                <textarea name="description" class="ml-2 form-control" id="inputPlanDescription" rows="2">{{$plan->description}}</textarea>
                             </div>
                         </div>
                         <div class="form-group row align-middle pt-1">
