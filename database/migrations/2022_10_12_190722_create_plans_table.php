@@ -21,9 +21,7 @@ return new class extends Migration
             $table->string('description',300)->nullable();
             $table->foreignId('user_id')->nullable()->constrained('users');
             $table->foreignId('category_id')->nullable()->constrained('categories');
-            $table->integer('age_max')->nullable();
-            $table->integer('age_min')->nullable();
-            $table->integer('sex')->nullable(); 
+            $table->integer('original_plan_id')->nullable();
             $table->boolean('is_default'); 
             $table->boolean('is_public')->default('0');
         });

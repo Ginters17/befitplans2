@@ -17,6 +17,7 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <script type="text/javascript" src="{{ asset('js/popovers.js') }}"></script>
 </head>
 
 <body class="antialiased">
@@ -25,7 +26,7 @@
     <h3 class="text-center">Workouts for this plan:</h3>
     <div class="container">
         <div class="row">
-            <div class="col">
+            <div class="col-3">
             </div>
             <div class="col-6">
                 @foreach ($planWorkouts as $workout)
@@ -37,8 +38,14 @@
                 @endif
                 @endforeach
             </div>
-            <div class="col">
+            <div class="col-3">
                 @auth
+                @if($plan->is_public && auth()->user()->id != $plan->user_id)
+                <button type="button" class="btn btn-outline-danger btn-open-modal mt-3 bg-danger text-light" data-toggle="modal" data-target="#joinModal">
+                    <i class="fa fa-plus"></i>
+                    Join
+                </button>
+                @endif
                 @if($plan->user_id == auth()->user()->id)
                 @include('includes.editDeleteButtons')
                 @endif
@@ -73,7 +80,8 @@
                         </div>
                         <div class="form-group row align-middle pt-1">
                             <label class="col-sm-2 col-form-label">Visibility</label>
-                            <div class="custom-control custom-radio custom-control-inline ml-4 mt-2">
+                            <i tabindex="0" class="align-middle text-dark fa fa-info-circle" role="button" data-toggle="popover" data-trigger="focus" title="Visibility" data-content="Private - only you can view this plan. Public - others can view and join this plan."></i>
+                            <div class="custom-control custom-radio custom-control-inline ml-4 mt-2 col-1">
                                 @if ($plan->is_public == 0)
                                 <input type="radio" id="customRadioInline1" class="custom-control-input" name="is_public" value="0" checked="checked">
                                 @endif
@@ -82,7 +90,7 @@
                                 @endif
                                 <label class="custom-control-label" for="customRadioInline1">Private</label>
                             </div>
-                            <div class="custom-control custom-radio custom-control-inline ml-4 mt-2">
+                            <div class="custom-control custom-radio custom-control-inline ml-4 mt-2 col-1">
                                 @if ($plan->is_public == 1)
                                 <input type="radio" id="customRadioInline2" class="custom-control-input" name="is_public" value="1" checked="checked">
                                 @endif
@@ -113,6 +121,22 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     <a type="button" class="btn btn-primary btn-danger" method="POST" href="/plan/{{$plan->id}}/delete">DELETE PLAN</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="joinModal" tabindex="-1" role="dialog" aria-labelledby="joinModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="joinModal">Are you sure you want to join this plan?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <a type="button" class="btn btn-primary btn-danger" method="POST" href="/plan/{{$plan->id}}/join">JOIN PLAN</a>
                 </div>
             </div>
         </div>

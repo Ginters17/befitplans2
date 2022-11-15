@@ -27,6 +27,7 @@ Route::get('plan/{plan_id}/delete', [App\Http\Controllers\PlanController::class,
 Route::get('storeDefaultPlan/{category_id}', [App\Http\Controllers\PlanController::class, 'storeDefaultPlan']);
 Route::get('storePersonalizedPlan/{category_id}', [App\Http\Controllers\PlanController::class, 'storePersonalizedPlan']);
 Route::post('plan/{plan_id}/update', [App\Http\Controllers\PlanController::class, 'update']);
+Route::get('plan/{plan_id}/join', [App\Http\Controllers\PlanController::class, 'join']);
 
 Route::get('plan/{plan_id}/workout/{workout_id}', [App\Http\Controllers\WorkoutController::class, 'index']);
 Route::get('plan/{plan_id}/workout/{workout_id}/complete', [App\Http\Controllers\WorkoutController::class, 'complete']);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Plan;
 use App\Models\Workout;
+use App\Models\Exercise;
 use App\Services\WorkoutService;
 use App\Services\WorkoutCoefficientService;
 use Illuminate\Support\Facades\Validator;
@@ -27,7 +28,12 @@ class PlanController extends Controller
     {
         $plan = Plan::findOrFail($planId);
         $planWorkouts = Workout::where('plan_id', $planId)->get();
-        return view('planPage', compact('planWorkouts'), compact('plan'));
+
+        if ($plan->is_public || auth()->user()->id == $plan->user_id) {
+            return view('planPage', compact('planWorkouts'), compact('plan'));
+        } else {
+            return redirect('/')->with('error', 'The Plan that you tried to view is set to private.');
+        }
     }
 
     /**
@@ -53,7 +59,7 @@ class PlanController extends Controller
             $previousPlanId = $this->findPreviousPlanId($request);
             if (!$previousPlanId) {
                 $plan = new Plan();
-                $plan->name = $this->getPlanName($user->name, $request);
+                $plan->name = $this->getPlanName($user->name, $request->category_id);
                 $plan->category_id = $request->category_id;
                 $plan->user_id = auth()->id();
                 $plan->is_default = 1;
@@ -63,7 +69,7 @@ class PlanController extends Controller
 
                 return redirect('/plan/' . $plan->id)->with('success', 'Plan has been created successfully.');
             } else {
-                return back()->with('errorWithLink', ["You already have a plan in this category.", "Go to plan", "/plan/".$previousPlanId]);
+                return back()->with('errorWithLink', ["You already have a plan in this category.", "Go to plan", "/plan/" . $previousPlanId]);
             }
         } else {
             return redirect('/register');
@@ -99,9 +105,8 @@ class PlanController extends Controller
                 $this->workoutService->makeWorkouts($coefficient, auth()->user(), $plan, true);
 
                 return redirect('/plan/' . $plan->id)->with('success', 'Plan has been created successfully.');
-            }
-            else {
-                return back()->with('errorWithLink', ["You already have a plan in this category.", "Go to plan", "/plan/".$previousPlanId]);
+            } else {
+                return back()->with('errorWithLink', ["You already have a plan in this category.", "Go to plan", "/plan/" . $previousPlanId]);
             }
         } else {
             return redirect('/register');
@@ -175,6 +180,25 @@ class PlanController extends Controller
         }
     }
 
+    // 
+    public function join($planId)
+    {
+        $plan = Plan::findOrFail($planId);
+
+        if (auth()->user() && $plan->user_id != auth()->user()->id) {
+            $existingPlanId = $this->hasUserAlreadyJoinedPlan($plan, auth()->user()->id);
+            if ($existingPlanId) {
+                return back()->with('errorWithLink', ["You have already joined this plan.", "Go to plan.", "/plan/".$existingPlanId]);
+            }
+
+            $user = auth()->user();
+            $planId = $this->addPlanToUser($plan, $user);
+            return redirect('plan/' . $planId)->with('success', 'Plan has been joined successfully.');
+        } else {
+            return back()->with('error', "You can't join your own plan.");
+        }
+    }
+
     // Checks whether user already has plan in a category that they are trying to get a new plan in
     // Return Plan's id if one is found
     // Else return false
@@ -192,25 +216,79 @@ class PlanController extends Controller
         return false;
     }
 
-    private function getPlanName($username, $request){
+    private function getPlanName($username, $category_id)
+    {
         $planName = "";
 
-        $planName .= $username[strlen($username)-1] == "s" ? $username."'" : $username."'s";
-        switch ($request->category_id) {
+        $planName .= $username[strlen($username) - 1] == "s" ? $username . "'" : $username . "'s";
+        switch ($category_id) {
             case 1:
-              $planName .= " Upper Body ";
-              break;
+                $planName .= " Upper Body ";
+                break;
             case 2:
                 $planName .= " Lower Body ";
-              break;
+                break;
             case 3:
                 $planName .= " Cardio ";
-              break;
+                break;
             default:
                 $planName .= " ";
-          }
+        }
         $planName .= "Plan";
 
         return $planName;
+    }
+
+    private function addPlanToUser($plan, $user)
+    {
+        $newPlan = new Plan();
+        $newPlan->name = $this->getPlanName($user->name, $plan->category_id);
+        $newPlan->category_id = $plan->category_id;
+        $newPlan->user_id = $user->id;
+        $newPlan->is_default = $plan->is_default;
+        $newPlan->original_plan_id = $plan->id;
+        $newPlan->save();
+
+        $planWorkouts = Workout::where('plan_id', $plan->id)->get();
+
+        for ($i = 0; $i < sizeof($planWorkouts); $i++) {
+            $newWorkout = new Workout();
+            $newWorkout->name = $planWorkouts[$i]->name;
+            $newWorkout->description = $planWorkouts[$i]->description;
+            $newWorkout->plan_id = $newPlan->id;
+            $newWorkout->user_id = $user->id;
+            $newWorkout->day = $planWorkouts[$i]->day;
+            $newWorkout->day_off = $planWorkouts[$i]->day_off;
+            $newWorkout->save();
+
+            $workoutExercises = Exercise::where('workout_id', $planWorkouts[$i]->id)->get();
+            foreach ($workoutExercises as $exercise) {
+                $newExercise = new Exercise();
+                $newExercise->name = $exercise->name;
+                $newExercise->description = $exercise->description;
+                $newExercise->workout_id = $newWorkout->id;
+                $newExercise->user_id = $user->id;
+                $newExercise->reps = $exercise->reps;
+                $newExercise->sets = $exercise->sets;
+                $newExercise->duration = $exercise->sets;
+                $newExercise->save();
+            }
+        }
+
+        return $newPlan->id;
+    }
+
+    private function hasUserAlreadyJoinedPlan($plan, $userId)
+    {
+        $userPlans = Plan::where('user_id', $userId)->get();
+
+        // Check if user has already joined this plan
+        foreach ($userPlans as $userPlan) {
+            if ($userPlan->original_plan_id == $plan->id) {
+                return $userPlan->id;
+            }
+        }
+
+        return false;
     }
 }
