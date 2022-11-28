@@ -27,10 +27,11 @@
             <div class="col-6">
                 <h2 class="d-flex justify-content-center home-page-heading">Choose your category</h2>
                 <br></br>
-                <ul class="list-group d-flex justify-content-center">
+                <ul class="list-group d-flex justify-content-center text-center">
                     <a class="list-group-item mt-3" data-toggle="modal" data-target="#upperBodyModalCenter">Upper Body</a>
                     <a class="list-group-item mt-3" data-toggle="modal" data-target="#lowerBodyModalCenter">Lower Body</a>
                     <a class="list-group-item mt-3" data-toggle="modal" data-target="#cardioModalCenter">Cardio</a>
+                    <a class="list-group-item mt-3" method="POST" href="/plan/create">Custom Plan</a>
                 </ul>
             </div>
             <div class="modal fade" id="upperBodyModalCenter" tabindex="-1" role="dialog" aria-labelledby="upperBodyModalCenter" aria-hidden="true">

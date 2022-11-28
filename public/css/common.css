@@ -49,3 +49,12 @@ body {
 h1, h2, h3 {
     color: #dc3545;
 }
+
+
+.custom-radio .custom-control-input:checked~.custom-control-label::before {
+    background-color: #dc3545;
+}
+
+.custom-radio .custom-control-input:checked~.custom-control-label::before{
+    box-shadow: 0 0 0 1px #dc3545, 0 0 0 0.2rem rgb(220 53 69 / 25%) !important;
+}

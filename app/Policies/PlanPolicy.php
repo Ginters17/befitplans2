@@ -91,4 +91,16 @@ class PlanPolicy
     {
         //
     }
+
+    /**
+     * Determine whether the user can add to the model.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Plan  $plan
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function addWorkout(User $user, Plan $plan)
+    {
+        return $user->id == $plan->user_id;
+    }
 }

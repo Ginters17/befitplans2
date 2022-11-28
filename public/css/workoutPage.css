@@ -29,3 +29,11 @@
     align-self: flex-end;
     margin-left: auto;
 }
+
+.add-exercise-button {
+    display: block;
+}
+
+.modal-body .alert {
+    width: 100%;
+}

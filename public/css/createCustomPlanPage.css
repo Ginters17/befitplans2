@@ -1,0 +1,21 @@
+.help-box {
+    border: 1px solid #dc3545;
+    border-radius: 5px;
+}
+
+.help-text {
+    padding: 10px;
+    color: #dc3545;
+}
+
+.plan-form input{
+    border-color: #dc3545;
+}
+
+.text-area {
+    border-color: #dc3545;
+}
+
+.plan-form {
+    color: #dc3545;
+}
