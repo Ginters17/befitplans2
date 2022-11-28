@@ -30,11 +30,18 @@
             <div class="col">
             </div>
             <div class="col-6">
+                @if($user->id == auth()->user()->id)
                 <h1 class="d-flex justify-content-center mt-5">My plans</h1>
+                @else
+                <h1 class="d-flex justify-content-center mt-5">{{$userName}} plans</h1>
+                @endif
                 <ul class="list-group d-flex justify-content-center">
                 @foreach ($userPlans as $plan)
                     <a class="list-group-item mt-3 bg-danger" href="/plan/{{$plan->id}}">{{ $plan->name }}</a>
                 @endforeach
+                @if (count($userPlans)==0)
+                    <h1 class="text-center mt-5">No Plans Found</h1>
+                @endif
                 </ul>
             </div>
             <div class="col">

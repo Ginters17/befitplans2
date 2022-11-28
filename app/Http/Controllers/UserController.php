@@ -18,7 +18,8 @@ class UserController extends Controller
     {
         $user = User::findOrFail($userId);
         $userPlans = Plan::where('user_id', $userId)->get();
-        return view('userPage', compact('userPlans'), compact('user'));
+        $userName = $user->name[strlen($user->name) - 1] == "s" ? $user->name . "'" : $user->name . "'s";
+        return view('userPage', compact('userPlans'), compact('user'))->with('userName', $userName);
     }
 
     /**

@@ -23,22 +23,30 @@
 <body class="antialiased">
     @include('includes.navBar')
     <h1 class="text-center mt-5">{{$plan->name}}</h1>
-    <h3 class="text-center">Workouts for this plan:</h3>
+    @if (count($planWorkouts)>0)
+        <h3 class="text-center">Workouts for this plan:</h3>
+    @endif
     <div class="container">
         <div class="row">
             <div class="col-3">
             </div>
             <div class="col-6">
                 @foreach ($planWorkouts as $workout)
-                @if($workout->is_complete)
-                <a class="bg-danger list-group-item mt-3" href="{{$workout->plan_id}}/workout/{{$workout->id}}">Day {{$workout->day}} - {{ $workout->name }}</a>
-                @endif
-                @if(!$workout->is_complete)
-                <a class="list-group-item mt-3" href="{{$workout->plan_id}}/workout/{{$workout->id}}">Day {{$workout->day}} - {{ $workout->name }}</a>
-                @endif
+                    @if(auth()->user() && $workout->user_id != auth()->user()->id)
+                    <a class="bg-danger list-group-item mt-3" href="{{$workout->plan_id}}/workout/{{$workout->id}}">Day {{$workout->day}} - {{ $workout->name }}</a>
+                    @else
+                        @if($workout->is_complete)
+                        <a class="bg-danger list-group-item mt-3" href="{{$workout->plan_id}}/workout/{{$workout->id}}">Day {{$workout->day}} - {{ $workout->name }}</a>
+                        @else(!$workout->is_complete)
+                        <a class="list-group-item mt-3" href="{{$workout->plan_id}}/workout/{{$workout->id}}">Day {{$workout->day}} - {{ $workout->name }}</a>
+                        @endif
+                    @endif
                 @endforeach
+                @if (count($planWorkouts)==0)
+                    <h2 class="text-center mt-5 mb-5">No workouts found!</h2>
+                @endif
                 @if($canAddWorkout)
-                <a class="list-group-item mt-3 bg-danger text-center" href="{{$plan->id}}/add-workout">ADD WORKOUT</a>
+                    <a class="list-group-item mt-3 bg-danger text-center" href="{{$plan->id}}/add-workout">ADD WORKOUT</a>
                 @endif
             </div>
             <div class="col-3">
