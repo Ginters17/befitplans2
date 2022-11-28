@@ -50,7 +50,13 @@ class Controller extends BaseController
     /// Checks whether any more exercises can be added to workout
     public function canExercisesBeAddedToWorkout($workout)
     {
+        if (auth()->user() && $workout->user_id == auth()->user()->id)
+        {
         $planExercises = Exercise::where('workout_id', $workout->id)->get();
         return sizeOf($planExercises) < 5 ? true : false;
+        }
+        else {
+            return false;
+        }
     }
 }

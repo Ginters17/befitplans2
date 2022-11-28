@@ -78,14 +78,19 @@
                     @endauth
                 </div>
                 @endforeach
+                @if (count($workout->exercise)==0)
+                    <h2 class="text-center mt-5 mb-5">No exercises found!</h2>
+                @endif
                 @if($canAddExercise)
                 <a class="list-group-item mt-3 bg-danger add-exercise-button text-center" href="{{$workout->id}}/add-exercise">ADD EXERCISE</a>
                 @endif
                 @if(!$workout->is_complete && $areAllExercisesCompleted && $areAllPreviousWorkoutsCompleted)
                 <a class="btn btn-outline-danger mt-3 mb-3 bg-danger text-light float-right" href="{{$workout->id}}/complete">Complete Workout</a>
                 @endif
-                @if($workout->is_complete)
-                <h3 class="mt-3 mb-3 float-right">Workout Completed</h3>
+                @if(auth()->user() && $workout->user_id == auth()->user()->id)
+                    @if($workout->is_complete)
+                    <h3 class="mt-3 mb-3 float-right">Workout Completed</h3>
+                    @endif
                 @endif
             </div>
             <div class="col">
