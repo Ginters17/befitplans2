@@ -27,5 +27,9 @@ class CategorySeeder extends Seeder
             'name' => 'Cardio',
             'description' => 'Cardio category',
         ]);
+        DB::table('categories')->insert([
+            'name' => 'Custom',
+            'description' => 'A custom plan',
+        ]);
     }
 }

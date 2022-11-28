@@ -24,6 +24,8 @@ return new class extends Migration
             $table->integer('original_plan_id')->nullable();
             $table->boolean('is_default'); 
             $table->boolean('is_public')->default('0');
+            $table->boolean('is_custom')->default('0');
+            $table->integer('days');
         });
     }
 

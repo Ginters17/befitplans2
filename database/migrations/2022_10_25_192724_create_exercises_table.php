@@ -25,6 +25,7 @@ return new class extends Migration
             $table->integer('duration')->nullable();
             $table->string('difficulty')->nullable();
             $table->string('is_complete')->nullable();
+            $table->integer('duration_type')->nullable();
         });
     }
 

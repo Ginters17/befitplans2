@@ -48,7 +48,12 @@
                         <p>Reps: {{$exercise->reps}}</p>
                         @endif
                         @if($exercise->duration != null)
-                        <p>Duration: {{$exercise->duration}}</p>
+                        @if($exercise->duration_type == 1)
+                        <p>Duration: {{$exercise->duration}} seconds</p>
+                        @endif
+                        @if($exercise->duration_type == 2)
+                        <p>Duration: {{$exercise->duration}} minutes</p>
+                        @endif
                         @endif
                     </div>
                     @auth
@@ -63,7 +68,7 @@
                         <button type="button" class="btn btn-outline-light btn-open-modal-no-text open-info-modal" data-id="{{$exercise}}" data-toggle="modal" data-target="#infoExerciseModal">
                             <i class="fa fa-info"></i>
                         </button>
-                        @if(!$exercise->is_complete)
+                        @if(!$exercise->is_complete && $areAllPreviousWorkoutsCompleted)
                         <a class="btn btn-outline-light btn-open-modal-no-text" href="{{$workout->id}}/exercise/{{$exercise->id}}/complete">
                             <i class="fa fa-check"></i>
                         </a>
@@ -71,12 +76,12 @@
                     </div>
                     @endif
                     @endauth
-                    @if($exercise->is_complete)
-
-                    @endif
                 </div>
                 @endforeach
-                @if(!$workout->is_complete && $areAllExercisesCompleted)
+                @if($canAddExercise)
+                <a class="list-group-item mt-3 bg-danger add-exercise-button text-center" href="{{$workout->id}}/add-exercise">ADD EXERCISE</a>
+                @endif
+                @if(!$workout->is_complete && $areAllExercisesCompleted && $areAllPreviousWorkoutsCompleted)
                 <a class="btn btn-outline-danger mt-3 mb-3 bg-danger text-light float-right" href="{{$workout->id}}/complete">Complete Workout</a>
                 @endif
                 @if($workout->is_complete)
@@ -111,12 +116,27 @@
                             <label for="name" class="col-sm-2 col-form-label">Name*</label>
                             <div class="col-sm-10">
                                 <input type="text" name="name" class="form-control ml-2" id="inputWorkoutName" value="{{$workout->name}}">
+                                @error('name')
+                                <p class="alert alert-danger ml-2" role="alert">{{ $message }}</p>
+                                @enderror
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="description" class="col-sm-2 col-form-label">Description</label>
                             <div class="col-sm-10">
                                 <textarea name="description" class="ml-2 form-control" id="inputWorkoutDescription" rows="2">{{$workout->description}}</textarea>
+                                @error('description')
+                                <p class="alert alert-danger ml-2" role="alert">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="day" class="col-sm-2 col-form-label">Day *</label>
+                            <div class="col-sm-10">
+                                <input min="1" max="28" type="number" name="day" id="day" class="form-control ml-2" value="{{$workout->day}}" />
+                                @error('day')
+                                <p class="alert alert-danger ml-2" role="alert">{{ $message }}</p>
+                                @enderror
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -230,6 +250,7 @@
         </div>
     </div>
     @include('includes.alerts')
+
 </body>
 
 </html>

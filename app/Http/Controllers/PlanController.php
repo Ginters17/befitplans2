@@ -27,11 +27,15 @@ class PlanController extends Controller
     public function index($planId)
     {
         $plan = Plan::findOrFail($planId);
-        $planWorkouts = Workout::where('plan_id', $planId)->get();
+        $planWorkouts = Workout::where('plan_id', $planId)->orderBy('day', 'ASC')->get();
 
-        if ($plan->is_public || auth()->user()->id == $plan->user_id) {
-            return view('planPage', compact('planWorkouts'), compact('plan'));
-        } else {
+        if ($plan->is_public || auth()->user() && auth()->user()->id == $plan->user_id)
+        {
+            $canAddWorkout = $this->canWorkoutsBeAddedToPlan($plan);
+            return view('planPage', compact('planWorkouts'), compact('plan'))->with('canAddWorkout', $canAddWorkout);
+        }
+        else
+        {
             return redirect('/')->with('error', 'The Plan that you tried to view is set to private.');
         }
     }
@@ -54,25 +58,27 @@ class PlanController extends Controller
      */
     public function storeDefaultPlan(Request $request)
     {
-        if (auth()->user()) {
-            $user = auth()->user();
-            $previousPlanId = $this->findPreviousPlanId($request);
-            if (!$previousPlanId) {
-                $plan = new Plan();
-                $plan->name = $this->getPlanName($user->name, $request->category_id);
-                $plan->category_id = $request->category_id;
-                $plan->user_id = auth()->id();
-                $plan->is_default = 1;
-                $plan->save();
+        $this->validateLoggedIn("/register");
 
-                $this->workoutService->makeWorkouts(1, auth()->user(), $plan, true);
+        $user = auth()->user();
+        $previousPlanId = $this->findPreviousPlanId($request->category_id);
+        if (!$previousPlanId)
+        {
+            $plan = new Plan();
+            $plan->name = $this->getPlanName($user->name, $request->category_id);
+            $plan->category_id = $request->category_id;
+            $plan->user_id = auth()->id();
+            $plan->is_default = 1;
+            $plan->days = 28;
+            $plan->save();
 
-                return redirect('/plan/' . $plan->id)->with('success', 'Plan has been created successfully.');
-            } else {
-                return back()->with('errorWithLink', ["You already have a plan in this category.", "Go to plan", "/plan/" . $previousPlanId]);
-            }
-        } else {
-            return redirect('/register');
+            $this->workoutService->makeWorkouts(1, auth()->user(), $plan, true);
+
+            return redirect('/plan/' . $plan->id)->with('success', 'Plan has been created successfully.');
+        }
+        else
+        {
+            return back()->with('errorWithLink', ["You already have a plan in this category.", "Go to plan", "/plan/" . $previousPlanId]);
         }
     }
 
@@ -82,34 +88,37 @@ class PlanController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function storePersonalizedPlan(Request $request)
+    public function storePersonalizedPlan($cetegoryId)
     {
-        if (auth()->user()) {
-            $previousPlanId = $this->findPreviousPlanId($request);
-            if (!$previousPlanId) {
-                $user = auth()->user();
+        $this->validateLoggedIn("/register");
 
-                if ($user->age == '' || $user->sex == null || $user->weight == null || $user->height == null) {
-                    return redirect('/user/' . $user->id . '/edit')->with('info', 'We need to know some details about you to create a personalized plan.');
-                }
+        $previousPlanId = $this->findPreviousPlanId($cetegoryId);
+        if (!$previousPlanId)
+        {
+            $user = auth()->user();
 
-                $plan = new Plan();
-                $plan->name = $this->getPlanName($user->name, $request);
-                $plan->category_id = $request->category_id;
-                $plan->user_id = auth()->id();
-                $plan->is_default = 0;
-                $plan->save();
-
-                /// Get coefficient for workout intensity and make workouts
-                $coefficient = $this->workoutCoefficientService->getCoefficient(auth()->user());
-                $this->workoutService->makeWorkouts($coefficient, auth()->user(), $plan, true);
-
-                return redirect('/plan/' . $plan->id)->with('success', 'Plan has been created successfully.');
-            } else {
-                return back()->with('errorWithLink', ["You already have a plan in this category.", "Go to plan", "/plan/" . $previousPlanId]);
+            if ($user->age == '' || $user->sex == null || $user->weight == null || $user->height == null)
+            {
+                return redirect('/user/' . $user->id . '/edit')->with('info', 'We need to know some details about you to create a personalized plan.');
             }
-        } else {
-            return redirect('/register');
+
+            $plan = new Plan();
+            $plan->name = $this->getPlanName($user->name, $cetegoryId);
+            $plan->category_id = $cetegoryId;
+            $plan->user_id = auth()->id();
+            $plan->is_default = 0;
+            $plan->days = 28;
+            $plan->save();
+
+            /// Get coefficient for workout intensity and make workouts
+            $coefficient = $this->workoutCoefficientService->getCoefficient(auth()->user());
+            $this->workoutService->makeWorkouts($coefficient, auth()->user(), $plan, true);
+
+            return redirect('/plan/' . $plan->id)->with('success', 'Plan has been created successfully.');
+        }
+        else
+        {
+            return back()->with('errorWithLink', ["You already have a plan in this category.", "Go to plan", "/plan/" . $previousPlanId]);
         }
     }
 
@@ -147,18 +156,22 @@ class PlanController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required'
         ]);
-        if ($validator->fails()) {
+        if ($validator->fails())
+        {
             return back()->with('error', 'Plan not updated - Name must not be empty.');
         }
 
         $plan = Plan::findOrFail($planId);
-        if (auth()->user() && $this->authorize('update', $plan)) {
+        if (auth()->user() && $this->authorize('update', $plan))
+        {
             $plan->name = $request->name;
             $plan->description = $request->description;
             $plan->is_public = $request->is_public;
             $plan->save();
             return back()->with('success', 'Plan has been updated successfully.');
-        } else {
+        }
+        else
+        {
             return redirect('/');
         }
     }
@@ -172,43 +185,111 @@ class PlanController extends Controller
     public function destroy($planId)
     {
         $plan = Plan::findOrFail($planId);
-        if (auth()->user() && $this->authorize('delete', $plan)) {
+        if (auth()->user() && $this->authorize('delete', $plan))
+        {
             $plan->delete();
             return redirect('/')->with('success', 'Plan has been deleted successfully.');
-        } else {
+        }
+        else
+        {
             return redirect('/');
         }
     }
 
-    // 
+    // Copies certain details from the given plan and creates a new plan for another user
     public function join($planId)
     {
         $plan = Plan::findOrFail($planId);
 
-        if (auth()->user() && $plan->user_id != auth()->user()->id) {
+        if (auth()->user() && $plan->user_id != auth()->user()->id)
+        {
             $existingPlanId = $this->hasUserAlreadyJoinedPlan($plan, auth()->user()->id);
-            if ($existingPlanId) {
-                return back()->with('errorWithLink', ["You have already joined this plan.", "Go to plan.", "/plan/".$existingPlanId]);
+            if ($existingPlanId)
+            {
+                return back()->with('errorWithLink', ["You have already joined this plan.", "Go to plan.", "/plan/" . $existingPlanId]);
             }
 
             $user = auth()->user();
             $planId = $this->addPlanToUser($plan, $user);
             return redirect('plan/' . $planId)->with('success', 'Plan has been joined successfully.');
-        } else {
+        }
+        else
+        {
             return back()->with('error', "You can't join your own plan.");
         }
     }
 
-    // Checks whether user already has plan in a category that they are trying to get a new plan in
+    // Returns view for user to create a custom plan
+    public function createCustomPlan()
+    {
+        $this->validateLoggedIn("/register");
+        return view('createCustomPlanPage');
+    }
+
+    // Stores a plan
+    public function storeCustomPlan(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:50',
+            'days' => 'required|min:0|max:28',
+            'description' => 'max:300'
+        ]);
+
+        if ($validator->fails())
+        {
+            return back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with("error", "Plan not created - one or more fields have an error");
+        }
+
+        $validateLoggedIn =  $this->validateLoggedIn("/register");
+        $validatePreviousPlan = $this->validatePreviousPlan(4, true);
+
+        if ($validateLoggedIn == null && $validatePreviousPlan == null)
+        {
+            $plan = new Plan();
+            $plan->name = $request->name;
+            $plan->description = $request->description;
+            $plan->category_id = 4;
+            $plan->user_id = auth()->user()->id;
+            $plan->is_default = 0;
+            $plan->is_custom = 1;
+            $plan->is_public = $request->is_public;
+            $plan->days = $request->days;
+            $plan->save();
+
+            return redirect('/plan/' . $plan->id . '/add-workout')->with('success', "Plan has been created successfully. Add your first workout!");
+        }
+    }
+
+    // 
+    public function validatePreviousPlan($cetegoryId, $customPlan = false)
+    {
+        $previousPlanId = $this->findPreviousPlanId($cetegoryId, $customPlan);
+        if ($previousPlanId > 0)
+        {
+            $errorMessage = $customPlan ? "You already have a custom plan." : "You already have a plan in this category.";
+            return redirect('/')->with('errorWithLink', [$errorMessage, "Go to plan", "/plan/" . $previousPlanId])->send();
+        }
+    }
+
+    // Checks whether user already has plan in a category that they are trying to get a new plan in or already has a custom plan
     // Return Plan's id if one is found
     // Else return false
-    private function findPreviousPlanId($request)
+    private function findPreviousPlanId($cetegoryId, $customPlan = false)
     {
         $userId = auth()->user()->id;
         $userPlans = Plan::where('user_id', $userId)->get();
 
-        foreach ($userPlans as $plan) {
-            if ($plan->category_id == $request->category_id) {
+        foreach ($userPlans as $plan)
+        {
+            if ($plan->category_id == $cetegoryId)
+            {
+                return $plan->id;
+            }
+            elseif ($customPlan && $plan->is_custom)
+            {
                 return $plan->id;
             }
         }
@@ -221,7 +302,8 @@ class PlanController extends Controller
         $planName = "";
 
         $planName .= $username[strlen($username) - 1] == "s" ? $username . "'" : $username . "'s";
-        switch ($category_id) {
+        switch ($category_id)
+        {
             case 1:
                 $planName .= " Upper Body ";
                 break;
@@ -247,11 +329,13 @@ class PlanController extends Controller
         $newPlan->user_id = $user->id;
         $newPlan->is_default = $plan->is_default;
         $newPlan->original_plan_id = $plan->id;
+        $newPlan->days = $plan->days;
         $newPlan->save();
 
         $planWorkouts = Workout::where('plan_id', $plan->id)->get();
 
-        for ($i = 0; $i < sizeof($planWorkouts); $i++) {
+        for ($i = 0; $i < sizeof($planWorkouts); $i++)
+        {
             $newWorkout = new Workout();
             $newWorkout->name = $planWorkouts[$i]->name;
             $newWorkout->description = $planWorkouts[$i]->description;
@@ -262,7 +346,8 @@ class PlanController extends Controller
             $newWorkout->save();
 
             $workoutExercises = Exercise::where('workout_id', $planWorkouts[$i]->id)->get();
-            foreach ($workoutExercises as $exercise) {
+            foreach ($workoutExercises as $exercise)
+            {
                 $newExercise = new Exercise();
                 $newExercise->name = $exercise->name;
                 $newExercise->description = $exercise->description;
@@ -278,13 +363,15 @@ class PlanController extends Controller
         return $newPlan->id;
     }
 
+    // Check if user has already joined this plan
     private function hasUserAlreadyJoinedPlan($plan, $userId)
     {
         $userPlans = Plan::where('user_id', $userId)->get();
 
-        // Check if user has already joined this plan
-        foreach ($userPlans as $userPlan) {
-            if ($userPlan->original_plan_id == $plan->id) {
+        foreach ($userPlans as $userPlan)
+        {
+            if ($userPlan->original_plan_id == $plan->id)
+            {
                 return $userPlan->id;
             }
         }

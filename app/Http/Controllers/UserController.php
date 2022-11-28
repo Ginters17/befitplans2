@@ -62,10 +62,13 @@ class UserController extends Controller
     public function edit($userId)
     {
         $user = User::findOrFail($userId);
-        if (auth()->user() && $this->authorize('edit', $user)) {
+        if (auth()->user() && $this->authorize('edit', $user))
+        {
             $user = User::findOrFail($userId);
             return view('editUserPage', compact('user'));
-        } else {
+        }
+        else
+        {
             return redirect('/');
         }
     }
@@ -79,15 +82,17 @@ class UserController extends Controller
      */
     public function update(Request $request, $userId)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'name' => 'required'
         ]);
-        if($validator->fails()){
+        if ($validator->fails())
+        {
             return back()->with('error', 'Account not updated - Name must not be empty.');
         };
 
         $user = User::findOrFail($userId);
-        if (auth()->user() && $this->authorize('update', $user)) {
+        if (auth()->user() && $this->authorize('update', $user))
+        {
             $user->name = $request->name;
             $user->age = $request->age;
             $user->weight = $request->weight;
@@ -95,7 +100,9 @@ class UserController extends Controller
             $user->sex = $request->sex;
             $user->save();
             return back()->with('success', 'Account has been updated successfully.');
-        } else {
+        }
+        else
+        {
             return redirect('/');
         }
     }

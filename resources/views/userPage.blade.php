@@ -42,6 +42,7 @@
             </div>
         </div>
     </div>
+    @include('includes.alerts')
 </body>
 
 </html>

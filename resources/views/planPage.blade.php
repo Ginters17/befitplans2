@@ -37,6 +37,9 @@
                 <a class="list-group-item mt-3" href="{{$workout->plan_id}}/workout/{{$workout->id}}">Day {{$workout->day}} - {{ $workout->name }}</a>
                 @endif
                 @endforeach
+                @if($canAddWorkout)
+                <a class="list-group-item mt-3 bg-danger text-center" href="{{$plan->id}}/add-workout">ADD WORKOUT</a>
+                @endif
             </div>
             <div class="col-3">
                 @auth
