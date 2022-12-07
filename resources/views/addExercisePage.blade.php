@@ -52,7 +52,7 @@
                     <div class="form-group row">
                         <label for="inputDescription" class="col-sm-2 col-form-label">Decription</label>
                         <div class="col-sm-10">
-                            <textarea type="text" name="description" class="form-control text-area" id="inputDescription" rows="2" value="{{ old('description') }}"></textarea>
+                            <textarea type="text" name="description" class="form-control text-area" id="inputDescription" rows="2" value="">{{ old('description') }}</textarea>
                             @error('description')
                             <p class="alert alert-danger" role="alert">{{ $message }}</p>
                             @enderror

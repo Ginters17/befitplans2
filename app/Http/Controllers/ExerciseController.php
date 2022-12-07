@@ -68,7 +68,8 @@ class ExerciseController extends Controller
                 'description' => 'max:300',
                 'reps' => 'nullable|integer|max:1000',
                 'sets' => 'nullable|integer|max:1000',
-                'duration' => 'nullable|integer|max:10000'
+                'duration' => 'nullable|integer|max:10000',
+                'info_video_url' => 'max:255',
             ]);
 
             if ($validator->fails())
@@ -76,7 +77,14 @@ class ExerciseController extends Controller
                 return back()
                     ->withErrors($validator)
                     ->withInput()
-                    ->with("error", "Plan not created - one or more fields have an error");
+                    ->with("error", "Exercise not created - one or more fields have an error");
+            }
+
+            if ($request->video_url != null && $this->checkIsValidVideoUrl($request->video_url) == 0)
+            {
+                return back()
+                    ->withInput()
+                    ->with("error", "Exercise not created - Video URL format is wrong");
             }
 
             $user = auth()->user();
@@ -89,7 +97,8 @@ class ExerciseController extends Controller
             $exercise->reps = $request->reps;
             $exercise->sets = $request->sets;
             $exercise->duration = $request->duration;
-            if($exercise->duration > 0){
+            if ($exercise->duration > 0)
+            {
                 $exercise->duration_type = $request->duration_type;
             }
             $exercise->info_video_url = $request->video_url;
