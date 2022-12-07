@@ -37,3 +37,7 @@
 .modal-body .alert {
     width: 100%;
 }
+
+#modal_info_no_description {
+    text-align: center;
+}

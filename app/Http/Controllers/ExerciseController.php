@@ -66,9 +66,9 @@ class ExerciseController extends Controller
             $validator = Validator::make($request->all(), [
                 'name' => 'required|max:100',
                 'description' => 'max:300',
-                'reps' => 'max:1000',
-                'sets' => 'max:1000',
-                'duration' => 'max:10000'
+                'reps' => 'nullable|integer|max:1000',
+                'sets' => 'nullable|integer|max:1000',
+                'duration' => 'nullable|integer|max:10000'
             ]);
 
             if ($validator->fails())
@@ -89,13 +89,16 @@ class ExerciseController extends Controller
             $exercise->reps = $request->reps;
             $exercise->sets = $request->sets;
             $exercise->duration = $request->duration;
-            $exercise->duration_type = $request->duration_type;
+            if($exercise->duration > 0){
+                $exercise->duration_type = $request->duration_type;
+            }
+            $exercise->info_video_url = $request->video_url;
             $exercise->save();
 
             $workout = Workout::findOrFail($workoutId);
             $workout->is_complete = 0;
             $workout->save();
-            
+
             return redirect('/plan/' . $workout->plan_id . "/workout/" . $workoutId)->with('success', 'Exercise has been added');
         }
     }
@@ -132,12 +135,25 @@ class ExerciseController extends Controller
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required'
+            'name' => 'required|max:100',
+            'description' => 'max:1000',
+            'reps' => 'nullable|integer',
+            'sets' => 'nullable|integer',
+            'duration' => 'nullable|integer',
+            'info_video_url' => 'max:255',
         ]);
 
         if ($validator->fails())
         {
-            return back()->with('error', 'Exercise not updated - Name must not be empty.');
+            return back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with("error", "Exercise not updated - one or more fields have an error");
+        }
+
+        if ($request->video_url != null && $this->checkIsValidVideoUrl($request->video_url) == 0)
+        {
+            return back()->with('error', "Exercise not updated - Video URL format is wrong");
         }
 
         $exercise = Exercise::findOrFail($request->exerciseId);
@@ -149,6 +165,7 @@ class ExerciseController extends Controller
             $exercise->reps = $request->reps;
             $exercise->duration = $request->duration;
             $exercise->duration_type = $request->duration_type;
+            $exercise->info_video_url = $request->video_url;
             $exercise->save();
             return back()->with('success', 'Exercise has been updated successfully.');
         }
@@ -190,6 +207,23 @@ class ExerciseController extends Controller
         else
         {
             return redirect('/');
+        }
+    }
+
+    private function checkIsValidVideoUrl($videoUrl)
+    {
+        // Youtube id's are 11 characters long
+        $actualUrlBeforeId = $newstring = substr($videoUrl, 0, strlen($videoUrl) - 11);
+        $expectedUrlBeforeId = "https://www.youtube.com/watch?v=";
+        $videoId = str_replace($actualUrlBeforeId, "", $videoUrl); // Remove VideoBeforeId from url
+
+        if (strcmp($actualUrlBeforeId, $expectedUrlBeforeId) == 0 && strlen($videoId) == 11)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 }

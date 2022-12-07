@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('name',100);
-            $table->string('description',300)->nullable();
+            $table->string('description',1000)->nullable();
             $table->foreignId('user_id')->nullable()->constrained('users');
             $table->foreignId('workout_id')->constrained('workouts')->onDelete('cascade');;
             $table->integer('reps')->nullable();
@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('difficulty')->nullable();
             $table->string('is_complete')->nullable();
             $table->integer('duration_type')->nullable();
+            $table->string('info_video_url')->nullable();
         });
     }
 

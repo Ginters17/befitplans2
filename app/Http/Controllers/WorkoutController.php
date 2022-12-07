@@ -18,7 +18,7 @@ class WorkoutController extends Controller
     {
         $workout = Workout::with(['exercise'])->findOrFail($workoutId);
         $plan = Plan::findOrFail($planId);
-        $areAllPreviousWorkoutsCompleted = $this->areAllPreviousWorkoutsCompleted($plan->id, $workoutId);
+        $areAllPreviousWorkoutsCompleted = $this->areAllPreviousWorkoutsCompleted($plan->id, $workout);
         $canAddExercise = $this->canExercisesBeAddedToWorkout($workout);
         $areAllExercisesCompleted = $this->areAllExercisesCompleted($workout);
 
@@ -68,7 +68,7 @@ class WorkoutController extends Controller
             $validator = Validator::make($request->all(), [
                 'name' => 'required|max:50',
                 'day' => 'required|min:0|max:28',
-                'description' => 'max:300'
+                'description' => 'max:1000'
             ]);
 
             if ($validator->fails())
@@ -186,14 +186,15 @@ class WorkoutController extends Controller
         $workout = Workout::findOrFail($workout_id);
         if (auth()->user() && $this->authorize('complete', $workout))
         {
-            if ($this->areAllPreviousWorkoutsCompleted($plan_id, $workout_id) && $this->areAllExercisesCompleted($workout))
+            if ($this->areAllPreviousWorkoutsCompleted($plan_id, $workout) && $this->areAllExercisesCompleted($workout))
             {
                 $workout->is_complete = true;
                 $workout->save();
                 return redirect('/plan/' . $plan_id)->with('success', 'Workout has been completed successfully.');
             }
-            else {
-                return back()->with("error","Previous workout or exercise isn't complete");
+            else
+            {
+                return back()->with("error", "Previous workout or exercise isn't complete");
             }
         }
         else
@@ -215,17 +216,24 @@ class WorkoutController extends Controller
         return true;
     }
 
-    private function areAllPreviousWorkoutsCompleted($planId, $workoutId)
+    private function areAllPreviousWorkoutsCompleted($planId, $workout)
     {
         $planWorkouts = Workout::where('plan_id', $planId)->orderby('day', 'ASC')->get();
-        for ($i = 0; $planWorkouts[$i]->id < $workoutId; $i++)
+        for ($i = 0; $planWorkouts[$i]->day <= $workout->day; $i++)
         {
+            if ($planWorkouts[$i]->id == $workout->id)
+            {
+                return true;
+            }
+            elseif ($planWorkouts[$i]->id < $workout->id && !$planWorkouts[$i]->is_complete)
+            {
+                return false;
+            }
             if (!$planWorkouts[$i]->is_complete)
             {
                 return false;
             }
         }
-
         return true;
     }
 }
