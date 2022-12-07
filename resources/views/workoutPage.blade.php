@@ -18,6 +18,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <script type="text/javascript" src="{{ asset('js/modal.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/popovers.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/radio.js') }}"></script>
 
     <style>
         body {
@@ -78,8 +80,11 @@
                     @endauth
                 </div>
                 @endforeach
-                @if (count($workout->exercise)==0)
-                    <h2 class="text-center mt-5 mb-5">No exercises found!</h2>
+                @if (count($workout->exercise)==0 && !$workout->day_off)
+                <h2 class="text-center mt-5 mb-5">No exercises found!</h2>
+                @endif
+                @if (count($workout->exercise)==0 && $workout->day_off)
+                <h2 class="text-center mt-5 mb-5">It's your day off let's relax</h2>
                 @endif
                 @if($canAddExercise)
                 <a class="list-group-item mt-3 bg-danger add-exercise-button text-center" href="{{$workout->id}}/add-exercise">ADD EXERCISE</a>
@@ -88,9 +93,9 @@
                 <a class="btn btn-outline-danger mt-3 mb-3 bg-danger text-light float-right" href="{{$workout->id}}/complete">Complete Workout</a>
                 @endif
                 @if(auth()->user() && $workout->user_id == auth()->user()->id)
-                    @if($workout->is_complete)
-                    <h3 class="mt-3 mb-3 float-right">Workout Completed</h3>
-                    @endif
+                @if($workout->is_complete)
+                <h3 class="mt-3 mb-3 float-right">Workout Completed</h3>
+                @endif
                 @endif
             </div>
             <div class="col">
@@ -203,30 +208,67 @@
                             <label for="name" class="col-sm-2 col-form-label">Name*</label>
                             <div class="col-sm-10">
                                 <input type="text" name="name" class="form-control ml-2" id="inputExerciseName" value="">
+                                @error('name')
+                                <p class="alert alert-danger ml-2" role="alert">{{ $message }}</p>
+                                @enderror
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="description" class="col-sm-2 col-form-label">Description</label>
                             <div class="col-sm-10">
                                 <textarea name="description" class="ml-2 form-control" id="inputExerciseDescription" rows="1"></textarea>
+                                @error('description')
+                                <p class="alert alert-danger ml-2" role="alert">{{ $message }}</p>
+                                @enderror
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="sets" class="col-sm-2 col-form-label">Sets</label>
                             <div class="col-sm-10">
                                 <input type="text" name="sets" class="form-control ml-2" id="inputExerciseSets" value="">
+                                @error('sets')
+                                <p class="alert alert-danger ml-2" role="alert">{{ $message }}</p>
+                                @enderror
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="reps" class="col-sm-2 col-form-label">Reps</label>
                             <div class="col-sm-10">
                                 <input type="text" name="reps" class="form-control ml-2" id="inputExerciseReps" value="">
+                                @error('reps')
+                                <p class="alert alert-danger ml-2" role="alert">{{ $message }}</p>
+                                @enderror
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="duration" class="col-sm-2 col-form-label">Duration</label>
                             <div class="col-sm-10">
-                                <input type="text" name="duration" class="form-control ml-2" id="inputExerciseDuration" value="">
+                                <input min="0" id="inputDuration" max="10000" type="number" name="duration" id="duration" class="form-control ml-2" onkeyup="showDurationTypeRadio()" value="" />
+                                @error('duration')
+                                <p class="alert alert-danger ml-2" role="alert">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+                        <input name="duration_type" hidden="true" value="-1" checked="true">
+                        <div class="form-group row align-middle pt-1 duration-type-radio" style="display:none">
+                            <label class="col-sm-2 col-form-label">Duration type</label>
+                            <div class="custom-control custom-radio custom-control-inline ml-4 mt-2 col-1">
+                                <input type="radio" id="seconds" class="custom-control-input" name="duration_type" value="1" >
+                                <label class="custom-control-label" for="seconds">Seconds</label>
+                            </div>
+                            <div class="custom-control custom-radio custom-control-inline ml-4 mt-2 col-1">
+                                <input type="radio" id="minutes" class="custom-control-input" name="duration_type" value="2" >
+                                <label class="custom-control-label active" for="minutes">Minutes</label>
+                            </div>
+                        </div>
+                        <div class="form-group row video-row">
+                            <label for="video_url" class="col-sm-2 col-form-label">Video URL</label>
+                            <i tabindex="0" class="col-sm-2 text-dark fa fa-info-circle" role="button" data-toggle="popover" data-trigger="focus" title="Video URL" data-content="URL must be from youtube and in format: https://www.youtube.com/watch?v=video-id"></i>
+                            <div class="col-sm-8">
+                                <input type="text" name="video_url" class="form-control ml-2" id="inputExerciseVideoURL" value="">
+                                @error('video_url')
+                                <p class="alert alert-danger ml-2" role="alert">{{ $message }}</p>
+                                @enderror
                             </div>
                         </div>
                         <input type="hidden" name="exerciseId" class="form-control ml-2" id="hiddenExerciseId" value="">
@@ -250,12 +292,15 @@
                 </div>
                 <div class="modal-body">
                     <p id="modal_info_description"></p>
+                    <p id="modal_info_no_description"></p>
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <iframe id="testing123" class="embed-responsive-item" src="" allowfullscreen></iframe>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     @include('includes.alerts')
-
 </body>
 
 </html>

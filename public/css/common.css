@@ -70,3 +70,7 @@ h1, h2, h3 {
 .form-control {
     border-color: #dc3545;
 }
+
+.label-with-info-icon {
+ white-space: nowrap;
+}

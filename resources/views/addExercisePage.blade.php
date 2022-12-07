@@ -18,7 +18,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <script type="text/javascript" src="{{ asset('js/common.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/addExercisePage.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/radio.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/popovers.js') }}"></script>
 
 
     <style>
@@ -51,8 +52,20 @@
                     <div class="form-group row">
                         <label for="inputDescription" class="col-sm-2 col-form-label">Decription</label>
                         <div class="col-sm-10">
-                            <textarea type="text" name="description" class="form-control text-area" id="inputDescription" rows="2" value="{{ old('description') }}"></textarea>
+                            <textarea type="text" name="description" class="form-control text-area" id="inputDescription" rows="2" value="">{{ old('description') }}</textarea>
                             @error('description')
+                            <p class="alert alert-danger" role="alert">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="form-group row video-row">
+                        <div class="col-sm-2 label-with-info-icon">
+                            <label for="video_url" class="col-form-label">Video URL</label>
+                            <i tabindex="0" class="align-top text-dark fa fa-info-circle" role="button" data-toggle="popover" data-trigger="focus" title="Video URL" data-content="URL must be from youtube and in format: https://www.youtube.com/watch?v=video-id"></i>
+                        </div>
+                        <div class="col-sm-10">
+                            <input type="text" name="video_url" class="form-control" id="inputExerciseVideoURL" value="">
+                            @error('video_url')
                             <p class="alert alert-danger" role="alert">{{ $message }}</p>
                             @enderror
                         </div>
@@ -60,7 +73,7 @@
                     <div class="form-group row">
                         <label for="reps" class="col-sm-2 col-form-label">Reps</label>
                         <div class="col-sm-10">
-                            <input min="0" max="1000" type="number" name="reps" id="reps" class="form-control" value="{{ old('sets') }}"/>
+                            <input min="0" max="1000" type="number" name="reps" id="reps" class="form-control" value="{{ old('sets') }}" />
                             @error('reps')
                             <p class="alert alert-danger" role="alert">{{ $message }}</p>
                             @enderror
@@ -69,7 +82,7 @@
                     <div class="form-group row">
                         <label for="sets" class="col-sm-2 col-form-label">Sets</label>
                         <div class="col-sm-10">
-                            <input min="0" max="1000" type="number" name="sets" id="sets" class="form-control" value="{{ old('reps') }}"/>
+                            <input min="0" max="1000" type="number" name="sets" id="sets" class="form-control" value="{{ old('reps') }}" />
                             @error('sets')
                             <p class="alert alert-danger" role="alert">{{ $message }}</p>
                             @enderror
@@ -78,7 +91,7 @@
                     <div class="form-group row">
                         <label for="duration" class="col-sm-2 col-form-label">Duration</label>
                         <div class="col-sm-10">
-                            <input min="0" id="duration-input" max="10000" type="number" name="duration" id="duration" class="form-control" onkeyup="showDurationTypeRadio()" value="{{ old('duration') }}"/>
+                            <input min="0" id="inputDuration" max="10000" type="number" name="duration" id="duration" class="form-control" onkeyup="showDurationTypeRadio()" value="{{ old('duration') }}" />
                             @error('duration')
                             <p class="alert alert-danger" role="alert">{{ $message }}</p>
                             @enderror

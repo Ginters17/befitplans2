@@ -1,5 +1,5 @@
-window.showDurationTypeRadio = function() {
-  var durationInput = document.getElementById('duration-input').value;
+window.showDurationTypeRadio = function () {
+  var durationInput = document.getElementById('inputDuration').value;
   if (!!durationInput) {
     document.getElementsByClassName('duration-type-radio')[0].style.display = 'inline';
     document.getElementsByClassName('add-exercise-button')[0].style.marginTop = '60px';
@@ -7,4 +7,4 @@ window.showDurationTypeRadio = function() {
     document.getElementsByClassName('duration-type-radio')[0].style.display = 'none';
     document.getElementsByClassName('add-exercise-button')[0].style.marginTop = '0px';
   };
- };
+};
