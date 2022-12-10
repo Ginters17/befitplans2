@@ -1,0 +1,76 @@
+body {
+    font-family: 'Nunito', sans-serif;
+}
+
+.btn-open-modal {
+    width: 130px;
+}
+
+.btn-open-modal-no-text {
+    width: 40px;
+    border-color: #dc3545;
+}
+
+.btn-open-modal-no-text:hover {
+    background-color: #932530;
+    border-color: #932530;
+    color: white;
+}
+
+.list-group-item {
+    color: #dc3545 !important;
+    border-color: #dc3545;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    border-radius: 0.25rem;
+}
+
+.list-group-item:hover {
+    border-color: none;
+    background-color: #dc3545;
+    color: white !important;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    cursor: pointer;
+}
+
+.list-group-item.bg-danger {
+    color: white !important;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    border-radius: 0.25rem;
+}
+
+.list-group-item:hover.bg-danger {
+    border-color: none;
+    color: white !important;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    cursor: pointer;
+}
+
+
+h1, h2, h3 {
+    color: #dc3545;
+}
+
+
+.custom-radio .custom-control-input:checked~.custom-control-label::before {
+    background-color: #dc3545;
+}
+
+.custom-radio .custom-control-input:checked~.custom-control-label::before{
+    box-shadow: 0 0 0 1px #dc3545, 0 0 0 0.2rem rgb(220 53 69 / 25%) !important;
+}
+
+.form-control:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #dc3545;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgb(86 21 27 / 25%);
+}
+
+.form-control {
+    border-color: #dc3545;
+}
+
+.label-with-info-icon {
+ white-space: nowrap;
+}

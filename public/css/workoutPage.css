@@ -1,0 +1,43 @@
+.exercise-list-item {
+    overflow: hidden;
+    cursor: default !important;
+}
+
+.exercise-list-item:last-child {
+    margin-bottom: 30px;
+}
+
+.exercise-list-item p:last-of-type {
+    margin-bottom: 6px;
+}
+
+
+@media only screen and (min-width: 771px) {
+    .list-group-item {
+        display: flex;
+    }
+}
+
+
+@media only screen and (max-width: 770px) {
+    .list-group-item {
+        display: block;
+    }
+}
+
+.exercise-actions {
+    align-self: flex-end;
+    margin-left: auto;
+}
+
+.add-exercise-button {
+    display: block;
+}
+
+.modal-body .alert {
+    width: 100%;
+}
+
+#modal_info_no_description {
+    text-align: center;
+}

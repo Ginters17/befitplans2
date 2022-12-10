@@ -1,0 +1,15 @@
+.exercise-form input{
+    border-color: #dc3545;
+}
+
+.text-area {
+    border-color: #dc3545;
+}
+
+.exercise-form {
+    color: #dc3545;
+}
+
+.add-exercise-button {
+    margin-top: 30px;
+}

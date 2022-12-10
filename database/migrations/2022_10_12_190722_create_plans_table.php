@@ -14,18 +14,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('plans', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->integer('sex')->nullable();
-            $table->integer('age')->nullable();
-            $table->integer('weight')->nullable();
-            $table->integer('height')->nullable();
-            $table->rememberToken();
             $table->timestamps();
+            $table->string('name',50);
+            $table->string('description',300)->nullable();
+            $table->foreignId('user_id')->nullable()->constrained('users');
+            $table->foreignId('category_id')->nullable()->constrained('categories');
+            $table->integer('original_plan_id')->nullable();
+            $table->boolean('is_default'); 
+            $table->boolean('is_public')->default('0');
+            $table->boolean('is_custom')->default('0');
+            $table->integer('days');
         });
     }
 
@@ -37,7 +37,7 @@ return new class extends Migration
     public function down()
     {
         DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-        Schema::drop('users');
+        Schema::drop('plans');
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 };
