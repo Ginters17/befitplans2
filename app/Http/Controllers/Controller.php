@@ -39,7 +39,7 @@ class Controller extends BaseController
         if (auth()->user() && $plan->user_id == auth()->user()->id)
         {
             $planWorkouts = Workout::where('plan_id', $plan->id)->get();
-            return sizeOf($planWorkouts) < $plan->days ? true : false;
+            return sizeOf($planWorkouts) < $plan->workouts ? true : false;
         }
         else
         {

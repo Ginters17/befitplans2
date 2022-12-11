@@ -84,12 +84,20 @@ class UserController extends Controller
     public function update(Request $request, $userId)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required'
+            'name' => 'required|max:50',
+            'age' => 'nullable|integer',
+            'height' => 'nullable|integer',
+            'weight' => 'nullable|integer',
+            'sex' => 'nullable|integer'
         ]);
+
         if ($validator->fails())
         {
-            return back()->with('error', 'Account not updated - Name must not be empty.');
-        };
+            return back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with("error", "Account not updated - one or more fields have an error");
+        }
 
         $user = User::findOrFail($userId);
         if (auth()->user() && $this->authorize('update', $user))
