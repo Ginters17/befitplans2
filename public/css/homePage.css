@@ -4,6 +4,18 @@
     white-space: nowrap;
 }
 
+.home-page-info {
+    font-size: 30px;
+    text-align: justify;
+}
+
+.home-page-second-heading {
+    margin-top: 50px;
+    font-size: 40px;
+    white-space: nowrap;
+    font-weight: bold;
+}
+
 .list-group-item {
     border-color: none;
     background-color: #dc3545;
@@ -34,4 +46,12 @@
         font-size: 30px;
         white-space: normal;
     }
+}
+
+.list-group {
+    align-items: center;
+}
+
+.list-group-item {
+    width: 80%;
 }

@@ -69,7 +69,7 @@ class PlanController extends Controller
             $plan->category_id = $request->category_id;
             $plan->user_id = auth()->id();
             $plan->is_default = 1;
-            $plan->days = 28;
+            $plan->workouts = 28;
             $plan->save();
 
             $this->workoutService->makeWorkouts(1, auth()->user(), $plan, true);
@@ -107,7 +107,7 @@ class PlanController extends Controller
             $plan->category_id = $cetegoryId;
             $plan->user_id = auth()->id();
             $plan->is_default = 0;
-            $plan->days = 28;
+            $plan->workouts = 28;
             $plan->save();
 
             /// Get coefficient for workout intensity and make workouts
@@ -154,11 +154,17 @@ class PlanController extends Controller
     public function update(Request $request, $planId)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required'
+            'name' => 'required|max:50',
+            'description' => 'max:300',
+            'workouts' => 'required|min:0|max:28',
         ]);
+
         if ($validator->fails())
         {
-            return back()->with('error', 'Plan not updated - Name must not be empty.');
+            return back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with("error", "Workout not updated - one or more fields have an error");
         }
 
         $plan = Plan::findOrFail($planId);
@@ -167,6 +173,7 @@ class PlanController extends Controller
             $plan->name = $request->name;
             $plan->description = $request->description;
             $plan->is_public = $request->is_public;
+            $plan->workouts = $request->workouts;
             $plan->save();
             return back()->with('success', 'Plan has been updated successfully.');
         }
@@ -231,7 +238,7 @@ class PlanController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:50',
-            'days' => 'required|min:0|max:28',
+            'workouts' => 'required|min:0|max:28',
             'description' => 'max:300'
         ]);
 
@@ -256,7 +263,7 @@ class PlanController extends Controller
             $plan->is_default = 0;
             $plan->is_custom = 1;
             $plan->is_public = $request->is_public;
-            $plan->days = $request->days;
+            $plan->workouts = $request->workouts;
             $plan->save();
 
             return redirect('/plan/' . $plan->id . '/add-workout')->with('success', "Plan has been created successfully. Add your first workout!");
@@ -302,23 +309,28 @@ class PlanController extends Controller
         $planName = "";
 
         $planName .= $username[strlen($username) - 1] == "s" ? $username . "'" : $username . "'s";
+        $categoryPart = "";
         switch ($category_id)
         {
             case 1:
-                $planName .= " Upper Body ";
+                $categoryPart = "Upper Body";
                 break;
             case 2:
-                $planName .= " Lower Body ";
+                $categoryPart = "Lower Body";
                 break;
             case 3:
-                $planName .= " Cardio ";
+                $categoryPart = "Cardio";
+                break;
+            case 4:
+                $categoryPart = "Custom";
                 break;
             default:
-                $planName .= " ";
+                $categoryPart = "";
         }
+        $planName .= " ".$categoryPart." ";
         $planName .= "Plan";
 
-        return $planName;
+        return strlen($planName) > 50 ? $categoryPart." Plan" : $planName;
     }
 
     private function addPlanToUser($plan, $user)
@@ -329,7 +341,7 @@ class PlanController extends Controller
         $newPlan->user_id = $user->id;
         $newPlan->is_default = $plan->is_default;
         $newPlan->original_plan_id = $plan->id;
-        $newPlan->days = $plan->days;
+        $newPlan->workouts = $plan->workouts;
         $newPlan->save();
 
         $planWorkouts = Workout::where('plan_id', $plan->id)->get();

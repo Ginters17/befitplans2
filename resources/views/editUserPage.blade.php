@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Befit - Edit my account</title>
+    <title>BefitPlans - Edit my account</title>
 
     <!-- Fonts -->
     <link href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -38,7 +38,7 @@
                         <div class="col-sm-10">
                             <input type="text" name="name" class="form-control" id="inputPassworzd" value="{{$user->name}}">
                             @error('name')
-                            <p class="alert alert-danger" role="alert">Name must not be empty</p>
+                            <p class="alert alert-danger" role="alert">{{ $message }}</p>
                             @enderror
                         </div>
                     </div>
@@ -47,7 +47,7 @@
                         <div class="col-sm-10">
                             <input type="text" name="age" class="form-control" id="inputPassworzd" value="{{$user->age}}">
                             @error('age')
-                            <p class="alert alert-danger" role="alert">You must be older than 13</p>
+                            <p class="alert alert-danger" role="alert">{{ $message }}</p>
                             @enderror
                         </div>
                     </div>
@@ -56,12 +56,18 @@
                         <div class="col-sm-10">
                             <input type="text" name="height" class="form-control" id="inputPassworzd" value="{{$user->height}}">
                         </div>
+                        @error('height')
+                        <p class="alert alert-danger" role="alert">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div class="form-group row">
                         <label for="inputPassword" class="col-sm-2 col-form-label">Weight (kg)</label>
                         <div class="col-sm-10">
                             <input type="text" name="weight" class="form-control" id="inputPassworzd" value="{{$user->weight}}">
                         </div>
+                        @error('weight')
+                        <p class="alert alert-danger" role="alert">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div class="form-group row">
                         <label for="" class="col-sm-2 col-form-label">Sex</label>
