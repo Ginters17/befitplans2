@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Befit</title>
+    <title>BefitPlans</title>
 
     <!-- Fonts -->
     <link href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -22,16 +22,17 @@
     @include('includes.navBar')
     <div class="container">
         <div class="row">
-            <div class="col-3">
+            <div class="col-md-2">
             </div>
-            <div class="col-6">
-                <h2 class="d-flex justify-content-center home-page-heading">Choose your category</h2>
-                <br></br>
+            <div class="col-md-8 mb-5">
+                <h2 class="d-flex justify-content-center home-page-heading"><span style="font-weight: bold">Befit</span>Plans</h2>
+                <h3 class="d-flex home-page-info">The one place for both new and experienced to get, create and share their fitness plans</h3>
+                <h2 class="d-flex justify-content-center home-page-second-heading">Choose your Plan</h2>
                 <ul class="list-group d-flex justify-content-center text-center">
                     <a class="list-group-item mt-3" data-toggle="modal" data-target="#upperBodyModalCenter">Upper Body</a>
                     <a class="list-group-item mt-3" data-toggle="modal" data-target="#lowerBodyModalCenter">Lower Body</a>
                     <a class="list-group-item mt-3" data-toggle="modal" data-target="#cardioModalCenter">Cardio</a>
-                    <a class="list-group-item mt-3" method="POST" href="/plan/create">Custom Plan</a>
+                    <a class="list-group-item mt-3" method="POST" href="/plan/create">Custom</a>
                 </ul>
             </div>
             <div class="modal fade" id="upperBodyModalCenter" tabindex="-1" role="dialog" aria-labelledby="upperBodyModalCenter" aria-hidden="true">
@@ -82,7 +83,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-3">
+            <div class="col-md-2">
             </div>
         </div>
     </div>

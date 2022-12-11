@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Befit - create custom plan</title>
+    <title>BefitPlans - create custom plan</title>
 
     <!-- Fonts -->
     <link href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -58,10 +58,10 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputDays" class="col-sm-2 col-form-label" for="typeNumber">Days *</label>
+                        <label for="workouts" class="col-sm-2 col-form-label">Workouts *</label>
                         <div class="col-sm-10">
-                            <input min="1" max="28" type="number" name="days" id="typeDays" class="form-control" />
-                            @error('days')
+                            <input min="1" max="28" type="number" name="workouts" id="workouts" class="form-control" />
+                            @error('workouts')
                             <p class="alert alert-danger" role="alert">{{ $message }}</p>
                             @enderror
                         </div>
