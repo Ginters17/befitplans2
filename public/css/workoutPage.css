@@ -41,3 +41,188 @@
 #modal_info_no_description {
     text-align: center;
 }
+
+.back-to-plan-desktop {
+    display: inline-block;
+}
+
+.back-to-plan-desktop .btn{
+    width: 120px;
+}
+
+@media only screen and (max-width: 767px) {
+    .back-to-plan-desktop {
+        display: none !important;
+    }
+}
+
+.workout-actions-desktop {
+    display: inline-block;
+}
+
+.workout-actions-desktop .btn-open-edit-modal {
+    width: 120px;
+    margin-top: 1rem;
+}
+
+.workout-actions-desktop .btn-open-delete-modal {
+    width: 120px;
+    margin-top: 0.25rem;
+}
+
+@media only screen and (max-width: 767px) {
+    .workout-actions-desktop {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .workout-actions-mobile {
+        display: inline-flex;
+        width: 100%;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    .workout-actions-mobile {
+        display: none;
+    }
+}
+
+.workout-actions-mobile .btn-back-to-plan{
+    width: 33%;
+    margin-right: 0.25rem;
+    border-radius: 0.25rem !important;
+}
+
+.workout-actions-mobile .btn-open-edit-modal{
+    width: 33%;
+    margin-right: 0.25rem; 
+    margin-top: 1rem;
+    border-radius: 0.25rem !important;
+}
+
+.workout-actions-mobile .btn-open-delete-modal{
+    width: 33%;
+    margin-top: 1rem;
+    border-radius: 0.25rem !important;
+}
+
+.workout-actions-mobile {
+    white-space: normal;
+}
+
+@media only screen and (max-width: 360px) {
+    .btn-back-to-plan-long{
+        display: none;
+    }
+}
+
+.modal-header {
+    border: none;
+}
+
+.modal-header #editModal {
+    width: 100%;
+    text-align: center;
+}
+
+.modal-body label {
+    color: #dc3545;
+}
+
+.modal-footer .btn-secondary:hover {
+    background-color: #474d52 !important;
+    border-color: #474d52 !important;
+}
+
+.modal-footer {
+    border: none;
+}
+
+#editModal .modal-footer {
+    margin-right: -2rem;
+}
+
+#editModal .close {
+    margin-right: -2rem;
+}
+
+
+.modal-content {
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+#editExerciseModal .modal-content {
+    padding-left: 30px;
+    padding-right: 70px;
+}
+
+@media only screen and (max-width: 575px) {
+    .modal-content {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    .form-control {
+        margin-left: 0px !important;
+    }
+
+    .alert {
+        margin-left: 0px !important;
+    }
+
+    #deleteModal .modal-title {
+        white-space: normal !important;
+    }
+
+    #editModal .modal-footer {
+        margin-right: -1rem;
+    }
+
+    #editModal .close {
+        margin-right: -1rem;
+    }
+
+    #editExerciseModal .modal-footer {
+        margin-right: -1rem !important;
+    }
+    
+    #editExerciseModal .close {
+        margin-right: -1em !important;
+    }
+}
+
+.alert {
+    width: 100%;
+}
+
+#deleteModal .modal-title {
+    white-space: nowrap;
+}
+
+.exercise-actions {
+    white-space: nowrap;
+}
+
+.duration-seconds {
+    margin-left: 5rem;
+}
+
+.duration-minutes{
+    margin-left: 2rem;
+}
+
+.fa-info-circle {
+    position: relative;
+    z-index: 99;
+}
+
+#editExerciseModal .modal-footer {
+    margin-right: -4rem !important;
+}
+
+#editExerciseModal .close {
+    margin-right: -4rem !important;
+}

@@ -74,3 +74,22 @@ h1, h2, h3 {
 .label-with-info-icon {
  white-space: nowrap;
 }
+
+.form-radio-row {
+    white-space: nowrap;
+}
+
+.empty-space {
+    height: 30px;
+}
+
+@media only screen and (max-width: 400px) {
+    .btn-floating {
+        display: none !important;
+    }
+}
+
+.btn:hover {
+    background-color: #c82333 !important;
+    border-color: #bd2130 !important;
+}

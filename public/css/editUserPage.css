@@ -1,0 +1,25 @@
+.row label {
+    color: #dc3545;
+}
+
+.radio-first-button {
+    margin-left: 6rem!important;
+}
+
+@media only screen and (max-width: 1199px) {
+    .radio-first-button {
+        margin-left: 2rem!important;
+    }
+}
+
+@media only screen and (max-width: 991px) {
+    .radio-first-button {
+        margin-left: 1rem!important;
+    }
+}
+
+.form-control option:hover {
+    background-color: #dc3545 !important;
+    color: #dc3545 !important;
+    border-color: #dc3545 !important;
+}

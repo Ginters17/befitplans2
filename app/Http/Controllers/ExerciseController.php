@@ -221,6 +221,7 @@ class ExerciseController extends Controller
 
     private function checkIsValidVideoUrl($videoUrl)
     {
+        
         // Youtube id's are 11 characters long
         $actualUrlBeforeId = $newstring = substr($videoUrl, 0, strlen($videoUrl) - 11);
         $expectedUrlBeforeId = "https://www.youtube.com/watch?v=";
