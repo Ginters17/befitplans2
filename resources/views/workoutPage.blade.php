@@ -265,7 +265,7 @@
                         <input name="duration_type" hidden="true" value="-1" checked="true">
                         <div class="form-group row align-middle pt-1 duration-type-radio form-radio-row" style="display:none">
                             <label class="col-sm-2 col-form-label">Units
-                                <div class="custom-control custom-radio custom-control-inline mt-2 col-1 duration-seconds ml-5">
+                                <div class="custom-control custom-radio custom-control-inline mt-2 col-1 duration-seconds">
                                     <input type="radio" id="seconds" class="custom-control-input" name="duration_type" value="1">
                                     <label class="custom-control-label" for="seconds">Seconds</label>
                                 </div>

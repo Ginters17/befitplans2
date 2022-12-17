@@ -98,10 +98,10 @@
                         </div>
                     </div>
                     <input name="duration_type" hidden="true" value="-1" checked="true">
-                    <div class="form-group row align-middle pt-1 form-radio-row" style="display:none">
-                        <label class="col-sm-2 col-form-label">Duration type
-                            <div class="custom-control custom-radio custom-control-inline mt-2 col-1 radio-button">
-                                <input type="radio" id="seconds" class="custom-control-input" name="duration_type" value="1">
+                    <div class="form-group row align-middle pt-1 duration-type-radio form-radio-row" style="display:none">
+                        <label class="col-sm-2 col-form-label">Units
+                            <div class="custom-control custom-radio custom-control-inline mt-2 col-1 ml-5 radio-button">
+                                <input type="radio" id="seconds" class="custom-control-input" name="duration_type" value="1" checked="checked">
                                 <label class="custom-control-label" for="seconds">Seconds</label>
                             </div>
                             <div class="custom-control custom-radio custom-control-inline ml-5 mt-2 col-1">
@@ -110,7 +110,7 @@
                             </div>
                         </label>
                     </div>
-                    <input type="submit" class="float-right btn btn-outline-danger bg-danger text-light submit-btn mt-3" value="ADD EXERCISE"></input>
+                    <input type="submit" class="float-right btn btn-outline-danger bg-danger text-light submit-btn" value="ADD EXERCISE"></input>
                 </form>
             </div>
             <div class="col-md-2">
