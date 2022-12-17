@@ -35,10 +35,21 @@
     <p class="text-center">{{$workout->description}}</p>
     <div class="container">
         <div class="row">
-            <div class="col">
-                <a class="btn btn-outline-danger mt-3 float-right bg-danger text-light" href="/plan/{{$plan->id}}">Back to plan</a>
+            <div class="col-md-2">
+                <div class="back-to-plan-desktop float-right">
+                    <a class="btn btn-outline-danger mt-3 bg-danger text-light" href="/plan/{{$plan->id}}">Back to plan</a>
+                </div>
             </div>
-            <div class="col-6">
+            <div class="col-md-8">
+                <div class="btn-group workout-actions-mobile" role="group">
+                    <a class="btn btn-outline-danger mt-3 bg-danger text-light btn-back-to-plan" href="/plan/{{$plan->id}}">Back <span class="btn-back-to-plan-long">to plan</span></a>
+                    @auth
+                    @if($workout->user_id == auth()->user()->id)
+                    @include('includes.editDeleteButtons')
+                    @endif
+                    @endauth
+                    @include('includes.toTopButton')
+                </div>
                 @foreach ($workout->exercise as $exercise)
                 <div class="list-group-item mt-3 exercise-list-item bg-danger" href="workout/{{$workout->id}}/exercise/{{$exercise->id}}">
                     <div class="exercise-information">
@@ -98,24 +109,26 @@
                 @endif
                 @endif
             </div>
-            <div class="col">
-                @auth
-                @if($workout->user_id == auth()->user()->id)
-                @include('includes.editDeleteButtons')
-                @endif
-                @endauth
-                @include('includes.toTopButton')
+            <div class="col-md-2">
+                <div class="workout-actions-desktop">
+                    @auth
+                    @if($workout->user_id == auth()->user()->id)
+                    @include('includes.editDeleteButtons')
+                    @endif
+                    @endauth
+                    @include('includes.toTopButton')
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Modals for the workout -->
     <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editModal">Edit Workout</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <h5 class="modal-title text-danger" id="editModal">Edit Workout</h5>
+                    <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -125,27 +138,27 @@
                         <div class="form-group row">
                             <label for="name" class="col-sm-2 col-form-label">Name*</label>
                             <div class="col-sm-10">
-                                <input type="text" name="name" class="form-control ml-2" id="inputWorkoutName" value="{{$workout->name}}">
+                                <input type="text" name="name" class="form-control ml-3" id="inputWorkoutName" value="{{$workout->name}}">
                                 @error('name')
-                                <p class="alert alert-danger ml-2" role="alert">{{ $message }}</p>
+                                <p class="alert alert-danger ml-3" role="alert">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="description" class="col-sm-2 col-form-label">Description</label>
                             <div class="col-sm-10">
-                                <textarea name="description" class="ml-2 form-control" id="inputWorkoutDescription" rows="2">{{$workout->description}}</textarea>
+                                <textarea name="description" class="ml-3 form-control" id="inputWorkoutDescription" rows="2">{{$workout->description}}</textarea>
                                 @error('description')
-                                <p class="alert alert-danger ml-2" role="alert">{{ $message }}</p>
+                                <p class="alert alert-danger ml-3" role="alert">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="day" class="col-sm-2 col-form-label">Day *</label>
                             <div class="col-sm-10">
-                                <input min="1" max="28" type="number" name="day" id="day" class="form-control ml-2" value="{{$workout->day}}" />
+                                <input min="1" max="28" type="number" name="day" id="day" class="form-control ml-3" value="{{$workout->day}}" />
                                 @error('day')
-                                <p class="alert alert-danger ml-2" role="alert">{{ $message }}</p>
+                                <p class="alert alert-danger ml-3" role="alert">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>
@@ -159,11 +172,11 @@
         </div>
     </div>
     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModal">Are you sure you want to delete this workout?</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <h5 class="modal-title text-danger" id="deleteModal">Are you sure you want to delete this workout?</h5>
+                    <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -177,11 +190,11 @@
 
     <!-- Modals for the exercise -->
     <div class="modal fade" id="deleteExerciseModal" tabindex="-1" role="dialog" aria-labelledby="deleteExerciseModal" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modal_delete_title"></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <h5 class="modal-title text-danger" id="modal_delete_title"></h5>
+                    <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -193,11 +206,11 @@
         </div>
     </div>
     <div class="modal fade" id="editExerciseModal" tabindex="-1" role="dialog" aria-labelledby="editExerciseModal" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modal_edit_title">Edit Exercise</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <h5 class="modal-title text-danger" id="modal_edit_title">Edit Exercise</h5>
+                    <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -207,16 +220,16 @@
                         <div class="form-group row">
                             <label for="name" class="col-sm-2 col-form-label">Name*</label>
                             <div class="col-sm-10">
-                                <input type="text" name="name" class="form-control ml-2" id="inputExerciseName" value="">
+                                <input type="text" name="name" class="form-control ml-5" id="inputExerciseName" value="">
                                 @error('name')
-                                <p class="alert alert-danger ml-2" role="alert">{{ $message }}</p>
+                                <p class="alert alert-danger ml-5" role="alert">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="description" class="col-sm-2 col-form-label">Description</label>
                             <div class="col-sm-10">
-                                <textarea name="description" class="ml-2 form-control" id="inputExerciseDescription" rows="1"></textarea>
+                                <textarea name="description" class="ml-5 form-control" id="inputExerciseDescription" rows="1"></textarea>
                                 @error('description')
                                 <p class="alert alert-danger ml-2" role="alert">{{ $message }}</p>
                                 @enderror
@@ -225,49 +238,53 @@
                         <div class="form-group row">
                             <label for="sets" class="col-sm-2 col-form-label">Sets</label>
                             <div class="col-sm-10">
-                                <input type="text" name="sets" class="form-control ml-2" id="inputExerciseSets" value="">
+                                <input type="text" name="sets" class="form-control ml-5" id="inputExerciseSets" value="">
                                 @error('sets')
-                                <p class="alert alert-danger ml-2" role="alert">{{ $message }}</p>
+                                <p class="alert alert-danger ml-5" role="alert">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="reps" class="col-sm-2 col-form-label">Reps</label>
                             <div class="col-sm-10">
-                                <input type="text" name="reps" class="form-control ml-2" id="inputExerciseReps" value="">
+                                <input type="text" name="reps" class="form-control ml-5" id="inputExerciseReps" value="">
                                 @error('reps')
-                                <p class="alert alert-danger ml-2" role="alert">{{ $message }}</p>
+                                <p class="alert alert-danger ml-5" role="alert">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="duration" class="col-sm-2 col-form-label">Duration</label>
                             <div class="col-sm-10">
-                                <input min="0" id="inputDuration" max="10000" type="number" name="duration" id="duration" class="form-control ml-2" onkeyup="showDurationTypeRadio()" value="" />
+                                <input min="0" id="inputDuration" max="10000" type="number" name="duration" id="duration" class="form-control ml-5" onkeyup="showDurationTypeRadio()" value="" />
                                 @error('duration')
-                                <p class="alert alert-danger ml-2" role="alert">{{ $message }}</p>
+                                <p class="alert alert-danger ml-5" role="alert">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>
                         <input name="duration_type" hidden="true" value="-1" checked="true">
-                        <div class="form-group row align-middle pt-1 duration-type-radio" style="display:none">
-                            <label class="col-sm-2 col-form-label">Duration type</label>
-                            <div class="custom-control custom-radio custom-control-inline ml-4 mt-2 col-1">
-                                <input type="radio" id="seconds" class="custom-control-input" name="duration_type" value="1" >
-                                <label class="custom-control-label" for="seconds">Seconds</label>
-                            </div>
-                            <div class="custom-control custom-radio custom-control-inline ml-4 mt-2 col-1">
-                                <input type="radio" id="minutes" class="custom-control-input" name="duration_type" value="2" >
-                                <label class="custom-control-label active" for="minutes">Minutes</label>
-                            </div>
+                        <div class="form-group row align-middle pt-1 duration-type-radio form-radio-row" style="display:none">
+                            <label class="col-sm-2 col-form-label">Units
+                                <div class="custom-control custom-radio custom-control-inline mt-2 col-1 duration-seconds">
+                                    <input type="radio" id="seconds" class="custom-control-input" name="duration_type" value="1">
+                                    <label class="custom-control-label" for="seconds">Seconds</label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline mt-2 col-1 duration-minutes">
+                                    <input type="radio" id="minutes" class="custom-control-input" name="duration_type" value="2">
+                                    <label class="custom-control-label active" for="minutes">Minutes</label>
+                                </div>
+                            </label>
                         </div>
                         <div class="form-group row video-row">
-                            <label for="video_url" class="col-sm-2 col-form-label">Video URL</label>
-                            <i tabindex="0" class="col-sm-2 text-dark fa fa-info-circle" role="button" data-toggle="popover" data-trigger="focus" title="Video URL" data-content="URL must be from youtube and in format: https://www.youtube.com/watch?v=video-id"></i>
-                            <div class="col-sm-8">
-                                <input type="text" name="video_url" class="form-control ml-2" id="inputExerciseVideoURL" value="">
+                            <div class="col-sm-2 label-with-info-icon">
+                                <label for="video_url" class="col-form-label">Video URL
+                                    <i tabindex="0" class="align-top fa fa-info-circle text-danger" role="button" data-toggle="popover" data-trigger="hover" title="Video URL" data-content="URL must be from youtube and in format: https://www.youtube.com/watch?v=video-id"></i>
+                                </label>
+                            </div>
+                            <div class="col-sm-10">
+                                <input type="text" name="video_url" class="form-control ml-5" id="inputExerciseVideoURL" value="{{ old('video_url') }}">
                                 @error('video_url')
-                                <p class="alert alert-danger ml-2" role="alert">{{ $message }}</p>
+                                <p class="alert alert-danger" role="alert">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>
@@ -282,11 +299,11 @@
         </div>
     </div>
     <div class="modal fade" id="infoExerciseModal" tabindex="-1" role="dialog" aria-labelledby="infoExerciseModal" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modal_info_title"></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <h5 class="modal-title text-danger" id="modal_info_title"></h5>
+                    <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -300,6 +317,7 @@
             </div>
         </div>
     </div>
+    @include('includes.footer')
     @include('includes.alerts')
 </body>
 

@@ -39,6 +39,11 @@
         font-size: 40px;
         white-space: nowrap;
     }
+
+    .home-page-second-heading {
+        white-space: nowrap;
+    }
+    
 }
 
 @media only screen and (max-width: 400px) {
@@ -46,6 +51,12 @@
         font-size: 30px;
         white-space: normal;
     }
+
+    .home-page-second-heading {
+        font-size: 30px;
+        white-space: normal;
+    }
+    
 }
 
 .list-group {
@@ -54,4 +65,27 @@
 
 .list-group-item {
     width: 80%;
+}
+
+.modal-header {
+    border: none;
+    justify-content: center;
+    padding-bottom: 0 !important;
+}
+
+.btn-group {
+    width: 100% !important;
+}
+
+.btn-group .btn-default-plan {
+    width: 50%;
+    margin-right: 0.25rem;
+    text-align: center;
+    height: 50px;
+}
+
+.btn-group .btn-personalized-plan {
+    width: 50%;
+    text-align: center;
+    height: 50px;
 }

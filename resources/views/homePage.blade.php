@@ -22,9 +22,9 @@
     @include('includes.navBar')
     <div class="container">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-1">
             </div>
-            <div class="col-md-8 mb-5">
+            <div class="col-md-10 mb-5">
                 <h2 class="d-flex justify-content-center home-page-heading"><span style="font-weight: bold">Befit</span>Plans</h2>
                 <h3 class="d-flex home-page-info">The one place for both new and experienced to get, create and share their fitness plans</h3>
                 <h2 class="d-flex justify-content-center home-page-second-heading">Choose your Plan</h2>
@@ -39,14 +39,13 @@
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title text-danger">Choose your plan for upper body</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                            <h3 class="modal-title text-danger">Choose your plan for upper body</h3>
                         </div>
                         <div class="modal-body">
-                            <a class="list-group-item mt-3" method="POST" href="/storeDefaultPlan/1">Default Plan</a>
-                            <a class="list-group-item mt-3" method="POST" href="/storePersonalizedPlan/1">Personalized Plan</a>
+                            <div class="btn-group" role="group">
+                                <a class="list-group-item mt-3 btn-default-plan" method="POST" href="/storeDefaultPlan/1">Default</a>
+                                <a class="list-group-item mt-3 btn-personalized-plan" method="POST" href="/storePersonalizedPlan/1">Personalized</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -55,14 +54,13 @@
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title text-danger">Choose your plan for lower body</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                            <h3 class="modal-title text-danger">Choose your plan for lower body</h3>
                         </div>
                         <div class="modal-body">
-                            <a class="list-group-item mt-3" method="POST" href="/storeDefaultPlan/2">Default Plan</a>
-                            <a class="list-group-item mt-3" method="POST" href="/storePersonalizedPlan/2">Personalized Plan</a>
+                            <div class="btn-group" role="group">
+                                <a class="list-group-item mt-3 btn-default-plan" method="POST" href="/storeDefaultPlan/2">Default</a>
+                                <a class="list-group-item mt-3 btn-default-plan" method="POST" href="/storePersonalizedPlan/2">Personalized</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -71,22 +69,22 @@
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title text-danger">Choose your plan for cardio</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                            <h3 class="modal-title text-danger">Choose your plan for cardio</h3>
                         </div>
                         <div class="modal-body">
-                            <a class="list-group-item mt-3" method="POST" href="/storeDefaultPlan/3">Default Plan</a>
-                            <a class="list-group-item mt-3" method="POST" href="/storePersonalizedPlan/3">Personalized Plan</a>
+                            <div class="btn-group" role="group">
+                                <a class="list-group-item mt-3 btn-default-plan" method="POST" href="/storeDefaultPlan/3">Default</a>
+                                <a class="list-group-item mt-3 btn-default-plan" method="POST" href="/storePersonalizedPlan/3">Personalized</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-1">
             </div>
         </div>
     </div>
+    @include('includes.footer')
     @include('includes.alerts')
 </body>
 

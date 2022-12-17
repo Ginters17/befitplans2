@@ -2,9 +2,9 @@ window.showDurationTypeRadio = function () {
   var durationInput = document.getElementById('inputDuration').value;
   if (!!durationInput) {
     document.getElementsByClassName('duration-type-radio')[0].style.display = 'inline';
-    document.getElementsByClassName('add-exercise-button')[0].style.marginTop = '60px';
+    document.getElementsByClassName('submit-btn')[0].style.marginTop = '60px';
   } else {
     document.getElementsByClassName('duration-type-radio')[0].style.display = 'none';
-    document.getElementsByClassName('add-exercise-button')[0].style.marginTop = '0px';
+    document.getElementsByClassName('submit-btn')[0].style.marginTop = '1.5rem';
   };
 };

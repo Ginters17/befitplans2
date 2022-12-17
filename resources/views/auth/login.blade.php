@@ -78,6 +78,7 @@
                                     <button type="submit" class="btn btn-primary bg-danger text-light submit-button">
                                         {{ __('Login') }}
                                     </button>
+                                    <a class="text-danger ml-2 ul"href="/register"><u>Don't have an account?</u></a>
                                 </div>
                             </div>
                         </form>

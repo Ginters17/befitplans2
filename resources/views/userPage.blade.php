@@ -27,9 +27,9 @@
     @include('includes.navBar')
     <div class="container">
         <div class="row">
-            <div class="col">
+            <div class="col-md-2">
             </div>
-            <div class="col-6">
+            <div class="col-md-8">
                 @if($user->id == auth()->user()->id)
                 <h1 class="d-flex justify-content-center mt-5">My plans</h1>
                 @else
@@ -44,11 +44,11 @@
                 @endif
                 </ul>
             </div>
-            <div class="col">
-            @include('includes.toTopButton')
+            <div class="col-md-2">
             </div>
         </div>
     </div>
+    @include('includes.footer')
     @include('includes.alerts')
 </body>
 
