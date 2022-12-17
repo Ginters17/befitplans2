@@ -23,6 +23,12 @@ Auth::routes();
 Route::get('plan/create', function () {
     return view('createCustomPlanPage');
 });
+
+Route::get('/information', function () {
+    return view('informationPage');
+});
+
+
 Route::post('plan/storeCustomPlan', [App\Http\Controllers\PlanController::class, 'storeCustomPlan']);
 Route::get('plan/create', [App\Http\Controllers\PlanController::class, 'createCustomPlan']);
 Route::get('plan/{plan_id}', [App\Http\Controllers\PlanController::class, 'index']);
