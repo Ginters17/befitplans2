@@ -19,3 +19,27 @@
 .plan-form {
     color: #dc3545;
 }
+
+.submit-btn:hover {
+    background-color: #bd2130 !important;
+}
+
+.radio-first-button {
+    margin-left: 3rem!important;
+}
+
+@media only screen and (max-width: 1199px) {
+    .radio-first-button {
+        margin-left: 2rem!important;
+    }
+}
+
+@media only screen and (max-width: 991px) {
+    .radio-first-button {
+        margin-left: 1rem!important;
+    }
+}
+
+.alert {
+    width: 100%;
+}

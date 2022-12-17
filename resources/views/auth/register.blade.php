@@ -90,6 +90,7 @@
                                     <button type="submit" class="btn btn-primary bg-danger text-light submit-button">
                                         {{ __('Register') }}
                                     </button>
+                                    <a class="text-danger ml-2 ul"href="/login"><u>Already have an account?</u></a>
                                 </div>
                             </div>
                         </form>

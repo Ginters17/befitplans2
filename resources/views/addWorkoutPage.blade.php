@@ -33,10 +33,10 @@
     <h1 class="d-flex justify-content-center mt-5 mb-3">Add Workout</h1>
     <div class="container">
         <div class="row">
-            <div class="col">
-                <a class="btn btn-outline-danger mt-3 float-right bg-danger text-light" href="/plan/{{$planId}}">Back to plan</a>
+            <div class="col-md-2">
+                <a class="btn btn-outline-danger mt-3 float-right bg-danger text-light back-to-plan-btn" href="/plan/{{$planId}}">Back to plan</a>
             </div>
-            <div class="col-6">
+            <div class="col-md-8">
                 <form method="POST" class="workout-form mt-3" action="{{ action([App\Http\Controllers\WorkoutController::class, 'store'], $planId) }}">
                     @csrf
                     <div class="form-group row">
@@ -66,25 +66,26 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="form-group row align-middle pt-1">
-                        <label class="col-sm-2 col-form-label">Day Off</label>
-                        <div class="custom-control custom-radio custom-control-inline ml-4 mt-2 col-1">
+                    <div class="form-group row align-middle pt-1 form-radio-row">
+                        <label class="col-sm-2 col-form-label">Day Off
+                        <div class="custom-control custom-radio custom-control-inline mt-2 col-1 radio-first-button">
                             <input type="radio" id="day_off" class="custom-control-input" name="is_day_off" value="0" checked="checked">
                             <label class="custom-control-label" for="day_off">False</label>
                         </div>
-                        <div class="custom-control custom-radio custom-control-inline ml-4 mt-2 col-1">
+                        <div class="custom-control custom-radio custom-control-inline mt-2 col-1 ml-4">
                             <input type="radio" id="day_off_checked" class="custom-control-input" name="is_day_off" value="1">
                             <label class="custom-control-label active" for="day_off_checked">True</label>
                         </div>
+                        </label>
                     </div>
-                    <input type="submit" class="float-right btn btn-outline-danger mt-3 bg-danger text-light" value="ADD WORKOUT"></input>
+                    <input type="submit" class="float-right btn btn-outline-danger mt-3 bg-danger text-light submit-btn" value="ADD WORKOUT"></input>
                 </form>
             </div>
-            <div class="col">
-                @include('includes.toTopButton')
+            <div class="col-md-2">
             </div>
         </div>
     </div>
+    @include('includes.footer')
     @include('includes.alerts')
 </body>
 

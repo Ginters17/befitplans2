@@ -1,15 +1,13 @@
 <style>
     #btn-back-to-top {
         position: fixed;
-        bottom: 30px;
+        bottom: 25px;
         display: none;
-        border-color: #dc3545;
         background-color: transparent;
-    }
-
-    #btn-back-to-top:hover {
-        border-color: none;
-        background-color: #dc3545;
+        right: 25px;
+        z-index: 100;
+        background-color: #bd2130 !important;
+        border-radius: 0.25rem;
     }
 
     #btn-back-to-top .bi-arrow-up {

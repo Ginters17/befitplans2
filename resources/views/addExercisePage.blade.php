@@ -34,10 +34,10 @@
     <h1 class="d-flex justify-content-center mt-5 mb-5">Add Exercise</h1>
     <div class="container">
         <div class="row">
-            <div class="col">
-                <a class="btn btn-outline-danger float-right bg-danger text-light" href="/plan/{{$planId}}/workout/{{$workoutId}}">Back to workout</a>
+            <div class="col-md-2">
+                <a class="btn btn-outline-danger float-right bg-danger text-light back-to-workout-btn" href="/plan/{{$planId}}/workout/{{$workoutId}}">Back to workout</a>
             </div>
-            <div class="col-6">
+            <div class="col-md-8">
                 <form method="POST" class="exercise-form" action="{{ action([App\Http\Controllers\ExerciseController::class, 'store'], $workoutId) }}">
                     @csrf
                     <div class="form-group row">
@@ -45,7 +45,7 @@
                         <div class="col-sm-10">
                             <input type="text" name="name" class="form-control" id="inputName" value="{{ old('name') }}">
                             @error('name')
-                            <p class="alert alert-danger" role="alert">{{ $message }}</p>
+                            <p class="alert alert-danger ml-3" role="alert">{{ $message }}</p>
                             @enderror
                         </div>
                     </div>
@@ -54,19 +54,19 @@
                         <div class="col-sm-10">
                             <textarea type="text" name="description" class="form-control text-area" id="inputDescription" rows="2" value="">{{ old('description') }}</textarea>
                             @error('description')
-                            <p class="alert alert-danger" role="alert">{{ $message }}</p>
+                            <p class="alert alert-danger ml-3" role="alert">{{ $message }}</p>
                             @enderror
                         </div>
                     </div>
                     <div class="form-group row video-row">
                         <div class="col-sm-2 label-with-info-icon">
                             <label for="video_url" class="col-form-label">Video URL</label>
-                            <i tabindex="0" class="align-top text-dark fa fa-info-circle" role="button" data-toggle="popover" data-trigger="focus" title="Video URL" data-content="URL must be from youtube and in format: https://www.youtube.com/watch?v=video-id"></i>
+                            <i tabindex="0" class="align-top fa fa-info-circle text-danger" role="button" data-toggle="popover" data-trigger="hover" title="Video URL" data-content="URL must be from youtube and in format: https://www.youtube.com/watch?v=video-id"></i>
                         </div>
                         <div class="col-sm-10">
-                            <input type="text" name="video_url" class="form-control" id="inputExerciseVideoURL" value="">
+                            <input type="text" name="video_url" class="form-control" id="inputExerciseVideoURL" value="{{ old('video_url') }}">
                             @error('video_url')
-                            <p class="alert alert-danger" role="alert">{{ $message }}</p>
+                            <p class="alert alert-danger ml-3" role="alert">{{ $message }}</p>
                             @enderror
                         </div>
                     </div>
@@ -75,7 +75,7 @@
                         <div class="col-sm-10">
                             <input min="0" max="1000" type="number" name="reps" id="reps" class="form-control" value="{{ old('sets') }}" />
                             @error('reps')
-                            <p class="alert alert-danger" role="alert">{{ $message }}</p>
+                            <p class="alert alert-danger ml-3" role="alert">{{ $message }}</p>
                             @enderror
                         </div>
                     </div>
@@ -84,7 +84,7 @@
                         <div class="col-sm-10">
                             <input min="0" max="1000" type="number" name="sets" id="sets" class="form-control" value="{{ old('reps') }}" />
                             @error('sets')
-                            <p class="alert alert-danger" role="alert">{{ $message }}</p>
+                            <p class="alert alert-danger ml-3" role="alert">{{ $message }}</p>
                             @enderror
                         </div>
                     </div>
@@ -93,31 +93,31 @@
                         <div class="col-sm-10">
                             <input min="0" id="inputDuration" max="10000" type="number" name="duration" id="duration" class="form-control" onkeyup="showDurationTypeRadio()" value="{{ old('duration') }}" />
                             @error('duration')
-                            <p class="alert alert-danger" role="alert">{{ $message }}</p>
+                            <p class="alert alert-danger ml-3" role="alert">{{ $message }}</p>
                             @enderror
                         </div>
                     </div>
                     <input name="duration_type" hidden="true" value="-1" checked="true">
-                    <div class="form-group row align-middle pt-1 duration-type-radio" style="display:none">
-                        <label class="col-sm-2 col-form-label">Duration type</label>
-                        <div class="custom-control custom-radio custom-control-inline ml-4 mt-2 col-1">
-                            <input type="radio" id="seconds" class="custom-control-input" name="duration_type" value="1">
-                            <label class="custom-control-label" for="seconds">Seconds</label>
-                        </div>
-                        <div class="custom-control custom-radio custom-control-inline ml-4 mt-2 col-1">
-                            <input type="radio" id="minutes" class="custom-control-input" name="duration_type" value="2">
-                            <label class="custom-control-label active" for="minutes">Minutes</label>
-                        </div>
+                    <div class="form-group row align-middle pt-1 form-radio-row" style="display:none">
+                        <label class="col-sm-2 col-form-label">Duration type
+                            <div class="custom-control custom-radio custom-control-inline mt-2 col-1 radio-button">
+                                <input type="radio" id="seconds" class="custom-control-input" name="duration_type" value="1">
+                                <label class="custom-control-label" for="seconds">Seconds</label>
+                            </div>
+                            <div class="custom-control custom-radio custom-control-inline ml-5 mt-2 col-1">
+                                <input type="radio" id="minutes" class="custom-control-input" name="duration_type" value="2">
+                                <label class="custom-control-label active" for="minutes">Minutes</label>
+                            </div>
+                        </label>
                     </div>
-                    <input type="submit" class="float-right btn btn-outline-danger bg-danger text-light add-exercise-button" value="ADD EXERCISE"></input>
+                    <input type="submit" class="float-right btn btn-outline-danger bg-danger text-light submit-btn mt-3" value="ADD EXERCISE"></input>
                 </form>
             </div>
-            <div class="col">
-                @include('includes.toTopButton')
+            <div class="col-md-2">
             </div>
         </div>
     </div>
+    @include('includes.footer')
     @include('includes.alerts')
 </body>
-
 </html>

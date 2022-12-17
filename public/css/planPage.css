@@ -1,3 +1,132 @@
 .list-group-item:last-child {
     margin-bottom: 30px;
 }
+
+.plan-actions-mobile {
+    display: none;
+}
+
+@media only screen and (max-width: 767px) {
+    .plan-actions-mobile {
+        display: inline-flex;
+    }
+}
+
+.plan-actions-desktop {
+    display: none;
+}
+
+@media only screen and (min-width: 768px) {
+    .plan-actions-desktop {
+        display: inline-block;
+    }
+
+    .btn-join-plan, .btn-open-edit-modal, .btn-open-delete-modal {
+        width: 120px;
+    }
+}
+
+.plan-actions-mobile {
+    width: 100%;
+}
+
+.plan-actions-mobile .btn-join-plan{
+    width: 100%;
+    display: inline;
+    border-radius: 0.25rem;
+}
+
+.plan-actions-mobile .btn-open-edit-modal{
+    width: 50%;
+    margin-right: 0.25rem;
+    border-radius: 0.25rem !important;
+}
+
+.plan-actions-mobile .btn-open-delete-modal{
+    width: 50%;
+    border-radius: 0.25rem !important;
+}
+
+.plan-actions-desktop .btn-open-edit-modal{
+    margin-top: 1rem !important;
+}
+
+.plan-actions-desktop .btn-open-delete-modal{
+    margin-top: 0.25rem !important;
+}
+
+.modal-header {
+    border: none;
+}
+
+.modal-header #editModal {
+    width: 100%;
+    text-align: center;
+}
+
+.modal-body label {
+    color: #dc3545;
+}
+
+.modal-footer .btn-secondary:hover {
+    background-color: #474d52 !important;
+    border-color: #474d52 !important;
+}
+
+.modal-footer {
+    border: none;
+}
+
+#editModal .modal-footer {
+    
+    margin-right: -2rem;
+}
+
+#editModal .close {
+    margin-right: -2rem;
+}
+
+#deleteModal .close {
+    margin-right: -2rem;
+}
+
+
+.modal-content {
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+@media only screen and (max-width: 575px) {
+    .modal-content {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    .form-control {
+        margin-left: 0px !important;
+    }
+
+    .alert {
+        margin-left: 0px !important;
+    }
+
+    #deleteModal .modal-title {
+        white-space: normal !important;
+    }
+
+    #editModal .modal-footer {
+        margin-right: -1rem;
+    }
+
+    #editModal .close {
+        margin-right: -1rem;
+    }
+}
+
+.alert {
+    width: 100%;
+}
+
+#deleteModal .modal-title {
+    white-space: nowrap;
+}

@@ -28,9 +28,22 @@
     @endif
     <div class="container">
         <div class="row">
-            <div class="col-3">
+            <div class="col-md-2">
             </div>
-            <div class="col-6">
+            <div class="col-md-8">
+                <div class="btn-group plan-actions-mobile" role="group">
+                    @auth
+                    @if($plan->is_public && auth()->user()->id != $plan->user_id)
+                    <button type="button" class="btn btn-outline-danger btn-join-plan mt-3 bg-danger text-light" data-toggle="modal" data-target="#joinModal">
+                        <i class="fa fa-plus"></i>
+                        Join
+                    </button>
+                    @endif
+                    @if($plan->user_id == auth()->user()->id)
+                    @include('includes.editDeleteButtons')
+                    @endif
+                    @endauth
+                </div>
                 @foreach ($planWorkouts as $workout)
                 @if(auth()->user() && $workout->user_id != auth()->user()->id)
                 <a class="bg-danger list-group-item mt-3" href="{{$workout->plan_id}}/workout/{{$workout->id}}">Day {{$workout->day}} - {{ $workout->name }}</a>
@@ -49,28 +62,30 @@
                 <a class="list-group-item mt-3 bg-danger text-center" href="{{$plan->id}}/add-workout">ADD WORKOUT</a>
                 @endif
             </div>
-            <div class="col-3">
-                @auth
-                @if($plan->is_public && auth()->user()->id != $plan->user_id)
-                <button type="button" class="btn btn-outline-danger btn-open-modal mt-3 bg-danger text-light" data-toggle="modal" data-target="#joinModal">
-                    <i class="fa fa-plus"></i>
-                    Join
-                </button>
-                @endif
-                @if($plan->user_id == auth()->user()->id)
-                @include('includes.editDeleteButtons')
-                @endif
-                @endauth
+            <div class="col-md-2">
+                <div class="plan-actions-desktop">
+                    @auth
+                    @if($plan->is_public && auth()->user()->id != $plan->user_id)
+                    <button type="button" class="btn btn-outline-danger btn-join-plan mt-3 bg-danger text-light" data-toggle="modal" data-target="#joinModal">
+                        <i class="fa fa-plus"></i>
+                        Join
+                    </button>
+                    @endif
+                    @if($plan->user_id == auth()->user()->id)
+                    @include('includes.editDeleteButtons')
+                    @endif
+                    @endauth
+                </div>
                 @include('includes.toTopButton')
             </div>
         </div>
     </div>
     <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editModal">Edit Plan</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <h5 class="modal-title text-danger" id="editModal">Edit Plan</h5>
+                    <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -80,49 +95,53 @@
                         <div class="form-group row">
                             <label for="name" class="col-sm-2 col-form-label">Name*</label>
                             <div class="col-sm-10">
-                                <input type="text" name="name" class="form-control ml-2" id="inputPlanName" value="{{$plan->name}}">
+                                <input type="text" name="name" class="form-control ml-3" id="inputPlanName" value="{{$plan->name}}">
+                                @error('name')
+                                <p class="alert alert-danger ml-3" role="alert">{{ $message }}</p>
+                                @enderror
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="description" class="col-sm-2 col-form-label">Description</label>
                             <div class="col-sm-10">
-                                <textarea name="description" class="ml-2 form-control" id="inputPlanDescription" rows="2">{{$plan->description}}</textarea>
+                                <textarea name="description" class="ml-3 form-control" id="inputPlanDescription" rows="2">{{$plan->description}}</textarea>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="workouts" class="col-sm-2 col-form-label">Workouts</label>
                             <div class="col-sm-10">
-                                <input min="0" id="workouts" max="28" type="number" name="workouts" id="workouts" class="form-control ml-2"  value="{{$plan->workouts}}" />
+                                <input min="0" id="workouts" max="28" type="number" name="workouts" id="workouts" class="form-control ml-3" value="{{$plan->workouts}}" />
                                 @error('workouts')
-                                <p class="alert alert-danger ml-2" role="alert">{{ $message }}</p>
+                                <p class="alert alert-danger ml-3" role="alert">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>
                         <div class="form-group row align-middle pt-1">
-                            <label class="col-sm-2 col-form-label">Visibility</label>
-                            <i tabindex="0" class="align-middle text-dark fa fa-info-circle" role="button" data-toggle="popover" data-trigger="focus" title="Visibility" data-content="Private - only you can view this plan. Public - others can view and join this plan."></i>
-                            <div class="custom-control custom-radio custom-control-inline ml-4 mt-2 col-1">
-                                @if ($plan->is_public == 0)
-                                <input type="radio" id="customRadioInline1" class="custom-control-input" name="is_public" value="0" checked="checked">
-                                @endif
-                                @if ($plan->is_public != 0)
-                                <input type="radio" id="customRadioInline1" class="custom-control-input" name="is_public" value="0">
-                                @endif
-                                <label class="custom-control-label" for="customRadioInline1">Private</label>
-                            </div>
-                            <div class="custom-control custom-radio custom-control-inline ml-4 mt-2 col-1">
-                                @if ($plan->is_public == 1)
-                                <input type="radio" id="customRadioInline2" class="custom-control-input" name="is_public" value="1" checked="checked">
-                                @endif
-                                @if ($plan->is_public != 1)
-                                <input type="radio" id="customRadioInline2" class="custom-control-input" name="is_public" value="1">
-                                @endif
-                                <label class="custom-control-label active" for="customRadioInline2">Public</label>
-                            </div>
+                            <label class="col-sm-2 col-form-label form-radio-row">Visibility
+                                <i tabindex="0" class="align-top text-danger fa fa-info-circle" role="button" data-toggle="popover" data-trigger="hover" title="Visibility" data-content="Private - only you can view this plan. Public - others can view and join this plan."></i>
+                                <div class="custom-control custom-radio custom-control-inline ml-2 mt-2 col-1">
+                                    @if ($plan->is_public == 0)
+                                    <input type="radio" id="customRadioInline1" class="custom-control-input" name="is_public" value="0" checked="checked">
+                                    @endif
+                                    @if ($plan->is_public != 0)
+                                    <input type="radio" id="customRadioInline1" class="custom-control-input" name="is_public" value="0">
+                                    @endif
+                                    <label class="custom-control-label" for="customRadioInline1">Private</label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline ml-4 mt-2 col-1">
+                                    @if ($plan->is_public == 1)
+                                    <input type="radio" id="customRadioInline2" class="custom-control-input" name="is_public" value="1" checked="checked">
+                                    @endif
+                                    @if ($plan->is_public != 1)
+                                    <input type="radio" id="customRadioInline2" class="custom-control-input" name="is_public" value="1">
+                                    @endif
+                                    <label class="custom-control-label active" for="customRadioInline2">Public</label>
+                                </div>
+                            </label>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary btn-success">Save</button>
+                            <input type="submit" class="float-right btn btn-danger btn-outline-danger bg-danger text-light submit-btn" value="SAVE"></input>
                         </div>
                     </form>
                 </div>
@@ -130,11 +149,11 @@
         </div>
     </div>
     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModal">Are you sure you want to delete this plan?</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <h5 class="modal-title text-danger" id="deleteModal">Are you sure you want to delete this plan?</h5>
+                    <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -146,11 +165,11 @@
         </div>
     </div>
     <div class="modal fade" id="joinModal" tabindex="-1" role="dialog" aria-labelledby="joinModal" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="joinModal">Are you sure you want to join this plan?</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <h5 class="modal-title text-danger" id="joinModal">Are you sure you want to join this plan?</h5>
+                    <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -161,6 +180,7 @@
             </div>
         </div>
     </div>
+    @include('includes.footer')
     @include('includes.alerts')
 </body>
 

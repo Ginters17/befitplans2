@@ -10,6 +10,41 @@
     color: #dc3545;
 }
 
-.add-exercise-button {
-    margin-top: 30px;
+@media only screen and (min-width: 576px) {
+    .form-control {
+        margin-left: 1rem !important;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .back-to-workout-btn {
+        float: left !important;
+        margin-bottom: 20px;
+    }
+}
+
+.submit-btn {
+    margin-right: -1rem !important;
+}
+
+.submit-btn:hover {
+    background-color: #bd2130 !important;
+}
+
+.radio-button {
+    margin-left: 3rem !important;
+}
+
+.alert {
+    width: 100%;
+}
+
+@media only screen and (max-width: 575px) {
+    .alert {
+        margin-left: 0 !important;
+    }
+
+    .submit-btn {
+        margin-right: 0.125rem !important;
+    }
 }
