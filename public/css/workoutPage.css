@@ -127,6 +127,15 @@
     text-align: center;
 }
 
+#addActivityToExerciseModal .modal-title {
+    width: 100%;
+    text-align: center;
+}
+
+#addActivityToExerciseModal .form-select {
+    padding: 5px;
+}
+
 .modal-body label {
     color: #dc3545;
 }

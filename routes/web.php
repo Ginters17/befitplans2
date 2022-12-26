@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Http\Client\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,6 +21,33 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+
+Route::get('settings', [App\Http\Controllers\SettingsController::class, 'index']);
+
+Route::get('auth', [App\Http\Controllers\StravaAPIController::class, 'process_authorization']);
+
+Route::get('/webhook', function (Request $request) {
+    $mode = $request->query('hub_mode'); // hub.mode
+    $token = $request->query('hub_verify_token'); // hub.verify_token
+    $challenge = $request->query('hub_challenge'); // hub.challenge
+
+    return app(StravaWebhookService::class)->validate($mode, $token, $challenge);
+});
+
+Route::post('/webhook', function (Request $request) {
+    $aspect_type = $request['aspect_type']; // "create" | "update" | "delete"
+    $event_time = $request['event_time']; // time the event occurred
+    $object_id = $request['object_id']; // activity ID | athlete ID
+    $object_type = $request['object_type']; // "activity" | "athlete"
+    $owner_id = $request['owner_id']; // athlete ID
+    $subscription_id = $request['subscription_id']; // push subscription ID receiving the event
+    $updates = $request['updates']; // activity update: {"title" | "type" | "private": true/false} ; app deauthorization: {"authorized": false}
+
+    // Log::channel('strava')->info(json_encode($request->all()));
+    dd(json_encode($request->all()));
+    
+    return response('EVENT_RECEIVED', Response::HTTP_OK);
+})->withoutMiddleware(VerifyCsrfToken::class);
 
 Route::get('plan/create', function () {
     return view('createCustomPlanPage');

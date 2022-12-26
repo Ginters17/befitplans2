@@ -86,6 +86,11 @@
                             <i class="fa fa-check"></i>
                         </a>
                         @endif
+                        @if($exercise->is_complete && count($strava_activities) > 0)
+                        <button type="button" class="btn btn-outline-light btn-open-modal-no-text open-add-activity-modal" data-id="{{$exercise}}" data-toggle="modal" data-target="#addActivityToExerciseModal">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        @endif
                     </div>
                     @endif
                     @endauth
@@ -313,6 +318,31 @@
                     <div class="embed-responsive embed-responsive-16by9">
                         <iframe id="testing123" class="embed-responsive-item" src="" allowfullscreen></iframe>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="addActivityToExerciseModal" tabindex="-1" role="dialog" aria-labelledby="addActivityToExerciseModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger">Add your activity from Strava</h5>
+                    <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Select one of these activities (Currently only supports runs)</p>
+                    <select class="form-select col-sm-12">
+                        <option selected disabled>Select</option>
+                        @foreach ($strava_activities as $activity)
+                        <option>{{$activity->name}} ({{$activity->start_date_local_short}})</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary btn-danger">Add</button>
                 </div>
             </div>
         </div>
