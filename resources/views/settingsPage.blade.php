@@ -26,7 +26,7 @@
             <div class="col-md-8 mt-5">
                 <h1>Settings</h1>
                 @if(!$strava_api_auhtorized)
-                <a href="http://www.strava.com/oauth/authorize?client_id=98338&response_type=code&redirect_uri=http://127.0.0.1:8000/auth?exchange_token&approval_prompt=force&scope=activity:read_all">Connect With Strava</a>
+                <a href="http://www.strava.com/oauth/authorize?client_id=98338&response_type=code&redirect_uri=https://befitplans.com/auth?exchange_token&approval_prompt=force&scope=activity:read_all">Connect With Strava</a>
                 @else
                 <p>Already connected with Strava</p>
                 @endif
