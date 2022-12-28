@@ -1,0 +1,39 @@
+.home-page-heading {
+    margin-top: 90px;
+    font-size: 60px;
+    white-space: nowrap;
+}
+
+.home-page-info {
+    font-size: 30px;
+    text-align: justify;
+}
+
+hr {
+    width:50%;
+    text-align:left;
+    margin-left:0;
+    border-top: 1px solid rgba(2200,53,69,.1) !important;
+}
+
+a {
+    color: #dc3545;
+}
+a:hover {
+    color: #dc3545;
+}
+a:visited {
+    color: #dc3545;
+}
+
+.settings-header {
+    margin-top: 10%;
+}
+
+section {
+    margin-top: 5%;
+}
+
+.settings-info {
+    color: #dc3545;
+}

@@ -75,6 +75,8 @@ Route::post('plan/{plan_id}/store-workout', [App\Http\Controllers\WorkoutControl
 Route::get('plan/{plan_id}/workout/{workout_id}/exercise/{exercise_id}/complete', [App\Http\Controllers\ExerciseController::class, 'complete']);
 Route::get('plan/{plan_id}/workout/{workout_id}/exercise/{exercise_id}/delete', [App\Http\Controllers\ExerciseController::class, 'destroy']);
 Route::post('plan/{plan_id}/workout/{workout_id}/exercise/{exercise_id}/update', [App\Http\Controllers\ExerciseController::class, 'update']);
+Route::get('plan/{plan_id}/workout/{workout_id}/exercise/{exercise_id}/remove-strava-activity', [App\Http\Controllers\ExerciseController::class, 'removeStravaActivity']);
+Route::post('plan/{plan_id}/workout/{workout_id}/exercise/{exercise_id}/add-strava-activity', [App\Http\Controllers\ExerciseController::class, 'addStravaActivity']);
 Route::get('plan/{plan_id}/workout/{workout_id}/add-exercise', [App\Http\Controllers\ExerciseController::class, 'create']);
 Route::post('workout/{workout_id}/store', [App\Http\Controllers\ExerciseController::class, 'store']);
 

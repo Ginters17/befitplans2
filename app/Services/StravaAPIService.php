@@ -4,6 +4,8 @@ namespace App\Services;
 
 use GuzzleHttp\Client;
 use App\Services\StravaHelperService;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Response;
 
 class StravaAPIService
 {
@@ -24,6 +26,9 @@ class StravaAPIService
         parse_str($uri_components['query'], $params);
         $authorization_code = $params["code"];
 
+        if($params["scope"] != 'read,activity:read_all'){
+            return back()->with("error", "'View data about your private activities' needs to be checked");
+        }
 
         $client = new Client();
 
@@ -85,7 +90,7 @@ class StravaAPIService
     }
 
     /// Create a GET request for all activities
-    /// Return JSON of all activities
+    /// Return object of all activities
     public function getAllActivies($access_token)
     {
         $client = new Client();
