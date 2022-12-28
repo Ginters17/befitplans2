@@ -37,3 +37,23 @@ section {
 .settings-info {
     color: #dc3545;
 }
+
+#deleteAccountModalCenter .warning-text {
+    font-weight: bold;
+    color: #dc3545;
+}
+
+.modal-footer .btn-secondary:hover {
+    background-color: #474d52 !important;
+    border-color: #474d52 !important;
+}
+
+.delete-account-link{
+    color: #dc3545 !important;
+}
+
+.delete-account-link:hover {
+    cursor: pointer;
+    text-decoration: underline !important;
+    color: #dc3545;
+}

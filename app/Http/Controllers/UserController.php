@@ -124,6 +124,16 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::findOrFail($id);
+        if (auth()->user() && $this->authorize('delete', $user))
+        {
+            $user->strava_activity()->delete();
+            $user->delete();
+            return redirect('/')->with('success', 'Account has been deleted successfully');
+        }
+        else
+        {
+            return redirect('/');
+        }
     }
 }

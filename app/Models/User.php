@@ -41,4 +41,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function strava_activity() { 
+        return $this->hasOne(Strava_activity::class);
+    }
 }

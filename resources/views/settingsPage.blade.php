@@ -34,15 +34,39 @@
                         </p>
                     </div>
                     @if(!$strava_api_auhtorized)
-                    <a href="http://www.strava.com/oauth/authorize?client_id=98338&response_type=code&redirect_uri=https://befitplans.com/auth?exchange_token&approval_prompt=force&scope=activity:read_all" target="_blank">
+                    <a href="http://www.strava.com/oauth/authorize?client_id=98338&response_type=code&redirect_uri=http://127.0.0.1:8000/auth?exchange_token&approval_prompt=force&scope=activity:read_all">
                         <img src="{{ asset('assets/images/btn_strava_connectwith_orange.png') }}" class="img-fluid" alt="Connect with Strava">
                     </a>
                     @else
                     <p>Already connected with Strava. You can revoke access to BefitPlans <a href="https://www.strava.com/settings/apps" target="_blank">here</a>.</p>
                     @endif
                 </section>
+                <section class="account-section">
+                    <h2>Account</h2>
+                    <hr>
+                    <a class="delete-account-link" data-toggle="modal" data-target="#deleteAccountModalCenter">Delete account</a>
+                </section>
             </div>
             <div class="col-md-2">
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="deleteAccountModalCenter" tabindex="-1" role="dialog" aria-labelledby="deleteAccountModalCenter" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger">Are you sure you want to delete your account?</h5>
+                    <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                        <p class="warning-text">Your account will be deleted and you won't be able to restore it. All your plans will be deleted.</p>
+                    </div>
+                <div class="modal-footer">
+                <a type="button" class="btn btn-primary btn-danger text-light" method="POST" href="/user/{{$user_id}}/delete">Delete</a>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
             </div>
         </div>
     </div>
