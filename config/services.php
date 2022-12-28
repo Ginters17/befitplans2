@@ -30,4 +30,12 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'strava' => [
+        'client_id' => env('STRAVA_CLIENT_ID'),
+        'client_secret' => env('STRAVA_CLIENT_SECRET'),
+        'push_subscriptions_url' => env('STRAVA_PUSH_SUBSCRIPTIONS_URL'),
+        'webhook_callback_url' => env('STRAVA_WEBHOOK_CALLBACK_URL'),
+        'webhook_verify_token' => env('STRAVA_WEBHOOK_VERIFY_TOKEN'),
+     ],
+
 ];

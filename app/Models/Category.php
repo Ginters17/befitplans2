@@ -7,9 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    protected $category = 'category';
     use HasFactory;
-    public function plan() { // FK relationship
+    public function plan() {
         return $this->hasMany(Plan::class);
     }
 }

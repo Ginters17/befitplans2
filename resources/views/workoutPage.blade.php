@@ -78,13 +78,38 @@
                         <button type="button" class="btn btn-outline-light btn-open-modal-no-text open-delete-modal" data-id="{{$exercise}}" data-toggle="modal" data-target="#deleteExerciseModal">
                             <i class="fa fa-trash"></i>
                         </button>
-                        <button type="button" class="btn btn-outline-light btn-open-modal-no-text open-info-modal" data-id="{{$exercise}}" data-toggle="modal" data-target="#infoExerciseModal">
+                        @php
+                        $hasExerciseWithStravaActivity = false
+                        @endphp
+                        @foreach($selected_strava_activities as $activity)
+                        @if($exercise->activity_id == $activity->activity_id)
+                        @php
+                        $hasExerciseWithStravaActivity = true
+                        @endphp
+                        <button type="button" class="btn btn-outline-light btn-open-modal-no-text open-info-modal" data-id="[{{$exercise}}, {{$activity}}]" data-toggle="modal" data-target="#infoExerciseModal">
                             <i class="fa fa-info"></i>
                         </button>
+                        @break
+                        @endif
+                        @endforeach
+                        @if(!$hasExerciseWithStravaActivity)
+                        <button type="button" class="btn btn-outline-light btn-open-modal-no-text open-info-modal" data-id="[{{$exercise}}, null]" data-toggle="modal" data-target="#infoExerciseModal">
+                            <i class="fa fa-info"></i>
+                        </button>
+                        @endif
                         @if(!$exercise->is_complete && $areAllPreviousWorkoutsCompleted)
                         <a class="btn btn-outline-light btn-open-modal-no-text" href="{{$workout->id}}/exercise/{{$exercise->id}}/complete">
                             <i class="fa fa-check"></i>
                         </a>
+                        @endif
+                        @if($exercise->is_complete && count($strava_activities) > 0 && $plan->category_id == 3 && $exercise->activity_id == null)
+                        <button type="button" class="btn btn-outline-light btn-open-modal-no-text open-add-strava-modal" data-id="{{$exercise}}" data-toggle="modal" data-target="#addActivityToExerciseModal">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        @elseif($exercise->is_complete  && $plan->category_id == 3 && $exercise->activity_id != null)
+                        <button type="button" class="btn btn-outline-light btn-open-modal-no-text open-remove-activity-modal" data-id="{{$exercise}}" data-toggle="modal" data-target="#removeActivityToExerciseModal">
+                            <i class="fa fa-close"></i>
+                        </button>
                         @endif
                     </div>
                     @endif
@@ -182,7 +207,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <a type="button" class="btn btn-primary btn-danger" method="POST" href="/plan/{{$plan->id}}/workout/{{$workout->id}}/delete">DELETE WORKOUT</a>
+                    <a type="button" class="btn btn-primary btn-danger text-light" method="POST" href="/plan/{{$plan->id}}/workout/{{$workout->id}}/delete">DELETE WORKOUT</a>
                 </div>
             </div>
         </div>
@@ -200,7 +225,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <a type="button" class="btn btn-primary btn-danger delete-modal-href" method="POST" href="">DELETE EXERCISE</a>
+                    <a type="button" class="btn btn-primary btn-danger delete-modal-href text-light" method="POST" href="">DELETE EXERCISE</a>
                 </div>
             </div>
         </div>
@@ -310,9 +335,93 @@
                 <div class="modal-body">
                     <p id="modal_info_description"></p>
                     <p id="modal_info_no_description"></p>
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <iframe id="testing123" class="embed-responsive-item" src="" allowfullscreen></iframe>
+                    <div class="strava-activity-data">
+                        <p class="table-title text-danger">Data from Strava about this exercise:</p>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Name</th>
+                                    <td id="name"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Date</th>
+                                    <td id="date"> </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Distance</th>
+                                    <td id="distance"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Avg. Pace</th>
+                                    <td id="avg_pace"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Total elevation gain</th>
+                                    <td id="total_elevation_gain"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Elapsed time</th>
+                                    <td id="elapsed_time"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Moving time</th>
+                                    <td id="moving_time"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <a href="" target="_blank" class="view-activity-link">View on Strava</a>
+                        <img src="{{ asset('assets/images/api_logo_pwrdBy_strava_horiz_light.png') }}" class="img-fluid" alt="Powered by Strava">
                     </div>
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <iframe class="embed-responsive-item" src="" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="addActivityToExerciseModal" tabindex="-1" role="dialog" aria-labelledby="addActivityToExerciseModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger">Add your activity from Strava</h5>
+                    <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form class="add-strava-modal-form" method="POST" action="">
+                    @csrf
+                    <div class="modal-body">
+                        <p>Select one of these activities (Currently only supports runs). It may take a couple of minutes to load your newest activity.</p>
+                        <select class="form-select col-sm-12 activity-dropdown" name="activity">
+                            @foreach ($strava_activities as $activity)
+                            <option value="{{$activity->activity_id}}">{{$activity->name}} ({{$activity->start_date_local_short}})</option>
+                            @endforeach
+                        </select>
+                        <a href="" target="_blank" class="view-activity-link">View on Strava</a>
+                        <img src="{{ asset('assets/images/api_logo_pwrdBy_strava_horiz_light.png') }}" class="img-fluid" alt="Powered by Strava">
+                    </div>
+                    <input type="hidden" name="exerciseId" id="hiddenExerciseId" value="">
+                    <input type="hidden" name="activityId" id="hiddenActivityId" value="">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary btn-danger">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="removeActivityToExerciseModal" tabindex="-1" role="dialog" aria-labelledby="removeActivityToExerciseModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger">Are you sure you want to remove Strava activity from this exercise?</h5>
+                    <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <a type="button" class="btn btn-primary btn-danger remove-activity-href text-light" method="POST" href="">REMOVE</a>
                 </div>
             </div>
         </div>

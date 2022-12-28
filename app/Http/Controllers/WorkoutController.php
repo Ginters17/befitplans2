@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Workout;
 use App\Models\Plan;
+use App\Models\Strava_activity;
 use Illuminate\Support\Facades\Validator;
 
 class WorkoutController extends Controller
@@ -21,8 +22,10 @@ class WorkoutController extends Controller
         $areAllPreviousWorkoutsCompleted = $this->areAllPreviousWorkoutsCompleted($plan->id, $workout);
         $canAddExercise = $this->canExercisesBeAddedToWorkout($workout);
         $areAllExercisesCompleted = $this->areAllExercisesCompleted($workout);
+        $strava_activities = Strava_activity::where('user_id', auth()->user()->id)->where('type', '=', 'Run')->where('exercise_id', '=', null)->orderBy('activity_id', 'DESC')->get();
+        $selected_strava_activities = Strava_activity::where('user_id', auth()->user()->id)->where('type', '=', 'Run')->where('exercise_id', '!=', null)->orderBy('activity_id', 'DESC')->get();
 
-        return view('workoutPage', compact('workout'), compact('plan'))
+        return view('workoutPage', compact('workout', 'plan', 'strava_activities', 'selected_strava_activities'))
             ->with('canAddExercise', $canAddExercise)
             ->with('areAllPreviousWorkoutsCompleted', $areAllPreviousWorkoutsCompleted)
             ->with('areAllExercisesCompleted', $areAllExercisesCompleted);

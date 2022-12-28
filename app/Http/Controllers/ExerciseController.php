@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Exercise;
 use App\Models\Plan;
+use App\Models\Strava_activity;
 use App\Models\Workout;
 use Illuminate\Support\Facades\Validator;
 
@@ -234,6 +235,47 @@ class ExerciseController extends Controller
         else
         {
             return false;
+        }
+    }
+
+    public function addStravaActivity(Request $request)
+    {
+        $exercise = Exercise::findOrFail($request->exerciseId);
+        $activity = Strava_activity::where('activity_id',$request->activityId)->get();
+        
+
+        if (auth()->user() && $this->authorize('update', $exercise))
+        {
+            $exercise->activity_id = $request->activity;
+            $exercise->save();
+
+            $activity[0]->exercise_id = $request->exerciseId;
+            $activity[0]->save();
+
+            return back()->with('success', 'Strava activity has been added sucessfully.');
+        }
+        else
+        {
+            return redirect('/');
+        }
+        
+    }
+
+    public function removeStravaActivity($planId, $workoutId, $exerciseId)
+    {
+        $exercise = Exercise::findOrFail($exerciseId);
+        $activity = Strava_activity::where('exercise_id',$exerciseId)->get();
+        if (auth()->user() && $this->authorize('delete', $exercise))
+        {
+            $exercise->activity_id = null;
+            $exercise->save();
+            $activity[0]->exercise_id = null;
+            $activity[0]->save();
+            return back()->with('success', 'Strava activity has been removed successfully.');
+        }
+        else
+        {
+            return redirect('/');
         }
     }
 }
