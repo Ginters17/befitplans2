@@ -84,5 +84,6 @@ Route::post('workout/{workout_id}/store', [App\Http\Controllers\ExerciseControll
 Route::get('user/{user_id}', [App\Http\Controllers\UserController::class, 'index']);
 Route::get('user/{user_id}/edit', [App\Http\Controllers\UserController::class, 'edit']);
 Route::post('user/{user_id}/update', [App\Http\Controllers\UserController::class, 'update']);
+Route::get('user/{user_id}/delete', [App\Http\Controllers\UserController::class, 'destroy']);
 
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
