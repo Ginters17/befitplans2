@@ -17,6 +17,6 @@ class Exercise extends Model
         return $this->belongsTo(User::class);
     }
     public function strava_activity() { 
-        return $this->hasMany(Strava_activity::class);
+        return $this->hasOne(Strava_activity::class);
     }
 }

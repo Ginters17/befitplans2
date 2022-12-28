@@ -56,16 +56,19 @@ class StravaWebhookService
 
             // Need to check and update process token for each request
             $access_token = app(StravaHelperService::class)->processAccessToken($owner_id);
+            $user_id = app(StravaHelperService::class)->getUserIdByStravaUserId($owner_id);
 
             // Event = create activity
             if($aspect_type == "create" && $object_type == "activity") {
                 $activity = app(StravaAPIService::class)->getActivity($object_id, $access_token);
-                Log::channel('strava')->info(json_encode($activity));
-                app(StravaHelperService::class)->addActivity($activity);
+                app(StravaHelperService::class)->storeActivityForUser($activity, $user_id);
             }
 
             // Event = deauthorization
-
+            if($aspect_type == "update" && $object_type == "athlete" && $updates['authorized'] == "false") {
+                app(StravaHelperService::class)->setStravaApiAuhtorizedFlag($user_id, false);
+                app(StravaHelperService::class)->deleteAllActivitiesForUser($user_id);
+            }
         }
         catch (Exception $ex)
         {

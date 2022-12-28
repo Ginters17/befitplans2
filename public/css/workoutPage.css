@@ -11,13 +11,11 @@
     margin-bottom: 6px;
 }
 
-
 @media only screen and (min-width: 771px) {
     .list-group-item {
         display: flex;
     }
 }
-
 
 @media only screen and (max-width: 770px) {
     .list-group-item {
@@ -46,7 +44,7 @@
     display: inline-block;
 }
 
-.back-to-plan-desktop .btn{
+.back-to-plan-desktop .btn {
     width: 120px;
 }
 
@@ -89,20 +87,20 @@
     }
 }
 
-.workout-actions-mobile .btn-back-to-plan{
+.workout-actions-mobile .btn-back-to-plan {
     width: 33%;
     margin-right: 0.25rem;
     border-radius: 0.25rem !important;
 }
 
-.workout-actions-mobile .btn-open-edit-modal{
+.workout-actions-mobile .btn-open-edit-modal {
     width: 33%;
-    margin-right: 0.25rem; 
+    margin-right: 0.25rem;
     margin-top: 1rem;
     border-radius: 0.25rem !important;
 }
 
-.workout-actions-mobile .btn-open-delete-modal{
+.workout-actions-mobile .btn-open-delete-modal {
     width: 33%;
     margin-top: 1rem;
     border-radius: 0.25rem !important;
@@ -113,7 +111,7 @@
 }
 
 @media only screen and (max-width: 360px) {
-    .btn-back-to-plan-long{
+    .btn-back-to-plan-long {
         display: none;
     }
 }
@@ -157,7 +155,6 @@
     margin-right: -2rem;
 }
 
-
 .modal-content {
     padding-left: 30px;
     padding-right: 30px;
@@ -197,7 +194,7 @@
     #editExerciseModal .modal-footer {
         margin-right: -1rem !important;
     }
-    
+
     #editExerciseModal .close {
         margin-right: -1em !important;
     }
@@ -219,7 +216,7 @@
     margin-left: 5rem;
 }
 
-.duration-minutes{
+.duration-minutes {
     margin-left: 2rem;
 }
 
@@ -234,4 +231,22 @@
 
 #editExerciseModal .close {
     margin-right: -4rem !important;
+}
+
+.modal-body img {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.modal a {
+    color: #dc3545;;
+}
+
+.modal a:hover {
+    color: #dc3545;;
+}
+
+.modal a:visited {
+    color: #dc3545;;
 }
