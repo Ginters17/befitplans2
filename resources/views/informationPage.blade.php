@@ -107,7 +107,7 @@
                     <div class="card-body">
                         <h2>Contact</h2>
                         <hr>
-                        <p>Befitplans is a website created by <a href="https://www.linkedin.com/in/ginters-blauva-955b8022b/" target="_blank">Ginters Blauva</a>. You can contact him through this email: contact@befitplans.com</p>
+                        <p>Befitplans is a website created by <a href="https://www.linkedin.com/in/ginters-blauva-955b8022b/" target="_blank">Ginters Blauva</a>. You can contact him through this email: glauva@gmail.com</p>
                     </div>
                 </div>
             </div>
