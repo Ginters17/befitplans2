@@ -93,3 +93,7 @@ h1, h2, h3 {
     background-color: #c82333 !important;
     border-color: #bd2130 !important;
 }
+
+.card {
+    border: 1px solid rgba(200,53,69,.25) !important;
+}

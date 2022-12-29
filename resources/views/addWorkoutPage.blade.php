@@ -19,13 +19,9 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <script type="text/javascript" src="{{ asset('js/popovers.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/common.js') }}"></script>
-
-
-    <style>
-        body {
-            font-family: 'Nunito', sans-serif;
-        }
-    </style>
+    @if (Cookie::get('theme') == "dark")
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/common-darkTheme.css') }}">
+    @endif
 </head>
 
 <body class="antialiased">
@@ -37,49 +33,53 @@
                 <a class="btn btn-outline-danger mt-3 float-right bg-danger text-light back-to-plan-btn" href="/plan/{{$planId}}">Back to plan</a>
             </div>
             <div class="col-md-8">
-                <form method="POST" class="workout-form mt-3" action="{{ action([App\Http\Controllers\WorkoutController::class, 'store'], $planId) }}">
-                    @csrf
-                    <div class="form-group row">
-                        <label for="inputName" class="col-sm-2 col-form-label">Name *</label>
-                        <div class="col-sm-10">
-                            <input type="text" name="name" class="form-control" id="inputName" value="{{ old('name') }}">
-                            @error('name')
-                            <p class="alert alert-danger" role="alert">{{ $message }}</p>
-                            @enderror
-                        </div>
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <form method="POST" class="workout-form mt-3" action="{{ action([App\Http\Controllers\WorkoutController::class, 'store'], $planId) }}">
+                            @csrf
+                            <div class="form-group row">
+                                <label for="inputName" class="col-sm-2 col-form-label">Name *</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="name" class="form-control" id="inputName" value="{{ old('name') }}">
+                                    @error('name')
+                                    <p class="alert alert-danger" role="alert">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputDescription" class="col-sm-2 col-form-label">Decription</label>
+                                <div class="col-sm-10">
+                                    <textarea type="text" name="description" class="form-control text-area" id="inputDescription" rows="2">{{ old('description') }}</textarea>
+                                    @error('description')
+                                    <p class="alert alert-danger" role="alert">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="day" class="col-sm-2 col-form-label" for="day">Day *</label>
+                                <div class="col-sm-10">
+                                    <input min="1" max="28" type="number" name="day" id="day" class="form-control" value="{{ old('day') }}" />
+                                    @error('day')
+                                    <p class="alert alert-danger" role="alert">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="form-group row align-middle pt-1 form-radio-row">
+                                <label class="col-sm-2 col-form-label">Day Off
+                                    <div class="custom-control custom-radio custom-control-inline mt-2 col-1 radio-first-button">
+                                        <input type="radio" id="day_off" class="custom-control-input" name="is_day_off" value="0" checked="checked">
+                                        <label class="custom-control-label" for="day_off">False</label>
+                                    </div>
+                                    <div class="custom-control custom-radio custom-control-inline mt-2 col-1 ml-4">
+                                        <input type="radio" id="day_off_checked" class="custom-control-input" name="is_day_off" value="1">
+                                        <label class="custom-control-label active" for="day_off_checked">True</label>
+                                    </div>
+                                </label>
+                            </div>
+                            <input type="submit" class="float-right btn btn-outline-danger mt-3 bg-danger text-light submit-btn" value="ADD WORKOUT"></input>
+                        </form>
                     </div>
-                    <div class="form-group row">
-                        <label for="inputDescription" class="col-sm-2 col-form-label">Decription</label>
-                        <div class="col-sm-10">
-                            <textarea type="text" name="description" class="form-control text-area" id="inputDescription" rows="2">{{ old('description') }}</textarea>
-                            @error('description')
-                            <p class="alert alert-danger" role="alert">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="day" class="col-sm-2 col-form-label" for="day">Day *</label>
-                        <div class="col-sm-10">
-                            <input min="1" max="28" type="number" name="day" id="day" class="form-control" value="{{ old('day') }}" />
-                            @error('day')
-                            <p class="alert alert-danger" role="alert">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="form-group row align-middle pt-1 form-radio-row">
-                        <label class="col-sm-2 col-form-label">Day Off
-                        <div class="custom-control custom-radio custom-control-inline mt-2 col-1 radio-first-button">
-                            <input type="radio" id="day_off" class="custom-control-input" name="is_day_off" value="0" checked="checked">
-                            <label class="custom-control-label" for="day_off">False</label>
-                        </div>
-                        <div class="custom-control custom-radio custom-control-inline mt-2 col-1 ml-4">
-                            <input type="radio" id="day_off_checked" class="custom-control-input" name="is_day_off" value="1">
-                            <label class="custom-control-label active" for="day_off_checked">True</label>
-                        </div>
-                        </label>
-                    </div>
-                    <input type="submit" class="float-right btn btn-outline-danger mt-3 bg-danger text-light submit-btn" value="ADD WORKOUT"></input>
-                </form>
+                </div>
             </div>
             <div class="col-md-2">
             </div>
