@@ -20,6 +20,10 @@ class StravaAPIService
 
     public function process_authorization()
     {
+        if(!auth()->user()){
+            return redirect('/login')->with("error","You aren't logged in!");
+        }
+        
         /// Get authorization code from uri
         $uri = $_SERVER['REQUEST_URI'];
         $uri_components = parse_url($uri);
