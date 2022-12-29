@@ -5,11 +5,8 @@ use App\Http\Middleware\VerifyCsrfToken;
 use App\Services\StravaWebhookService;
 use App\Services\StravaAPIService;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -38,11 +35,11 @@ Route::get('auth', function (Request $request)
 });
 Route::get('/webhook', function (Request $request)
 {
-    $mode = $request->query('hub_mode'); // hub.mode
-    $token = $request->query('hub_verify_token'); // hub.verify_token
-    $challenge = $request->query('hub_challenge'); // hub.challenge
+    $mode = $request->query('hub_mode'); 
+    $verify_token = $request->query('hub_verify_token'); 
+    $challenge = $request->query('hub_challenge'); 
 
-    return app(StravaWebhookService::class)->validate($mode, $token, $challenge);
+    return app(StravaWebhookService::class)->validate($mode, $verify_token, $challenge);
 });
 Route::post('/webhook', function (Request $request)
 {
@@ -90,5 +87,9 @@ Route::post('workout/{workout_id}/store', [App\Http\Controllers\ExerciseControll
 Route::get('user/{user_id}', [App\Http\Controllers\UserController::class, 'index']);
 Route::get('user/{user_id}/edit', [App\Http\Controllers\UserController::class, 'edit']);
 Route::post('user/{user_id}/update', [App\Http\Controllers\UserController::class, 'update']);
+Route::get('user/{user_id}/delete', [App\Http\Controllers\UserController::class, 'destroy']);
+
+/// Personalization, localizationm
+Route::get('theme/{theme}', [App\Http\Controllers\ThemeController::class, '__invoke']);
 
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');

@@ -18,6 +18,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <script type="text/javascript" src="{{ asset('js/popovers.js') }}"></script>
+    @if (Cookie::get('theme') == "dark")
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/common-darkTheme.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/planPage-darkTheme.css') }}">
+    @endif
 </head>
 
 <body class="antialiased">

@@ -69,3 +69,11 @@
         margin-left: 1.5rem !important;
     }
 }
+
+.card-body {
+    margin-right: 10px !important;
+}
+
+.submit-btn {
+    border: none;
+}
