@@ -1,0 +1,21 @@
+p {
+    color: white !important;
+}
+
+li {
+    color: white !important;
+}
+
+.card-header {
+    background-color: #1a1a1b !important;
+    color: white;
+    border-bottom: 1px solid rgba(255,255,255,.125);
+}
+
+.card-body {
+    color: white;
+}
+
+hr {
+    border-bottom: 1px solid rgba(255,255,255,.125);
+}
