@@ -111,4 +111,10 @@ class StravaHelperService
             $activity->delete();
         }
     }
+
+    public function isStravaUserAlreadyAssociated($strava_user_id){
+        $users = User::where("strava_user_id",$strava_user_id)->get();
+
+        return sizeof($users) == 0;
+    }
 }
