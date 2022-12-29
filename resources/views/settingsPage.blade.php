@@ -40,7 +40,7 @@
                             </p>
                         </div>
                         @if(!$strava_api_auhtorized)
-                        <a href="http://www.strava.com/oauth/authorize?client_id=98338&response_type=code&redirect_uri=http://127.0.0.1:8000/auth?exchange_token&approval_prompt=force&scope=activity:read_all">
+                        <a href="http://www.strava.com/oauth/authorize?client_id=98338&response_type=code&redirect_uri=http://befitplans.com/auth?exchange_token&approval_prompt=force&scope=activity:read_all">
                             <img src="{{ asset('assets/images/btn_strava_connectwith_orange.png') }}" class="img-fluid" alt="Connect with Strava">
                         </a>
                         @else
