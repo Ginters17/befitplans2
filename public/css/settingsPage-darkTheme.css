@@ -1,0 +1,11 @@
+.modal-header {
+    border-bottom: 1px solid gray !important;
+}
+
+.modal-footer {
+    border-top: 1px solid gray !important;
+}
+
+.already-connected-message {
+    color: white;
+}

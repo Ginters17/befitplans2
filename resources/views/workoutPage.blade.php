@@ -20,19 +20,21 @@
     <script type="text/javascript" src="{{ asset('js/modal.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/popovers.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/radio.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/theme.js') }}"></script>
 
-    <style>
-        body {
-            font-family: 'Nunito', sans-serif;
-        }
-    </style>
+    @if (Cookie::get('theme') == "dark")
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/common-darkTheme.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/workoutPage-darkTheme.css') }}">
+    @endif
 </head>
 
 <body class="antialiased">
     @include('includes.navBar')
     <h1 class="text-center mt-5">Workout</h1>
-    <p class="text-center">{{$workout->name}}</p>
-    <p class="text-center">{{$workout->description}}</p>
+    <div class="workout-info">
+        <p class="text-center">{{$workout->name}}</p>
+        <p class="text-center">{{$workout->description}}</p>
+    </div>
     <div class="container">
         <div class="row">
             <div class="col-md-2">
@@ -106,7 +108,7 @@
                         <button type="button" class="btn btn-outline-light btn-open-modal-no-text open-add-strava-modal" data-id="{{$exercise}}" data-toggle="modal" data-target="#addActivityToExerciseModal">
                             <i class="fa fa-plus"></i>
                         </button>
-                        @elseif($exercise->is_complete  && $plan->category_id == 3 && $exercise->activity_id != null)
+                        @elseif($exercise->is_complete && $plan->category_id == 3 && $exercise->activity_id != null)
                         <button type="button" class="btn btn-outline-light btn-open-modal-no-text open-remove-activity-modal" data-id="{{$exercise}}" data-toggle="modal" data-target="#removeActivityToExerciseModal">
                             <i class="fa fa-close"></i>
                         </button>
