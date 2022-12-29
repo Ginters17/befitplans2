@@ -23,7 +23,7 @@ class StravaAPIService
         if(!auth()->user()){
             return redirect('/login')->with("error","You aren't logged in!");
         }
-        
+
         /// Get authorization code from uri
         $uri = $_SERVER['REQUEST_URI'];
         $uri_components = parse_url($uri);
@@ -66,7 +66,12 @@ class StravaAPIService
 
         // Add access token, access token expiry and refresh token to user
         $user_id = auth()->user()->id;
-        app(StravaHelperService::class)->addStravaUserIdToUser($user_id, $strava_user_id);
+
+        if(app(StravaHelperService::class)->hasStravaUserBeenAssociatedWithDifferentUser($strava_user_id)){
+            return back()->with("error", "Your Strava account is already associated with a different account on BefitPlans");
+        }
+
+        app(StravaHelperService::class)->isStravaUserAlreadyAssociated($user_id, $strava_user_id);
         app(StravaHelperService::class)->addAccessTokenToUser($user_id, $access_token, $access_token_expiry);
         app(StravaHelperService::class)->addRefreshTokenToUser($user_id, $refresh_token);
 
