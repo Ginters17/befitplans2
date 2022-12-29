@@ -117,4 +117,13 @@ class StravaHelperService
 
         return sizeof($users) == 0;
     }
+
+    public function removeStravaDataFromUser($user_id){
+        $user = User::findOrFail($user_id);
+        $user->access_token = null;
+        $user->access_token_expiry = null;
+        $user->refresh_token = null;
+        $user->strava_user_id = null;
+        $user->save();
+    }
 }
