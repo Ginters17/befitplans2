@@ -24,6 +24,14 @@ class StravaAPIService
         $uri = $_SERVER['REQUEST_URI'];
         $uri_components = parse_url($uri);
         parse_str($uri_components['query'], $params);
+
+        if(isset($_GET["error"])  && $params["error"] == "access_denied"){
+            return back()->with("error", "Access denied");
+        }
+        elseif(isset($_GET["error"])  && $params["error"] != "access_denied"){
+            return back()->with("error", "Something went wrong, Try again!");
+        }
+
         $authorization_code = $params["code"];
 
         if($params["scope"] != 'read,activity:read_all'){
