@@ -115,7 +115,7 @@ class StravaHelperService
     public function isStravaUserAlreadyAssociated($strava_user_id){
         $users = User::where("strava_user_id",$strava_user_id)->get();
 
-        return sizeof($users) == 0;
+        return sizeof($users) > 0;
     }
 
     public function removeStravaDataFromUser($user_id){
