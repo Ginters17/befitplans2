@@ -1,0 +1,38 @@
+.information-page-heading {
+    margin-top: 91px;
+    font-size: 60px;
+    white-space: nowrap;
+}
+
+@media only screen and (max-width: 600px) {
+    .information-page-heading {
+        font-size: 40px;
+        white-space: nowrap;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .information-page-heading {
+        font-size: 30px;
+        white-space: normal;
+    }
+}
+
+a {
+    color: #dc3545;
+}
+
+a:hover {
+    color: #dc3545;
+    cursor: pointer;
+}
+
+/* FAQ */
+#accordion .card-header {
+    background-color: white;
+}
+
+#accordion .card {
+    border: none !important;
+}
+
