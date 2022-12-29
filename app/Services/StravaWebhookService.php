@@ -68,6 +68,7 @@ class StravaWebhookService
             if($aspect_type == "update" && $object_type == "athlete" && $updates['authorized'] == "false") {
                 app(StravaHelperService::class)->setStravaApiAuhtorizedFlag($user_id, false);
                 app(StravaHelperService::class)->deleteAllActivitiesForUser($user_id);
+                app(StravaHelperService::class)->removeStravaDataFromUser($user_id);
             }
         }
         catch (Exception $ex)
