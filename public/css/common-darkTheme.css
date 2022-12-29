@@ -47,5 +47,14 @@ option {
     background-color: #1a1a1b !important;
 }
 
+select {
+    color: white;
+}
 
+th {
+    color: white;
+}
 
+td {
+    color: white;
+}

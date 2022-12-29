@@ -20,7 +20,6 @@
     <script type="text/javascript" src="{{ asset('js/modal.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/popovers.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/radio.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/theme.js') }}"></script>
 
     @if (Cookie::get('theme') == "dark")
     <link rel="stylesheet" type="text/css" href="{{ asset('css/common-darkTheme.css') }}">
