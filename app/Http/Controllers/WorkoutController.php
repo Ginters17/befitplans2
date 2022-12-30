@@ -22,8 +22,17 @@ class WorkoutController extends Controller
         $areAllPreviousWorkoutsCompleted = $this->areAllPreviousWorkoutsCompleted($plan->id, $workout);
         $canAddExercise = $this->canExercisesBeAddedToWorkout($workout);
         $areAllExercisesCompleted = $this->areAllExercisesCompleted($workout);
-        $strava_activities = Strava_activity::where('user_id', auth()->user()->id)->where('type', '=', 'Run')->where('exercise_id', '=', null)->orderBy('activity_id', 'DESC')->get();
-        $selected_strava_activities = Strava_activity::where('user_id', auth()->user()->id)->where('type', '=', 'Run')->where('exercise_id', '!=', null)->orderBy('activity_id', 'DESC')->get();
+
+        if (auth()->user())
+        {
+            $strava_activities = Strava_activity::where('user_id', auth()->user()->id)->where('type', '=', 'Run')->where('exercise_id', '=', null)->orderBy('activity_id', 'DESC')->get();
+            $selected_strava_activities = Strava_activity::where('user_id', auth()->user()->id)->where('type', '=', 'Run')->where('exercise_id', '!=', null)->orderBy('activity_id', 'DESC')->get();
+        }
+        else
+        {
+            $strava_activities = [];
+            $selected_strava_activities = [];
+        }
 
         return view('workoutPage', compact('workout', 'plan', 'strava_activities', 'selected_strava_activities'))
             ->with('canAddExercise', $canAddExercise)
