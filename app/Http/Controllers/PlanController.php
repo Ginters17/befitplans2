@@ -206,11 +206,14 @@ class PlanController extends Controller
     // Copies certain details from the given plan and creates a new plan for another user
     public function join($planId)
     {
+        $validateLoggedIn =  $this->validateLoggedIn("/register");
+        
         $plan = Plan::findOrFail($planId);
+
         if(!$plan->is_public){
             return back()->with('error', "This plan is private");
         }
-        
+
         if (auth()->user() && $plan->user_id != auth()->user()->id)
         {
             $existingPlanId = $this->hasUserAlreadyJoinedPlan($plan, auth()->user()->id);
