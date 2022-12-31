@@ -207,7 +207,10 @@ class PlanController extends Controller
     public function join($planId)
     {
         $plan = Plan::findOrFail($planId);
-
+        if(!$plan->is_public){
+            return back()->with('error', "This plan is private");
+        }
+        
         if (auth()->user() && $plan->user_id != auth()->user()->id)
         {
             $existingPlanId = $this->hasUserAlreadyJoinedPlan($plan, auth()->user()->id);
