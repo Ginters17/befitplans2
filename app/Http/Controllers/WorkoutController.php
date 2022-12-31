@@ -22,8 +22,14 @@ class WorkoutController extends Controller
         $areAllPreviousWorkoutsCompleted = $this->areAllPreviousWorkoutsCompleted($plan->id, $workout);
         $canAddExercise = $this->canExercisesBeAddedToWorkout($workout);
         $areAllExercisesCompleted = $this->areAllExercisesCompleted($workout);
-        if(!$plan->is_public){
-            return redirect('/')->with("error","The workout you tried to view is in a private plan");
+
+        if (!$plan->is_public && !auth()->user())
+        {
+            return redirect('/')->with("error", "The workout you tried to view is in a private plan");
+        }
+        elseif (!$plan->is_public && auth()->user() && auth()->user()->id != $plan->user_id)
+        {
+            return redirect('/')->with("error", "The workout you tried to view is in a private plan");
         }
 
         if (auth()->user())
