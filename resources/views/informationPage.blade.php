@@ -45,8 +45,9 @@
                         <p>Once you are registered and logged in, you can choose one out of four plan categories in home page for fitness plan creation.</p>
                         <ol>
                             <li><span style="font-weight: bold">Upper Body</span> - a 28 day plan for your upper body muscles (Shoulders, Biceps, Triceps, Chest muscles, Back muscles, abs)</li>
-                            <li><span style="font-weight: bold">Upper Body</span> - a 28 day plan for your upper body muscles (Shoulders, Biceps, Triceps, Chest muscles, Back muscles, abs)</li>
-                            <li><span style="font-weight: bold">Upper Body</span> - a 28 day plan for your upper body muscles (Shoulders, Biceps, Triceps, Chest muscles, Back muscles, abs)</li>
+                            <li><span style="font-weight: bold">Lower Body</span> - a 28 day plan for your lower body muscles (Glutes, Quads, Hamstrings, Calves)</li>
+                            <li><span style="font-weight: bold">Cardio</span> - a 28 day plan for cardio</li>
+                            <li><span style="font-weight: bold">Custom</span> - a custom plan</li>
                         </ol>
                         <p>When you have created a plan you can view it in 'My Plans'. Even an automatically generated plan is highly customizable with options to create, edit, delete workouts and exercises.</p>
                     </div>

@@ -12,16 +12,6 @@ use Illuminate\Support\Facades\Validator;
 class ExerciseController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index($planId, $exerciseId)
-    {
-        //
-    }
-
-    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -114,28 +104,6 @@ class ExerciseController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -205,6 +173,7 @@ class ExerciseController extends Controller
         }
     }
 
+    // Complete exercise
     public function complete($plan_id, $workout_id, $exercise_id)
     {
         $exercise = Exercise::findOrFail($exercise_id);
@@ -220,29 +189,12 @@ class ExerciseController extends Controller
         }
     }
 
-    private function checkIsValidVideoUrl($videoUrl)
-    {
-        
-        // Youtube id's are 11 characters long
-        $actualUrlBeforeId = $newstring = substr($videoUrl, 0, strlen($videoUrl) - 11);
-        $expectedUrlBeforeId = "https://www.youtube.com/watch?v=";
-        $videoId = str_replace($actualUrlBeforeId, "", $videoUrl); // Remove VideoBeforeId from url
-
-        if (strcmp($actualUrlBeforeId, $expectedUrlBeforeId) == 0 && strlen($videoId) == 11)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
+    // Add strava activity to exercise
     public function addStravaActivity(Request $request)
     {
         $exercise = Exercise::findOrFail($request->exerciseId);
-        $activity = Strava_activity::where('activity_id',$request->activityId)->get();
-        
+        $activity = Strava_activity::where('activity_id', $request->activityId)->get();
+
 
         if (auth()->user() && $this->authorize('update', $exercise))
         {
@@ -258,13 +210,13 @@ class ExerciseController extends Controller
         {
             return redirect('/');
         }
-        
     }
 
+    // Remove strava activity from exercise
     public function removeStravaActivity($planId, $workoutId, $exerciseId)
     {
         $exercise = Exercise::findOrFail($exerciseId);
-        $activity = Strava_activity::where('exercise_id',$exerciseId)->get();
+        $activity = Strava_activity::where('exercise_id', $exerciseId)->get();
         if (auth()->user() && $this->authorize('delete', $exercise))
         {
             $exercise->activity_id = null;
@@ -276,6 +228,25 @@ class ExerciseController extends Controller
         else
         {
             return redirect('/');
+        }
+    }
+
+    // Check if link is 
+    private function checkIsValidVideoUrl($videoUrl)
+    {
+
+        // Youtube id's are 11 characters long
+        $actualUrlBeforeId = $newstring = substr($videoUrl, 0, strlen($videoUrl) - 11);
+        $expectedUrlBeforeId = "https://www.youtube.com/watch?v=";
+        $videoId = str_replace($actualUrlBeforeId, "", $videoUrl); // Remove VideoBeforeId from url
+
+        if (strcmp($actualUrlBeforeId, $expectedUrlBeforeId) == 0 && strlen($videoId) == 11)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 }

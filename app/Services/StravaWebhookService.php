@@ -40,6 +40,7 @@ class StravaWebhookService
         return response('', Response::HTTP_FORBIDDEN);
     }
 
+    // Processes a webhook POST request
     public function processWebhookPost(Request $request): Response|JsonResponse
     {
         $aspect_type = $request['aspect_type']; // "create" | "update" | "delete"

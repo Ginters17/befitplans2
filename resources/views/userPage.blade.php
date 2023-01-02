@@ -28,7 +28,7 @@
             <div class="col-md-2">
             </div>
             <div class="col-md-8">
-                @if($user->id == auth()->user()->id)
+                @if(auth()->user() && $user->id == auth()->user()->id)
                 <h1 class="d-flex justify-content-center mt-5">My plans</h1>
                 @else
                 <h1 class="d-flex justify-content-center mt-5">{{$userName}} plans</h1>
