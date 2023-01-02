@@ -23,30 +23,49 @@ class WorkoutController extends Controller
         $canAddExercise = $this->canExercisesBeAddedToWorkout($workout);
         $areAllExercisesCompleted = $this->areAllExercisesCompleted($workout);
 
-        if (!$plan->is_public && !auth()->user())
+        if ($this->canPlanBeViewed($plan))
         {
-            return redirect('/')->with("error", "The workout you tried to view is in a private plan");
-        }
-        elseif (!$plan->is_public && auth()->user() && auth()->user()->id != $plan->user_id)
-        {
-            return redirect('/')->with("error", "The workout you tried to view is in a private plan");
-        }
+            if (auth()->user())
+            {
+                $strava_activities = Strava_activity::where('user_id', auth()->user()->id)
+                    ->where('type', '=', 'Run')
+                    ->where('exercise_id', '=', null)
+                    ->orderBy('activity_id', 'DESC')->get();
+                $selected_strava_activities = Strava_activity::where('user_id', auth()->user()->id)
+                    ->where('type', '=', 'Run')
+                    ->where('exercise_id', '!=', null)
+                    ->orderBy('activity_id', 'DESC')->get();
+            }
+            else
+            {
+                $strava_activities = [];
+                $selected_strava_activities = [];
+            }
 
-        if (auth()->user())
-        {
-            $strava_activities = Strava_activity::where('user_id', auth()->user()->id)->where('type', '=', 'Run')->where('exercise_id', '=', null)->orderBy('activity_id', 'DESC')->get();
-            $selected_strava_activities = Strava_activity::where('user_id', auth()->user()->id)->where('type', '=', 'Run')->where('exercise_id', '!=', null)->orderBy('activity_id', 'DESC')->get();
+            return view('workoutPage', compact('workout', 'plan', 'strava_activities', 'selected_strava_activities'))
+                ->with('canAddExercise', $canAddExercise)
+                ->with('areAllPreviousWorkoutsCompleted', $areAllPreviousWorkoutsCompleted)
+                ->with('areAllExercisesCompleted', $areAllExercisesCompleted);
         }
         else
         {
-            $strava_activities = [];
-            $selected_strava_activities = [];
+            return redirect('/')->with("error", "The workout you tried to view is in a private plan");
+        }
+    }
+
+    // Checks if plan be viewed by current user
+    private function canPlanBeViewed($plan)
+    {
+        if (!$plan->is_public && !auth()->user())
+        {
+            return false;
+        }
+        elseif (!$plan->is_public && auth()->user() && auth()->user()->id != $plan->user_id)
+        {
+            return false;
         }
 
-        return view('workoutPage', compact('workout', 'plan', 'strava_activities', 'selected_strava_activities'))
-            ->with('canAddExercise', $canAddExercise)
-            ->with('areAllPreviousWorkoutsCompleted', $areAllPreviousWorkoutsCompleted)
-            ->with('areAllExercisesCompleted', $areAllExercisesCompleted);
+        return true;
     }
 
     /**
@@ -123,28 +142,6 @@ class WorkoutController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -202,6 +199,7 @@ class WorkoutController extends Controller
         }
     }
 
+    // Complete workout
     public function complete($plan_id, $workout_id)
     {
         $workout = Workout::findOrFail($workout_id);
@@ -224,6 +222,7 @@ class WorkoutController extends Controller
         }
     }
 
+    // Checks if all exercises in a workout are completed
     private function areAllExercisesCompleted(Workout $workout)
     {
         foreach ($workout->exercise as $exercise)
@@ -237,6 +236,7 @@ class WorkoutController extends Controller
         return true;
     }
 
+    // Check if all previous workouts in a plan are completed
     private function areAllPreviousWorkoutsCompleted($planId, $workout)
     {
         $planWorkouts = Workout::where('plan_id', $planId)->orderby('day', 'ASC')->get();

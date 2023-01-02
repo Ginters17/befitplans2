@@ -24,23 +24,13 @@ class StravaAPIService
             return redirect('/login')->with("error","You aren't logged in!");
         }
 
-        /// Get authorization code from uri
+        /// Get parameters from URI
         $uri = $_SERVER['REQUEST_URI'];
         $uri_components = parse_url($uri);
         parse_str($uri_components['query'], $params);
 
-        if(isset($_GET["error"])  && $params["error"] == "access_denied"){
-            return back()->with("error", "Access denied");
-        }
-        elseif(isset($_GET["error"])  && $params["error"] != "access_denied"){
-            return back()->with("error", "Something went wrong, Try again!");
-        }
-
-        $authorization_code = $params["code"];
-
-        if($params["scope"] != 'read,activity:read_all'){
-            return back()->with("error", "'View data about your private activities' needs to be checked");
-        }
+        // Validate URI and get authorization code if successful
+        $authorization_code = app(StravaHelperService::class)->validateStravaRedirectURI($params);
 
         $client = new Client();
 

@@ -111,17 +111,38 @@ class StravaHelperService
         }
     }
 
-    public function isStravaUserAlreadyAssociated($strava_user_id){
-        $users = User::where("strava_user_id",$strava_user_id)->get();
+    public function isStravaUserAlreadyAssociated($strava_user_id)
+    {
+        $users = User::where("strava_user_id", $strava_user_id)->get();
         return sizeof($users) > 0;
     }
 
-    public function removeStravaDataFromUser($user_id){
+    public function removeStravaDataFromUser($user_id)
+    {
         $user = User::findOrFail($user_id);
         $user->access_token = null;
         $user->access_token_expiry = null;
         $user->refresh_token = null;
         $user->strava_user_id = null;
         $user->save();
+    }
+
+    public function validateStravaRedirectURI($params)
+    {
+        if (isset($_GET["error"])  && $params["error"] == "access_denied")
+        {
+            return back()->with("error", "Access denied")->send();;
+        }
+        elseif (isset($_GET["error"])  && $params["error"] != "access_denied")
+        {
+            return back()->with("error", "Something went wrong, Try again!")->send();;
+        }
+        elseif ($params["scope"] != 'read,activity:read_all')
+        {
+            return back()->with("error", "'View data about your private activities' needs to be checked")->send();;
+        }
+        else{
+            return $params["code"];
+        }
     }
 }

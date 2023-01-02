@@ -41,16 +41,6 @@ class PlanController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -123,28 +113,6 @@ class PlanController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -156,7 +124,7 @@ class PlanController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:50',
             'description' => 'max:300',
-            'workouts' => 'required|min:0|max:28',
+            'workouts' => 'required|min:1|max:28',
         ]);
 
         if ($validator->fails())
@@ -206,15 +174,16 @@ class PlanController extends Controller
     // Copies certain details from the given plan and creates a new plan for another user
     public function join($planId)
     {
-        $validateLoggedIn =  $this->validateLoggedIn("/register");
-        
+        $this->validateLoggedIn("/register");
+
         $plan = Plan::findOrFail($planId);
 
-        if(!$plan->is_public){
+        if (!$plan->is_public)
+        {
             return back()->with('error', "This plan is private");
         }
 
-        if (auth()->user() && $plan->user_id != auth()->user()->id)
+        if ($plan->user_id != auth()->user()->id)
         {
             $existingPlanId = $this->hasUserAlreadyJoinedPlan($plan, auth()->user()->id);
             if ($existingPlanId)
@@ -239,7 +208,7 @@ class PlanController extends Controller
         return view('createCustomPlanPage');
     }
 
-    // Stores a plan
+    // Stores a custom plan
     public function storeCustomPlan(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -276,8 +245,9 @@ class PlanController extends Controller
         }
     }
 
-    // 
-    public function validatePreviousPlan($cetegoryId, $customPlan = false)
+    // Tries to find user's previous plan
+    // Returns error message if it does
+    private function validatePreviousPlan($cetegoryId, $customPlan = false)
     {
         $previousPlanId = $this->findPreviousPlanId($cetegoryId, $customPlan);
         if ($previousPlanId > 0)
@@ -310,6 +280,7 @@ class PlanController extends Controller
         return false;
     }
 
+    // Constructs and returns name for plan based on username and category
     private function getPlanName($username, $category_id)
     {
         $planName = "";
@@ -333,12 +304,13 @@ class PlanController extends Controller
             default:
                 $categoryPart = "";
         }
-        $planName .= " ".$categoryPart." ";
+        $planName .= " " . $categoryPart . " ";
         $planName .= "Plan";
 
-        return strlen($planName) > 50 ? $categoryPart." Plan" : $planName;
+        return strlen($planName) > 50 ? $categoryPart . " Plan" : $planName;
     }
 
+    // Adds given plan (and it's workouts and exercises) to given user
     private function addPlanToUser($plan, $user)
     {
         $newPlan = new Plan();
