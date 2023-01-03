@@ -155,7 +155,7 @@ class StravaHelperService
     {
         $exercises_with_strava = Exercise::Where('user_id',$user_id)->where('activity_id','!=','null')->get();
         foreach($exercises_with_strava as $exercise){
-            $exercise->strava_activity_id = null;
+            $exercise->activity_id = null;
             $exercise->save();
         }
     }
