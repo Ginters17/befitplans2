@@ -45,4 +45,8 @@ class User extends Authenticatable
     public function strava_activity() { 
         return $this->hasOne(Strava_activity::class);
     }
+
+    public function plan() { 
+        return $this->hasMany(Plan::class);
+    }
 }

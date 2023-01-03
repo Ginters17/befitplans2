@@ -70,6 +70,7 @@ class StravaWebhookService
                 app(StravaHelperService::class)->setStravaApiAuhtorizedFlag($user_id, false);
                 app(StravaHelperService::class)->deleteAllActivitiesForUser($user_id);
                 app(StravaHelperService::class)->removeStravaDataFromUser($user_id);
+                app(StravaHelperService::class)->removeStravaDataFromExercises($user_id);
             }
         }
         catch (Exception $ex)

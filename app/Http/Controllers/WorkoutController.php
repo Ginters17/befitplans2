@@ -116,7 +116,7 @@ class WorkoutController extends Controller
                 return back()
                     ->withErrors($validator)
                     ->withInput()
-                    ->with("error", "Plan not created - one or more fields have an error");
+                    ->with("error", "Workout not created - one or more fields have an error");
             }
 
             $user = auth()->user();
