@@ -80,7 +80,7 @@ class ExerciseController extends Controller
 
             $user = auth()->user();
             $workout = Workout::findOrFail($workoutId);
-            if ($this->authorize('addExercise', $workout) && $this->canExercisesBeAddedToWorkout($workoutId))
+            if ($this->authorize('addExercise', $workout) && $this->canExercisesBeAddedToWorkout($workout))
             {
                 $exercise = new Exercise();
                 $exercise->workout_id = $workoutId;
