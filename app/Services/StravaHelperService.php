@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Exercise;
 use App\Models\Strava_activity;
 use App\Models\User;
 use DateTime;
@@ -111,12 +112,14 @@ class StravaHelperService
         }
     }
 
+    // Checks if user has been already authorized on Strava
     public function isStravaUserAlreadyAssociated($strava_user_id)
     {
         $users = User::where("strava_user_id", $strava_user_id)->get();
         return sizeof($users) > 0;
     }
 
+    // Remove strava data from user
     public function removeStravaDataFromUser($user_id)
     {
         $user = User::findOrFail($user_id);
@@ -127,6 +130,7 @@ class StravaHelperService
         $user->save();
     }
 
+    // Validates URI
     public function validateStravaRedirectURI($params)
     {
         if (isset($_GET["error"])  && $params["error"] == "access_denied")
@@ -143,6 +147,16 @@ class StravaHelperService
         }
         else{
             return $params["code"];
+        }
+    }
+
+    // Removes strava data from exercises for user
+    public function removeStravaDataFromExercises($user_id)
+    {
+        $exercises_with_strava = Exercise::Where('user_id',$user_id)->where('activity_id','!=','null')->get();
+        foreach($exercises_with_strava as $exercise){
+            $exercise->strava_activity_id = null;
+            $exercise->save();
         }
     }
 }

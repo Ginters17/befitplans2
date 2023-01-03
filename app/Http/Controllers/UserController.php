@@ -96,6 +96,7 @@ class UserController extends Controller
         if (auth()->user() && $this->authorize('delete', $user))
         {
             $user->strava_activity()->delete();
+            $user->plan()->delete();
             $user->delete();
             return redirect('/')->with('success', 'Account has been deleted successfully');
         }

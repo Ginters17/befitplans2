@@ -79,27 +79,30 @@ class ExerciseController extends Controller
             }
 
             $user = auth()->user();
-
-            $exercise = new Exercise();
-            $exercise->workout_id = $workoutId;
-            $exercise->name = $request->name;
-            $exercise->description = $request->description;
-            $exercise->user_id = $user->id;
-            $exercise->reps = $request->reps;
-            $exercise->sets = $request->sets;
-            $exercise->duration = $request->duration;
-            if ($exercise->duration > 0)
-            {
-                $exercise->duration_type = $request->duration_type;
-            }
-            $exercise->info_video_url = $request->video_url;
-            $exercise->save();
-
             $workout = Workout::findOrFail($workoutId);
-            $workout->is_complete = 0;
-            $workout->save();
+            if ($this->authorize('addExercise', $workoutId) && $this->canExercisesBeAddedToWorkout($workoutId))
+            {
+                $exercise = new Exercise();
+                $exercise->workout_id = $workoutId;
+                $exercise->name = $request->name;
+                $exercise->description = $request->description;
+                $exercise->user_id = $user->id;
+                $exercise->reps = $request->reps;
+                $exercise->sets = $request->sets;
+                $exercise->duration = $request->duration;
+                if ($exercise->duration > 0)
+                {
+                    $exercise->duration_type = $request->duration_type;
+                }
+                $exercise->info_video_url = $request->video_url;
+                $exercise->save();
 
-            return redirect('/plan/' . $workout->plan_id . "/workout/" . $workoutId)->with('success', 'Exercise has been added');
+                $workout = Workout::findOrFail($workoutId);
+                $workout->is_complete = 0;
+                $workout->save();
+
+                return redirect('/plan/' . $workout->plan_id . "/workout/" . $workoutId)->with('success', 'Exercise has been added');
+            }
         }
     }
 
