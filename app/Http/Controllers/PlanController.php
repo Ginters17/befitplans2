@@ -32,7 +32,10 @@ class PlanController extends Controller
         if ($plan->is_public || auth()->user() && auth()->user()->id == $plan->user_id)
         {
             $canAddWorkout = $this->canWorkoutsBeAddedToPlan($plan);
-            return view('planPage', compact('planWorkouts'), compact('plan'))->with('canAddWorkout', $canAddWorkout);
+            $canCompletePlan = $this->canCompletePlan($plan);
+            return view('planPage', compact('planWorkouts'), compact('plan'))
+                ->with('canAddWorkout', $canAddWorkout)
+                ->with('canCompletePlan', $canCompletePlan);
         }
         else
         {
@@ -132,7 +135,13 @@ class PlanController extends Controller
             return back()
                 ->withErrors($validator)
                 ->withInput()
-                ->with("error", "Workout not updated - one or more fields have an error");
+                ->with("error", "Plan not updated - one or more fields have an error");
+        }
+
+        if (!$this->canUpdateWorkoutCount($planId, $request->workouts))
+        {
+            return back()
+                ->with("error", "Plan not updated - can't reduce to this nr. of workouts because there are more workouts than that already in this plan. You can delete them manually.");
         }
 
         $plan = Plan::findOrFail($planId);
@@ -141,6 +150,10 @@ class PlanController extends Controller
             $plan->name = $request->name;
             $plan->description = $request->description;
             $plan->is_public = $request->is_public;
+            if ($plan->workouts < $request->workouts)
+            {
+                $plan->is_complete = 0;
+            }
             $plan->workouts = $request->workouts;
             $plan->save();
             return back()->with('success', 'Plan has been updated successfully.');
@@ -245,6 +258,29 @@ class PlanController extends Controller
         }
     }
 
+    // Complete plan
+    public function complete($plan_id)
+    {
+        $plan = Plan::findOrFail($plan_id);
+        if (auth()->user() && $this->authorize('complete', $plan))
+        {
+            if ($this->canCompletePlan($plan))
+            {
+                $plan->is_complete = true;
+                $plan->save();
+                return redirect('/plan/' . $plan_id)->with('success', 'Plan has been completed successfully.');
+            }
+            else
+            {
+                return back()->with("error", "Not all workouts are completed");
+            }
+        }
+        else
+        {
+            return redirect('/');
+        }
+    }
+
     // Tries to find user's previous plan
     // Returns error message if it does
     private function validatePreviousPlan($cetegoryId, $customPlan = false)
@@ -252,18 +288,25 @@ class PlanController extends Controller
         $previousPlanId = $this->findPreviousPlanId($cetegoryId, $customPlan);
         if ($previousPlanId > 0)
         {
-            $errorMessage = $customPlan ? "You already have a custom plan." : "You already have a plan in this category.";
+            $errorMessage = $customPlan ? "You already have a custom plan in progress." : "You already have a plan in progress in this category.";
             return redirect('/')->with('errorWithLink', [$errorMessage, "Go to plan", "/plan/" . $previousPlanId])->send();
         }
     }
 
-    // Checks whether user already has plan in a category that they are trying to get a new plan in or already has a custom plan
+    // Checks whether user already has a not completed plan in a category that they are trying to get a new plan in or already has a custom plan
     // Return Plan's id if one is found
     // Else return false
     private function findPreviousPlanId($cetegoryId, $customPlan = false)
     {
         $userId = auth()->user()->id;
-        $userPlans = Plan::where('user_id', $userId)->get();
+        $userPlans = Plan::where('user_id', $userId)
+            ->where(
+                function ($query)
+                {
+                    $query->where('is_complete', '0')
+                        ->orWhereNull('is_complete');
+                }
+            )->get();
 
         foreach ($userPlans as $plan)
         {
@@ -367,5 +410,41 @@ class PlanController extends Controller
         }
 
         return false;
+    }
+
+    // Checks if all workouts are completed in a plan
+    private function canCompletePlan($plan)
+    {
+        if (auth()->user() && $plan->user_id == auth()->user()->id)
+        {
+            if ($plan->is_complete)
+            {
+                return false;
+            }
+
+            $workouts = Workout::where('plan_id', $plan->id)->get();
+            if (sizeof($workouts) != $plan->workouts)
+            {
+                return false;
+            }
+
+            foreach ($workouts as $workout)
+            {
+                if (!$workout->is_complete)
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    // Checks if number of workouts in plan is less than or equal to the number of workouts that user tried to reduce to
+    private function canUpdateWorkoutCount($planId, $nrOfWorkouts)
+    {
+        $workouts = Workout::where('plan_id', $planId)->get();
+
+        return sizeof($workouts) <= $nrOfWorkouts ? true : false;
     }
 }

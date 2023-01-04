@@ -80,6 +80,7 @@ class ExerciseController extends Controller
 
             $user = auth()->user();
             $workout = Workout::findOrFail($workoutId);
+            $plan = Plan::findOrFail($workout->plan_id);
             if ($this->authorize('addExercise', $workout) && $this->canExercisesBeAddedToWorkout($workout))
             {
                 $exercise = new Exercise();
@@ -97,9 +98,11 @@ class ExerciseController extends Controller
                 $exercise->info_video_url = $request->video_url;
                 $exercise->save();
 
-                $workout = Workout::findOrFail($workoutId);
                 $workout->is_complete = 0;
                 $workout->save();
+
+                $plan->is_complete = 0;
+                $plan->save();
 
                 return redirect('/plan/' . $workout->plan_id . "/workout/" . $workoutId)->with('success', 'Exercise has been added');
             }

@@ -120,6 +120,7 @@ class WorkoutController extends Controller
             }
 
             $user = auth()->user();
+            $plan = Plan::findOrFail($planId);
 
             $workout = new Workout();
             $workout->plan_id = $planId;
@@ -129,6 +130,9 @@ class WorkoutController extends Controller
             $workout->day = $request->day;
             $workout->day_off = $request->is_day_off;
             $workout->save();
+
+            $plan->is_complete = 0;
+            $plan->save();
 
             if ($workout->day_off)
             {

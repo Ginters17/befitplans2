@@ -126,7 +126,7 @@
                 @if($canAddExercise)
                 <a class="list-group-item mt-3 bg-danger add-exercise-button text-center" href="{{$workout->id}}/add-exercise">ADD EXERCISE</a>
                 @endif
-                @if(!$workout->is_complete && $areAllExercisesCompleted && $areAllPreviousWorkoutsCompleted)
+                @if(!$workout->is_complete && $areAllExercisesCompleted && $areAllPreviousWorkoutsCompleted && auth()->user() && $workout->user_id == auth()->user()->id)
                 <a class="btn btn-outline-danger mt-3 mb-3 bg-danger text-light float-right" href="{{$workout->id}}/complete">Complete Workout</a>
                 @endif
                 @if(auth()->user() && $workout->user_id == auth()->user()->id)

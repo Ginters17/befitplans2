@@ -17,9 +17,20 @@ class UserController extends Controller
     public function index($userId)
     {
         $user = User::findOrFail($userId);
-        $userPlans = Plan::where('user_id', $userId)->get();
+        $completedUserPlans = Plan::where('user_id', $userId)
+            ->where('is_complete', '1')
+            ->get();
+        $notCompletedUserPlans = Plan::where('user_id', $userId)
+            ->where(
+                function ($query)
+                {
+                    $query->where('is_complete', '0')
+                        ->orWhereNull('is_complete');
+                }
+            )->get();
+
         $userName = $user->name[strlen($user->name) - 1] == "s" ? $user->name . "'" : $user->name . "'s";
-        return view('userPage', compact('userPlans'), compact('user'))->with('userName', $userName);
+        return view('userPage', compact('completedUserPlans','notCompletedUserPlans','user'))->with('userName', $userName);
     }
 
     /**

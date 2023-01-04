@@ -33,14 +33,23 @@
                 @else
                 <h1 class="d-flex justify-content-center mt-5">{{$userName}} plans</h1>
                 @endif
-                <ul class="list-group d-flex justify-content-center">
-                @foreach ($userPlans as $plan)
-                    <a class="list-group-item mt-3 bg-danger" href="/plan/{{$plan->id}}">{{ $plan->name }}</a>
-                @endforeach
-                @if (count($userPlans)==0)
-                    <h1 class="text-center mt-5">No Plans Found</h1>
+                @if (count($notCompletedUserPlans)>0)
+                <h3 class="d-flex justify-content-left mt-2">In progress: </h3>
                 @endif
-                </ul>
+
+                @foreach ($notCompletedUserPlans as $plan)
+                <a class="list-group-item mt-3 bg-danger" href="/plan/{{$plan->id}}">{{ $plan->name }}</a>
+                @endforeach
+                @if (count($completedUserPlans)>0)
+                <h3 class="d-flex justify-content-left mt-5">Completed: </h3>
+                @endif
+                @foreach ($completedUserPlans as $plan)
+                <a class="list-group-item mt-3 bg-danger" href="/plan/{{$plan->id}}">{{ $plan->name }}</a>
+                @endforeach
+                @if (count($notCompletedUserPlans)==0 && count($completedUserPlans)==0)
+                <h1 class="text-center mt-5">No Plans Found</h1>
+                @endif
+
             </div>
             <div class="col-md-2">
             </div>
