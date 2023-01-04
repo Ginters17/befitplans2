@@ -45,4 +45,16 @@ class PlanPolicy
     {
         return $user->id == $plan->user_id;
     }
+
+    /**
+     * Determine whether the user can complete the plan.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Plan  $plan
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function complete(User $user, Plan $plan)
+    {
+        return $user->id == $plan->user_id;
+    }
 }

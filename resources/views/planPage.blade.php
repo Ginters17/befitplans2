@@ -65,6 +65,14 @@
                 @if($canAddWorkout)
                 <a class="list-group-item mt-3 bg-danger text-center" href="{{$plan->id}}/add-workout">ADD WORKOUT</a>
                 @endif
+                @if($canCompletePlan)
+                <a class="list-group-item mt-3 bg-danger text-center" href="{{$plan->id}}/complete">COMPLETE PLAN</a>
+                @endif
+                @if(auth()->user() && $plan->user_id == auth()->user()->id)
+                @if($plan->is_complete)
+                <h3 class="mt-3 mb-3 float-right">Plan Completed</h3>
+                @endif
+                @endif
             </div>
             <div class="col-md-2">
                 <div class="plan-actions-desktop">
