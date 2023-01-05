@@ -31,7 +31,7 @@ Route::get('settings', [App\Http\Controllers\SettingsController::class, 'index']
 /// Strava API
 Route::get('auth', function (Request $request)
 {
-    return app(StravaAPIService::class)->process_authorization($request);
+    return app(StravaAPIService::class)->processAuthorization($request);
 });
 Route::get('/webhook', function (Request $request)
 {
