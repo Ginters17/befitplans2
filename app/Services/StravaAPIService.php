@@ -18,7 +18,8 @@ class StravaAPIService
         $this->client_secret = config('services.strava.client_secret');
     }
 
-    public function process_authorization()
+    // Responsible for processing Strava authorization  
+    public function processAuthorization()
     {
         if(!auth()->user()){
             return redirect('/login')->with("error","You aren't logged in!");
