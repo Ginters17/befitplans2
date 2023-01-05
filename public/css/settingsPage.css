@@ -50,3 +50,13 @@ section {
 .form-radio-row {
     padding-left: 0px !important;
 }
+
+.edit-account-link{
+    color: #dc3545 !important;
+}
+
+.edit-account-link:hover {
+    cursor: pointer;
+    text-decoration: underline !important;
+    color: #dc3545;
+}
