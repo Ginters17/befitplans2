@@ -83,6 +83,7 @@
                     <div class="card-body">
                         <h2>Account</h2>
                         <hr>
+                        <a class="edit-account-link" href="user/{{auth()->user()->id}}/edit">Edit account</a> <br>
                         <a class="delete-account-link" data-toggle="modal" data-target="#deleteAccountModalCenter">Delete account</a>
                     </div>
                 </div>
