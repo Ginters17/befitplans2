@@ -55,19 +55,19 @@
                                 <label for="inputPassword" class="col-sm-2 col-form-label">Height (cm)</label>
                                 <div class="col-sm-10">
                                     <input min="1" type="number" name="height" class="form-control" id="inputPassworzd" value="{{$user->height}}">
+                                    @error('height')
+                                    <p class="alert alert-danger" role="alert">{{ $message }}</p>
+                                    @enderror
                                 </div>
-                                @error('height')
-                                <p class="alert alert-danger" role="alert">{{ $message }}</p>
-                                @enderror
                             </div>
                             <div class="form-group row">
                                 <label for="inputPassword" class="col-sm-2 col-form-label">Weight (kg)</label>
                                 <div class="col-sm-10">
                                     <input min="1" type="number" name="weight" class="form-control" id="inputPassworzd" value="{{$user->weight}}">
+                                    @error('weight')
+                                    <p class="alert alert-danger" role="alert">{{ $message }}</p>
+                                    @enderror
                                 </div>
-                                @error('weight')
-                                <p class="alert alert-danger" role="alert">{{ $message }}</p>
-                                @enderror
                             </div>
                             <div class="form-group row tests">
                                 <label for="inputSex" class="col-sm-2 col-form-label">Sex</label>

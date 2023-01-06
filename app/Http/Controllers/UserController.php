@@ -64,10 +64,10 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:50',
-            'age' => 'nullable|integer',
-            'height' => 'nullable|integer',
-            'weight' => 'nullable|integer',
-            'sex' => 'nullable|integer'
+            'age' => 'nullable|integer|max:100',
+            'height' => 'nullable|integer|max:300',
+            'weight' => 'nullable|integer|max:500',
+            'sex' => 'nullable|integer|digits:1'
         ]);
 
         if ($validator->fails())

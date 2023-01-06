@@ -121,9 +121,9 @@ class ExerciseController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:100',
             'description' => 'max:1000',
-            'reps' => 'nullable|integer',
-            'sets' => 'nullable|integer',
-            'duration' => 'nullable|integer',
+            'reps' => 'nullable|integer|max:1000',
+            'sets' => 'nullable|integer|max:1000',
+            'duration' => 'nullable|integer|max:1000',
             'info_video_url' => 'max:255',
         ]);
 
