@@ -87,3 +87,55 @@
     text-align: center;
     height: 50px;
 }
+
+.collapse-link {
+    margin-top: 10px;
+    text-decoration: underline !important;
+}
+
+.collapse-link:hover {
+    cursor: pointer;
+}
+
+.collapsed-body {
+    margin-top: 10px;
+}
+
+.select-equipment {
+    color: #dc3545;
+    margin-top: 10px !important;
+    margin-bottom: 5px !important;
+}
+
+label {
+    color: #dc3545;
+}
+
+.submit-button {
+    border: none;
+}
+
+.custom-checkbox .custom-control-input:checked ~ .custom-control-label::before {
+    background-color: #dc3545 !important;
+}
+
+.custom-checkbox
+    .custom-control-input:checked:focus
+    ~ .custom-control-label::before {
+    box-shadow: none;
+}
+.custom-checkbox .custom-control-input:focus ~ .custom-control-label::before {
+    box-shadow: none;
+}
+.custom-checkbox .custom-control-input:active ~ .custom-control-label::before {
+    background-color: #dc3545;
+}
+
+.custom-control-label {
+    white-space: nowrap;
+}
+
+.custom-control-label::before {
+    border: 1px solid red;
+    background-color: transparent;
+}
