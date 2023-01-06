@@ -471,9 +471,13 @@ class PlanController extends Controller
                     return false;
                 }
             }
-        }
 
-        return true;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     // Checks if number of workouts in plan is less than or equal to the number of workouts that user tried to reduce to
