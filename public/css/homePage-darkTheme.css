@@ -1,0 +1,23 @@
+.btn-default-plan {
+    background-color: #dc3545 !important;
+    border-color: #dc3545 !important;
+}
+
+.btn-default-plan:hover {
+    background-color: #932530 !important;
+    border-color: #932530 !important;
+}
+
+.btn-personalized-plan {
+    background-color: #dc3545 !important;
+    border-color: #dc3545 !important;
+}
+
+.btn-personalized-plan:hover {
+    background-color: #932530 !important;
+    border-color: #932530 !important;
+}
+
+.card-body {
+    background-color: #121212 !important;
+}
