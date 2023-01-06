@@ -5,6 +5,6 @@ window.showDurationTypeRadio = function () {
     document.getElementsByClassName('submit-btn')[0].style.marginTop = '60px';
   } else {
     document.getElementsByClassName('duration-type-radio')[0].style.display = 'none';
-    document.getElementsByClassName('submit-btn')[0].style.marginTop = '1.5rem';
+    document.getElementsByClassName('submit-btn')[0].style.marginTop = '24px';
   };
 };
