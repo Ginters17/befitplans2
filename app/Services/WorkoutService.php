@@ -122,6 +122,7 @@ class WorkoutService
         $diamondPushUps_description = "In a diamond push-up, you touch your thumbs and index fingers together to make a diamond shape directly in front of the center of your chest.";
         $pullUps_description = "Start with your hands on the bar approximately shoulder-width apart with your palms facing forward. With arms extended above you, stick your chest out and curve your back slightly. That is your starting position. Pull yourself up towards the bar using your back until the bar is at chest level while breathing out. Slowly lower yourself to the starting position while breathing in.";
         $bicepCurls_description = "Stand by holding a dumbbell in each hand with your arms hanging by your sides. Ensure your elbows are close to your torso and your palms facing forward. Keeping your upper arms stationary, exhale as you curl the weights up to shoulder level while contracting your biceps.";
+        $overHeadExtensions_description = "Stand with your feet staggered while holding a pair of dumbbells directly overhead, with your palms facing each other and the weights touching. Without moving your upper arms, lower the weights behind your head. Keep the dumbbells pressed together the whole time. Press the weights back up to the starting position until your arms are fully extended, stopping short of locking them out";
 
         // Video links
         $regularPushUps_link = "https://www.youtube.com/watch?v=IODxDxX7oi4";
@@ -132,11 +133,20 @@ class WorkoutService
         $diamondPushUps_link = "shttps://www.youtube.com/watch?v=pD3mD6WgykM";
         $pullUps_link = "https://www.youtube.com/watch?v=eGo4IYlbE5g";
         $bicepCurls_link = "https://www.youtube.com/watch?v=XE_pHwbst04";
+        $overHeadExtensions_link = "https://www.youtube.com/watch?v=YbX7Wd8jQ-Q";
 
-
-        $workout_id = $this->makeWorkout("Regular push ups and Tricep dips", "Regular pushups will work your chest and triceps. Tricep dips will work your triceps", $plan->id, $user->id, 1, 0, $coefficient);
-        $this->makeExercise("Regular push ups", $regularPushUps_description, $workout_id, $user->id, 6, 3, null, $coefficient, -1, $regularPushUps_link);
-        $this->makeExercise("Tricep Dips", $tricepDips_description, $workout_id, $user->id, 6, 3, null, $coefficient, -1, $tricepDips_link);
+        if (!$this->hasDumbbells)
+        {
+            $workout_id = $this->makeWorkout("Regular push ups and Tricep dips", "Regular pushups will work your chest and triceps. Tricep dips will work your triceps", $plan->id, $user->id, 1, 0, $coefficient);
+            $this->makeExercise("Regular push ups", $regularPushUps_description, $workout_id, $user->id, 6, 3, null, $coefficient, -1, $regularPushUps_link);
+            $this->makeExercise("Tricep Dips", $tricepDips_description, $workout_id, $user->id, 6, 3, null, $coefficient, -1, $tricepDips_link);
+        }
+        else
+        {
+            $workout_id = $this->makeWorkout("Regular push ups and Overhead extensions", "Regular pushups will work your chest and triceps. Overhead extensions will work your triceps", $plan->id, $user->id, 1, 0, $coefficient);
+            $this->makeExercise("Regular push ups", $regularPushUps_description, $workout_id, $user->id, 6, 3, null, $coefficient, -1, $regularPushUps_link);
+            $this->makeExercise("Overhead extensions", $overHeadExtensions_description, $workout_id, $user->id, 6, 3, null, $coefficient, -1, $overHeadExtensions_link);
+        }
 
         $workout_id = $this->makeWorkout("Planks and Crunches", "Planks will work your core. Crunches will work your abs", $plan->id, $user->id, 2, 0, $coefficient);
         $this->makeExercise("Planks", $planks_description, $workout_id, $user->id, null, null, 60, $coefficient, 1, $planks_link);
@@ -163,9 +173,18 @@ class WorkoutService
 
         $workout_id = $this->makeWorkout("FREE", "It's your day off.. let's relax", $plan->id, $user->id, 4, 1, $coefficient);
 
-        $workout_id = $this->makeWorkout("Regular push ups and Tricep dips", "Regular pushups will work your chest and triceps. Tricep dips will work your triceps", $plan->id, $user->id, 5, 0, $coefficient);
-        $this->makeExercise("Regular push ups", $regularPushUps_description, $workout_id, $user->id, 8, 3, null, $coefficient, -1, $regularPushUps_link);
-        $this->makeExercise("Tricep Dips", $tricepDips_description, $workout_id, $user->id, 8, 3, null, $coefficient, -1, $tricepDips_link);
+        if (!$this->hasDumbbells)
+        {
+            $workout_id = $this->makeWorkout("Regular push ups and Tricep dips", "Regular pushups will work your chest and triceps. Tricep dips will work your triceps", $plan->id, $user->id, 5, 0, $coefficient);
+            $this->makeExercise("Regular push ups", $regularPushUps_description, $workout_id, $user->id, 8, 3, null, $coefficient, -1, $regularPushUps_link);
+            $this->makeExercise("Tricep Dips", $tricepDips_description, $workout_id, $user->id, 8, 3, null, $coefficient, -1, $tricepDips_link);
+        }
+        else
+        {
+            $workout_id = $this->makeWorkout("Regular push ups and Overhead extensions", "Regular pushups will work your chest and triceps. Overhead extensions will work your triceps", $plan->id, $user->id, 5, 0, $coefficient);
+            $this->makeExercise("Regular push ups", $regularPushUps_description, $workout_id, $user->id, 8, 3, null, $coefficient, -1, $regularPushUps_link);
+            $this->makeExercise("Overhead extensions", $overHeadExtensions_description, $workout_id, $user->id, 8, 3, null, $coefficient, -1, $overHeadExtensions_link);
+        }
 
         $workout_id = $this->makeWorkout("Planks and Crunches", "Planks will work your core. Crunches will work your abs", $plan->id, $user->id, 6, 0, $coefficient);
         $this->makeExercise("Planks", $planks_description, $workout_id, $user->id, null, null, 70, $coefficient, 1, $planks_link);
@@ -192,9 +211,18 @@ class WorkoutService
 
         $workout_id = $this->makeWorkout("FREE", "It's your day off.. let's relax", $plan->id, $user->id, 8, 1, $coefficient);
 
-        $workout_id = $this->makeWorkout("Regular push ups and Tricep dips", "Regular pushups will work your chest and triceps. Tricep dips will work your triceps", $plan->id, $user->id, 9, 0, $coefficient);
-        $this->makeExercise("Regular push ups", $regularPushUps_description, $workout_id, $user->id, 9, 3, null, $coefficient, -1, $regularPushUps_link);
-        $this->makeExercise("Tricep Dips", $tricepDips_description, $workout_id, $user->id, 9, 3, null, $coefficient, -1, $tricepDips_link);
+        if (!$this->hasDumbbells)
+        {
+            $workout_id = $this->makeWorkout("Regular push ups and Tricep dips", "Regular pushups will work your chest and triceps. Tricep dips will work your triceps", $plan->id, $user->id, 9, 0, $coefficient);
+            $this->makeExercise("Regular push ups", $regularPushUps_description, $workout_id, $user->id, 9, 3, null, $coefficient, -1, $regularPushUps_link);
+            $this->makeExercise("Tricep Dips", $tricepDips_description, $workout_id, $user->id, 9, 3, null, $coefficient, -1, $tricepDips_link);
+        }
+        else
+        {
+            $workout_id = $this->makeWorkout("Regular push ups and Overhead extensions", "Regular pushups will work your chest and triceps. Overhead extensions will work your triceps", $plan->id, $user->id, 9, 0, $coefficient);
+            $this->makeExercise("Regular push ups", $regularPushUps_description, $workout_id, $user->id, 9, 3, null, $coefficient, -1, $regularPushUps_link);
+            $this->makeExercise("Overhead extensions", $overHeadExtensions_description, $workout_id, $user->id, 9, 3, null, $coefficient, -1, $overHeadExtensions_link);
+        }
 
         $workout_id = $this->makeWorkout("Planks and Crunches", "Planks will work your core. Crunches will work your abs", $plan->id, $user->id, 10, 0, $coefficient);
         $this->makeExercise("Planks", $planks_description, $workout_id, $user->id, null, null, 75, $coefficient, 1, $planks_link);
@@ -222,9 +250,18 @@ class WorkoutService
 
         $workout_id = $this->makeWorkout("FREE", "It's your day off.. let's relax", $plan->id, $user->id, 12, 1, $coefficient);
 
-        $workout_id = $this->makeWorkout("Regular push ups and Tricep dips", "Regular pushups will work your chest and triceps. Tricep dips will work your triceps", $plan->id, $user->id, 13, 0, $coefficient);
-        $this->makeExercise("Regular push ups", $regularPushUps_description, $workout_id, $user->id, 10, 3, null, $coefficient, -1, $regularPushUps_link);
-        $this->makeExercise("Tricep Dips", $tricepDips_description, $workout_id, $user->id, 10, 3, null, $coefficient, -1, $tricepDips_link);
+        if (!$this->hasDumbbells)
+        {
+            $workout_id = $this->makeWorkout("Regular push ups and Tricep dips", "Regular pushups will work your chest and triceps. Tricep dips will work your triceps", $plan->id, $user->id, 13, 0, $coefficient);
+            $this->makeExercise("Regular push ups", $regularPushUps_description, $workout_id, $user->id, 10, 3, null, $coefficient, -1, $regularPushUps_link);
+            $this->makeExercise("Tricep Dips", $tricepDips_description, $workout_id, $user->id, 10, 3, null, $coefficient, -1, $tricepDips_link);
+        }
+        else
+        {
+            $workout_id = $this->makeWorkout("Regular push ups and Overhead extensions", "Regular pushups will work your chest and triceps. Overhead extensions will work your triceps", $plan->id, $user->id, 13, 0, $coefficient);
+            $this->makeExercise("Regular push ups", $regularPushUps_description, $workout_id, $user->id, 10, 3, null, $coefficient, -1, $regularPushUps_link);
+            $this->makeExercise("Overhead extensions", $overHeadExtensions_description, $workout_id, $user->id, 10, 3, null, $coefficient, -1, $overHeadExtensions_link);
+        }
 
         $workout_id = $this->makeWorkout("Planks and Crunches", "Planks will work your core. Crunches will work your abs", $plan->id, $user->id, 14, 0, $coefficient);
         $this->makeExercise("Planks", $planks_description, $workout_id, $user->id, null, null, 80, $coefficient, 1, $planks_link);
@@ -251,9 +288,18 @@ class WorkoutService
 
         $workout_id = $this->makeWorkout("FREE", "It's your day off.. let's relax", $plan->id, $user->id, 16, 1, $coefficient);
 
-        $workout_id = $this->makeWorkout("Regular push ups and Tricep dips", "Regular pushups will work your chest and triceps. Tricep dips will work your triceps", $plan->id, $user->id, 17, 0, $coefficient);
-        $this->makeExercise("Regular push ups", $regularPushUps_description, $workout_id, $user->id, 11, 3, null, $coefficient, -1, $regularPushUps_link);
-        $this->makeExercise("Tricep Dips", $tricepDips_description, $workout_id, $user->id, 11, 3, null, $coefficient, -1, $tricepDips_link);
+        if (!$this->hasDumbbells)
+        {
+            $workout_id = $this->makeWorkout("Regular push ups and Tricep dips", "Regular pushups will work your chest and triceps. Tricep dips will work your triceps", $plan->id, $user->id, 17, 0, $coefficient);
+            $this->makeExercise("Regular push ups", $regularPushUps_description, $workout_id, $user->id, 11, 3, null, $coefficient, -1, $regularPushUps_link);
+            $this->makeExercise("Tricep Dips", $tricepDips_description, $workout_id, $user->id, 11, 3, null, $coefficient, -1, $tricepDips_link);
+        }
+        else
+        {
+            $workout_id = $this->makeWorkout("Regular push ups and Overhead extensions", "Regular pushups will work your chest and triceps. Overhead extensions will work your triceps", $plan->id, $user->id, 17, 0, $coefficient);
+            $this->makeExercise("Regular push ups", $regularPushUps_description, $workout_id, $user->id, 11, 3, null, $coefficient, -1, $regularPushUps_link);
+            $this->makeExercise("Overhead extensions", $overHeadExtensions_description, $workout_id, $user->id, 11, 3, null, $coefficient, -1, $overHeadExtensions_link);
+        }
 
         $workout_id = $this->makeWorkout("Planks and Crunches", "Planks will work your core. Crunches will work your abs", $plan->id, $user->id, 18, 0, $coefficient);
         $this->makeExercise("Planks", $planks_description, $workout_id, $user->id, null, null, 85, $coefficient, 1, $planks_link);
@@ -280,9 +326,18 @@ class WorkoutService
 
         $workout_id = $this->makeWorkout("FREE", "It's your day off.. let's relax", $plan->id, $user->id, 20, 1, $coefficient);
 
-        $workout_id = $this->makeWorkout("Regular push ups and Tricep dips", "Regular pushups will work your chest and triceps. Tricep dips will work your triceps", $plan->id, $user->id, 21, 0, $coefficient);
-        $this->makeExercise("Regular push ups", $regularPushUps_description, $workout_id, $user->id, 12, 3, null, $coefficient, -1, $regularPushUps_link);
-        $this->makeExercise("Tricep Dips", $tricepDips_description, $workout_id, $user->id, 12, 3, null, $coefficient, -1, $tricepDips_link);
+        if (!$this->hasDumbbells)
+        {
+            $workout_id = $this->makeWorkout("Regular push ups and Tricep dips", "Regular pushups will work your chest and triceps. Tricep dips will work your triceps", $plan->id, $user->id, 21, 0, $coefficient);
+            $this->makeExercise("Regular push ups", $regularPushUps_description, $workout_id, $user->id, 12, 3, null, $coefficient, -1, $regularPushUps_link);
+            $this->makeExercise("Tricep Dips", $tricepDips_description, $workout_id, $user->id, 12, 3, null, $coefficient, -1, $tricepDips_link);
+        }
+        else
+        {
+            $workout_id = $this->makeWorkout("Regular push ups and Overhead extensions", "Regular pushups will work your chest and triceps. Overhead extensions will work your triceps", $plan->id, $user->id, 21, 0, $coefficient);
+            $this->makeExercise("Regular push ups", $regularPushUps_description, $workout_id, $user->id, 12, 3, null, $coefficient, -1, $regularPushUps_link);
+            $this->makeExercise("Overhead extensions", $overHeadExtensions_description, $workout_id, $user->id, 12, 3, null, $coefficient, -1, $overHeadExtensions_link);
+        }
 
         $workout_id = $this->makeWorkout("Planks and Crunches", "Planks will work your core. Crunches will work your abs", $plan->id, $user->id, 22, 0, $coefficient);
         $this->makeExercise("Planks", $planks_description, $workout_id, $user->id, null, null, 90, $coefficient, 1, $planks_link);
@@ -309,9 +364,18 @@ class WorkoutService
 
         $workout_id = $this->makeWorkout("FREE", "It's your last day off in this plan.. let's relax", $plan->id, $user->id, 24, 1, $coefficient);
 
-        $workout_id = $this->makeWorkout("Regular push ups and Tricep dips", "Regular pushups will work your chest and triceps. Tricep dips will work your triceps", $plan->id, $user->id, 25, 0, $coefficient);
-        $this->makeExercise("Regular push ups", $regularPushUps_description, $workout_id, $user->id, 10, 4, null, $coefficient, -1, $regularPushUps_link);
-        $this->makeExercise("Tricep Dips", $tricepDips_description, $workout_id, $user->id, 10, 4, null, $coefficient, -1, $tricepDips_link);
+        if (!$this->hasDumbbells)
+        {
+            $workout_id = $this->makeWorkout("Regular push ups and Tricep dips", "Regular pushups will work your chest and triceps. Tricep dips will work your triceps", $plan->id, $user->id, 25, 0, $coefficient);
+            $this->makeExercise("Regular push ups", $regularPushUps_description, $workout_id, $user->id, 10, 4, null, $coefficient, -1, $regularPushUps_link);
+            $this->makeExercise("Tricep Dips", $tricepDips_description, $workout_id, $user->id, 10, 4, null, $coefficient, -1, $tricepDips_link);
+        }
+        else
+        {
+            $workout_id = $this->makeWorkout("Regular push ups and Overhead extensions", "Regular pushups will work your chest and triceps. Overhead extensions will work your triceps", $plan->id, $user->id, 25, 0, $coefficient);
+            $this->makeExercise("Regular push ups", $regularPushUps_description, $workout_id, $user->id, 10, 4, null, $coefficient, -1, $regularPushUps_link);
+            $this->makeExercise("Overhead extensions", $overHeadExtensions_description, $workout_id, $user->id, 10, 4, null, $coefficient, -1, $overHeadExtensions_link);
+        }
 
         $workout_id = $this->makeWorkout("Planks and Crunches", "Planks will work your core. Crunches will work your abs", $plan->id, $user->id, 26, 0, $coefficient);
         $this->makeExercise("Planks", $planks_description, $workout_id, $user->id, null, null, 90, $coefficient, 1, $planks_link);
