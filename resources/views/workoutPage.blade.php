@@ -264,7 +264,7 @@
                         <div class="form-group row">
                             <label for="sets" class="col-sm-2 col-form-label">Sets</label>
                             <div class="col-sm-10">
-                                <input type="text" name="sets" class="form-control ml-5" id="inputExerciseSets" value="">
+                                <input min="0" max="1000" type="number" name="sets" class="form-control ml-5" id="inputExerciseSets" value="">
                                 @error('sets')
                                 <p class="alert alert-danger ml-5" role="alert">{{ $message }}</p>
                                 @enderror
@@ -273,7 +273,7 @@
                         <div class="form-group row">
                             <label for="reps" class="col-sm-2 col-form-label">Reps</label>
                             <div class="col-sm-10">
-                                <input type="text" name="reps" class="form-control ml-5" id="inputExerciseReps" value="">
+                                <input min="0" max="1000" type="numer" name="reps" class="form-control ml-5" id="inputExerciseReps" value="">
                                 @error('reps')
                                 <p class="alert alert-danger ml-5" role="alert">{{ $message }}</p>
                                 @enderror
