@@ -8,6 +8,7 @@ use App\Models\Workout;
 use App\Models\Exercise;
 use App\Services\WorkoutService;
 use App\Services\WorkoutCoefficientService;
+use Exception;
 use Illuminate\Support\Facades\Validator;
 
 class PlanController extends Controller
@@ -43,6 +44,23 @@ class PlanController extends Controller
         }
     }
 
+    // Will call another store function depending on plan type (default or personalized)
+    public function storePlan(Request $request)
+    {
+        if ($request->plan_type == "Default")
+        {
+            return $this->storeDefaultPlan($request);
+        }
+        elseif ($request->plan_type == "Personalized")
+        {
+            return $this->storePersonalizedPlan($request);
+        }
+        else
+        {
+            return back()->with("error", "Sorry, something went wrong!");
+        }
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -65,7 +83,16 @@ class PlanController extends Controller
             $plan->workouts = 28;
             $plan->save();
 
-            $this->workoutService->makeWorkouts(1, auth()->user(), $plan, true);
+            try
+            {
+                $equipment = array(isset($request->pullUpBar), isset($request->dumbbells));
+                $this->workoutService->makeWorkouts(1, auth()->user(), $plan, $equipment);
+            }
+            catch (Exception $ex)
+            {
+                $plan->delete();
+                return back()->with("error", "Sorry, something went wrong!");
+            }
 
             return redirect('/plan/' . $plan->id)->with('success', 'Plan has been created successfully.');
         }
@@ -81,11 +108,11 @@ class PlanController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function storePersonalizedPlan($cetegoryId)
+    public function storePersonalizedPlan(Request $request)
     {
         $this->validateLoggedIn("/register");
 
-        $previousPlanId = $this->findPreviousPlanId($cetegoryId);
+        $previousPlanId = $this->findPreviousPlanId($request->category_id);
         if (!$previousPlanId)
         {
             $user = auth()->user();
@@ -96,16 +123,25 @@ class PlanController extends Controller
             }
 
             $plan = new Plan();
-            $plan->name = $this->getPlanName($user->name, $cetegoryId);
-            $plan->category_id = $cetegoryId;
+            $plan->name = $this->getPlanName($user->name, $request->category_id);
+            $plan->category_id = $request->category_id;
             $plan->user_id = auth()->id();
             $plan->is_default = 0;
             $plan->workouts = 28;
             $plan->save();
 
             /// Get coefficient for workout intensity and make workouts
-            $coefficient = $this->workoutCoefficientService->getCoefficient(auth()->user());
-            $this->workoutService->makeWorkouts($coefficient, auth()->user(), $plan, true);
+            try
+            {
+                $equipment = array(isset($request->pullUpBar), isset($request->dumbbells));
+                $coefficient = $this->workoutCoefficientService->getCoefficient(auth()->user());
+                $this->workoutService->makeWorkouts($coefficient, auth()->user(), $plan, $equipment);
+            }
+            catch (Exception $ex)
+            {
+                $plan->delete();
+                return back()->with("error", "Sorry, something went wrong!");
+            }
 
             return redirect('/plan/' . $plan->id)->with('success', 'Plan has been created successfully.');
         }
