@@ -102,8 +102,9 @@ class WorkoutController extends Controller
     public function store(Request $request, $planId)
     {
         $validateLoggedIn = $this->validateLoggedIn("/register");
+        $plan = Plan::findOrFail($planId);
 
-        if ($validateLoggedIn == null)
+        if ($validateLoggedIn == null && $this->authorize('storeWorkout', $plan) && $this->canWorkoutsBeAddedToPlan($plan))
         {
             $validator = Validator::make($request->all(), [
                 'name' => 'required|max:50',
@@ -120,7 +121,7 @@ class WorkoutController extends Controller
             }
 
             $user = auth()->user();
-            $plan = Plan::findOrFail($planId);
+            
 
             $workout = new Workout();
             $workout->plan_id = $planId;
@@ -142,6 +143,9 @@ class WorkoutController extends Controller
             {
                 return redirect('/plan/' . $planId . "/workout/" . $workout->id . "/add-exercise")->with('success', 'Workout has been added.');
             }
+        }
+        else {
+            return back()->with("error","No more workouts can be added to this plan");
         }
     }
 
