@@ -45,10 +45,30 @@
                             <h3 class="modal-title text-danger">Choose your plan for upper body</h3>
                         </div>
                         <div class="modal-body">
-                            <div class="btn-group" role="group">
-                                <a class="list-group-item mt-3 btn-default-plan" method="POST" href="/storeDefaultPlan/1">Default</a>
-                                <a class="list-group-item mt-3 btn-personalized-plan" method="POST" href="/storePersonalizedPlan/1">Personalized</a>
-                            </div>
+                            <form method="POST" class="workout-form mt-3" action="{{ action([App\Http\Controllers\PlanController::class, 'storePlan']) }}">
+                                @csrf
+                                <div class="btn-group" role="group">
+                                    <input class="list-group-item mt-3 btn-default-plan" type="submit" name="plan_type" value="Default" />
+                                    <input class="list-group-item mt-3 btn-personalized-plan" type="submit" name="plan_type" value="Personalized" />
+                                </div>
+                                <a data-toggle="collapse" data-target="#collapse" aria-expanded="true" aria-controls="collapse" class="collapse-link text-danger float-right">
+                                    Advanced
+                                </a>
+                                <div id="collapse" class="collapse" data-parent="#accordion">
+                                    <div class="card-body">
+                                        <p class="select-equipment">Select which equipment you have:</p>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="pullUpBarUB" name="pullUpBar">
+                                            <label class="custom-control-label text-danger" for="pullUpBarUB">Pull-up bar</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox mt-1">
+                                            <input type="checkbox" class="custom-control-input" id="dumbbellsUB" name="dumbbells">
+                                            <label class="custom-control-label text-danger" for="dumbbellsUB">Dumbbells</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input name="category_id" hidden="true" value="1">
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -60,10 +80,26 @@
                             <h3 class="modal-title text-danger">Choose your plan for lower body</h3>
                         </div>
                         <div class="modal-body">
-                            <div class="btn-group" role="group">
-                                <a class="list-group-item mt-3 btn-default-plan" method="POST" href="/storeDefaultPlan/2">Default</a>
-                                <a class="list-group-item mt-3 btn-default-plan" method="POST" href="/storePersonalizedPlan/2">Personalized</a>
-                            </div>
+                            <form method="POST" class="workout-form mt-3" action="{{ action([App\Http\Controllers\PlanController::class, 'storePlan']) }}">
+                                @csrf
+                                <div class="btn-group" role="group">
+                                    <input class="list-group-item mt-3 btn-default-plan" type="submit" name="plan_type" value="Default" />
+                                    <input class="list-group-item mt-3 btn-personalized-plan" type="submit" name="plan_type" value="Personalized" />
+                                </div>
+                                <a data-toggle="collapse" id="lower-body-collapse" data-target="#collapseLB" aria-expanded="true" aria-controls="collapse" class="collapse-link text-danger float-right">
+                                    Advanced
+                                </a>
+                                <div id="collapseLB" class="collapse" data-parent="#lower-body-collapse">
+                                    <div class="card-body">
+                                        <p class="select-equipment">Select which equipment you have:</p>
+                                        <div class="custom-control custom-checkbox mt-1">
+                                            <input type="checkbox" class="custom-control-input" id="dumbbellsLB" name="dumbbells">
+                                            <label class="custom-control-label text-danger" for="dumbbellsLB">Dumbbells</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input name="category_id" hidden="true" value="2">
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -75,20 +111,23 @@
                             <h3 class="modal-title text-danger">Choose your plan for cardio</h3>
                         </div>
                         <div class="modal-body">
-                            <div class="btn-group" role="group">
-                                <a class="list-group-item mt-3 btn-default-plan" method="POST" href="/storeDefaultPlan/3">Default</a>
-                                <a class="list-group-item mt-3 btn-default-plan" method="POST" href="/storePersonalizedPlan/3">Personalized</a>
-                            </div>
+                            <form method="POST" class="workout-form mt-3" action="{{ action([App\Http\Controllers\PlanController::class, 'storePlan']) }}">
+                                @csrf
+                                <div class="btn-group" role="group">
+                                    <input class="list-group-item mt-3 btn-default-plan" type="submit" name="plan_type" value="Default" />
+                                    <input class="list-group-item mt-3 btn-personalized-plan" type="submit" name="plan_type" value="Personalized" />
+                                </div>
+                                <input name="category_id" hidden="true" value="3">
+                            </form>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-1">
+                <div class="col-md-1">
+                </div>
             </div>
         </div>
-    </div>
-    @include('includes.footer')
-    @include('includes.alerts')
+        @include('includes.footer')
+        @include('includes.alerts')
 </body>
 
 </html>
