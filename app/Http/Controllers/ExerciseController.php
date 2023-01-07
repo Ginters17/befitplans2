@@ -199,20 +199,15 @@ class ExerciseController extends Controller
     public function addStravaActivity(Request $request)
     {
         $exercise = Exercise::findOrFail($request->exerciseId);
-        $activity = Strava_activity::where('activity_id', $request->activityId)->get();
+        $activity = Strava_activity::where('activity_id', $request->activityId)->firstOrFail(); 
 
-        if($activity[0] == null)
+        if (auth()->user() && $this->authorize('update', $exercise) && auth()->user()->id == $activity->user_id)
         {
-            return back()->with("error","Sorry, couldn't find the activity you tried to add.");
-        }
-
-        if (auth()->user() && $this->authorize('update', $exercise) && $this->authorize('addActivity', $activity[0]))
-        {
-            $exercise->activity_id = $request->activity;
+            $exercise->activity_id = $request->activityId;
             $exercise->save();
 
-            $activity[0]->exercise_id = $request->exerciseId;
-            $activity[0]->save();
+            $activity->exercise_id = $request->exerciseId;
+            $activity->save();
 
             return back()->with('success', 'Strava activity has been added sucessfully.');
         }
@@ -226,13 +221,14 @@ class ExerciseController extends Controller
     public function removeStravaActivity($planId, $workoutId, $exerciseId)
     {
         $exercise = Exercise::findOrFail($exerciseId);
-        $activity = Strava_activity::where('exercise_id', $exerciseId)->get();
+        $activity = Strava_activity::where('exercise_id', $exerciseId)->firstOrFail(); 
+
         if (auth()->user() && $this->authorize('delete', $exercise))
         {
             $exercise->activity_id = null;
             $exercise->save();
-            $activity[0]->exercise_id = null;
-            $activity[0]->save();
+            $activity->exercise_id = null;
+            $activity->save();
             return back()->with('success', 'Strava activity has been removed successfully.');
         }
         else
