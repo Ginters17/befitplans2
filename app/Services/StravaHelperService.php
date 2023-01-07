@@ -11,16 +11,20 @@ use DateTime;
 class StravaHelperService
 {
     // Process access token
+    // Return valid access token
     public function processAccessToken($strava_user_id)
     {
         $user = User::where("strava_user_id", $strava_user_id)->get();
 
         if ($this->isAccessTokenExpired($user[0]->access_token_expiry))
         {
-            $newAccessToken = app(StravaAPIService::class)->getAccessToken($user[0]->refresh_token);
-            $this->addAccessTokenToUser($user[0]->id, $newAccessToken->access_token, $newAccessToken->expires_at);
+            // Need to update access token, access token expiry and refresh token for user
+            $access = app(StravaAPIService::class)->getAccessDetails($user[0]->refresh_token);
+            $this->addAccessTokenToUser($user[0]->id, $access->access_token);
+            $this->addAccessTokenExpiryToUser($user[0]->id, $access->access_token_expiry);
+            $this->addRefreshTokenToUser($user[0]->id, $access->refresh_token);
 
-            return $newAccessToken;
+            return $access->access_token;
         }
 
         return $user[0]->access_token;
@@ -44,12 +48,19 @@ class StravaHelperService
     }
 
     // Adds Strava access token to user
-    public function addAccessTokenToUser($user_id, $access_token, $access_token_expiry)
+    public function addAccessTokenToUser($user_id, $access_token)
     {
         $user = User::findOrFail($user_id);
         $user->access_token = $access_token;
-        $user->access_token_expiry = $access_token_expiry;
         $user->save();
+    }
+
+    // Adds Strava access token expiry to user
+    public function addAccessTokenExpiryToUser($user_id, $access_token_expiry)
+    {
+        $user = User::findOrFail($user_id);
+        $user->access_token_expiry = $access_token_expiry;
+        $user->save(); 
     }
 
     // Adds Strava refresh token to user

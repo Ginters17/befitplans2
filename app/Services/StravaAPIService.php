@@ -75,8 +75,9 @@ class StravaAPIService
         return back()->with("success", "Successfully connected with your Strava account");
     }
 
-    // Gets access token for fiven refresh token (One refresh token per Strava user)
-    public function getAccessToken($refresh_token)
+    // Returns response object, which includes access token and access token expiry and refresh token
+    // (One refresh token per Strava user, which expires after each request)
+    public function getAccessDetails($refresh_token)
     {
         $client = new Client();
 
@@ -94,7 +95,7 @@ class StravaAPIService
             ]
         );
 
-        return json_decode($response->getBody())->access_token;
+        return json_decode($response->getBody());
     }
 
     /// Create a GET request for all activities
