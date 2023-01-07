@@ -78,9 +78,11 @@ class ExerciseController extends Controller
                     ->with("error", "Exercise not created - Video URL format is wrong");
             }
 
+            
             $user = auth()->user();
             $workout = Workout::findOrFail($workoutId);
             $plan = Plan::findOrFail($workout->plan_id);
+            
             if ($this->authorize('addExercise', $workout) && $this->canExercisesBeAddedToWorkout($workout))
             {
                 $exercise = new Exercise();
@@ -105,6 +107,9 @@ class ExerciseController extends Controller
                 $plan->save();
 
                 return redirect('/plan/' . $workout->plan_id . "/workout/" . $workoutId)->with('success', 'Exercise has been added');
+            }
+            else {
+                return back()->with("error", "No more exercises can be added to this workout");
             }
         }
     }
