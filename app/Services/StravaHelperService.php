@@ -21,7 +21,7 @@ class StravaHelperService
             // Need to update access token, access token expiry and refresh token for user
             $access = app(StravaAPIService::class)->getAccessDetails($user[0]->refresh_token);
             $this->addAccessTokenToUser($user[0]->id, $access->access_token);
-            $this->addAccessTokenExpiryToUser($user[0]->id, $access->access_token_expiry);
+            $this->addAccessTokenExpiryToUser($user[0]->id, $access->expires_at);
             $this->addRefreshTokenToUser($user[0]->id, $access->refresh_token);
 
             return $access->access_token;
