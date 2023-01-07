@@ -47,6 +47,18 @@ class PlanPolicy
     }
 
     /**
+     * Determine whether the user can add workouts to the model.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Plan  $plan
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function storeWorkout(User $user, Plan $plan)
+    {
+        return $user->id == $plan->user_id;
+    }
+
+    /**
      * Determine whether the user can complete the plan.
      *
      * @param  \App\Models\User  $user

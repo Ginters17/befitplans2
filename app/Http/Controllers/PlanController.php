@@ -40,7 +40,7 @@ class PlanController extends Controller
         }
         else
         {
-            return redirect('/')->with('error', 'The Plan that you tried to view is set to private.');
+            return back()->with('error', 'The Plan that you tried to view is set to private.');
         }
     }
 
