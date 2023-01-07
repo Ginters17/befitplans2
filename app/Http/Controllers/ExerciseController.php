@@ -188,7 +188,11 @@ class ExerciseController extends Controller
     public function complete($plan_id, $workout_id, $exercise_id)
     {
         $exercise = Exercise::findOrFail($exercise_id);
-        if (auth()->user() && $this->authorize('complete', $exercise))
+        $workout = Workout::findOrFail($workout_id);
+
+        $validateLoggedIn = $this->validateLoggedIn("/register");
+
+        if ($validateLoggedIn == null && $this->authorize('complete', $exercise) && $this->areAllPreviousWorkoutsCompleted($plan_id, $workout))
         {
             $exercise->is_complete = true;
             $exercise->save();
@@ -196,7 +200,7 @@ class ExerciseController extends Controller
         }
         else
         {
-            return redirect('/');
+            return back()->with("error","Previous workout isn't complete!");
         }
     }
 

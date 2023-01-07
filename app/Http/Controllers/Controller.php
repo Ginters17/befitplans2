@@ -60,4 +60,26 @@ class Controller extends BaseController
             return false;
         }
     }
+
+    // Check if all previous workouts in a plan are completed
+    private function areAllPreviousWorkoutsCompleted($planId, $workout)
+    {
+        $planWorkouts = Workout::where('plan_id', $planId)->orderby('day', 'ASC')->get();
+        for ($i = 0; $planWorkouts[$i]->day <= $workout->day; $i++)
+        {
+            if ($planWorkouts[$i]->id == $workout->id)
+            {
+                return true;
+            }
+            elseif ($planWorkouts[$i]->id < $workout->id && !$planWorkouts[$i]->is_complete)
+            {
+                return false;
+            }
+            if (!$planWorkouts[$i]->is_complete)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 }
