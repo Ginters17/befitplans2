@@ -14,20 +14,20 @@ class StravaHelperService
     // Return valid access token
     public function processAccessToken($strava_user_id)
     {
-        $user = User::where("strava_user_id", $strava_user_id)->get();
+        $user = User::where("strava_user_id", $strava_user_id)->firstOrFail(); 
 
-        if ($this->isAccessTokenExpired($user[0]->access_token_expiry))
+        if ($this->isAccessTokenExpired($user->access_token_expiry))
         {
             // Need to update access token, access token expiry and refresh token for user
-            $access = app(StravaAPIService::class)->getAccessDetails($user[0]->refresh_token);
-            $this->addAccessTokenToUser($user[0]->id, $access->access_token);
-            $this->addAccessTokenExpiryToUser($user[0]->id, $access->expires_at);
-            $this->addRefreshTokenToUser($user[0]->id, $access->refresh_token);
+            $access = app(StravaAPIService::class)->getAccessDetails($user->refresh_token);
+            $this->addAccessTokenToUser($user->id, $access->access_token);
+            $this->addAccessTokenExpiryToUser($user->id, $access->expires_at);
+            $this->addRefreshTokenToUser($user->id, $access->refresh_token);
 
             return $access->access_token;
         }
 
-        return $user[0]->access_token;
+        return $user->access_token;
     }
 
     // Store activities for user
@@ -108,8 +108,8 @@ class StravaHelperService
     // Gets user id by strava user id
     public function getUserIdByStravaUserId($strava_user_id)
     {
-        $user = User::where('strava_user_id', $strava_user_id)->get();
-        return $user[0]->id;
+        $user = User::where('strava_user_id', $strava_user_id)->firstOrFail(); 
+        return $user->id;
     }
 
     // Deletes all activites for user
