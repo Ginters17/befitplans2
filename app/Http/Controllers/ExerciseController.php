@@ -201,8 +201,12 @@ class ExerciseController extends Controller
         $exercise = Exercise::findOrFail($request->exerciseId);
         $activity = Strava_activity::where('activity_id', $request->activityId)->get();
 
+        if($activity[0] == null)
+        {
+            return back()->with("error","Sorry, couldn't find the activity you tried to add.");
+        }
 
-        if (auth()->user() && $this->authorize('update', $exercise))
+        if (auth()->user() && $this->authorize('update', $exercise) && $this->authorize('addActivity', $activity[0]))
         {
             $exercise->activity_id = $request->activity;
             $exercise->save();
