@@ -81,7 +81,7 @@ $(document).on("click", ".open-info-modal", function () {
         $('td#date').html(date);
         $('td#distance').html(distance + " km");
         $('td#moving_time').html(moving_time);
-        $('td#avg_pace').html(pace + "/km");
+        $('td#avg_pace').html(pace + " min/km");
         $('td#total_elevation_gain').html(total_elevation_gain + " m");
         $('td#elapsed_time').html(elapsed_time);
         $("a.view-activity-link").attr("href", "https://www.strava.com/activities/" + exercise["activity_id"]);
